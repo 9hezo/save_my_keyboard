@@ -5,6 +5,10 @@ const UsersService = require('../services/users.service');
 class UsersController {
   usersService = new UsersService();
 
+  output_login = (req, res) => {
+    res.render('users/login');
+  }
+
   createUser = async (req, res) => {
     // const { email, password, name, phone, address } = req.body;
 
