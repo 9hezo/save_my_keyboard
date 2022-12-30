@@ -1,0 +1,29 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon ./bin/server.js",
+    "format": "prettier --write '**/*.js'",
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.28.0",
+    "socket.io": "^4.5.4"
+  },
+  "devDependencies": {
+    "jest": "^29.3.1",
+    "sequelize-cli": "^6.5.2",
+    "supertest": "^6.3.3"
+  }
+}
