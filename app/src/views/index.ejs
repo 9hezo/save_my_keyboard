@@ -10,6 +10,10 @@
 <body>
   <%- include('components/nav') %>
 
+  <% if (locals.userInfo) { %>
+    <h1><%= userInfo.name %>, <%= userInfo.point %></h1>
+  <% } %>
+
   <%- include('components/best_review') %>
   
 

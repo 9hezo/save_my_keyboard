@@ -15,10 +15,10 @@
     <h1>로그인</h1>
 
     <!-- 일반/사장 선택 버튼 -->
-    <div class="list-group list-group-horizontal text-center mb-2">
+    <!-- <div class="list-group list-group-horizontal text-center mb-2">
       <a class="list-group-item list-group-item-action active" id="customer-list" data-bs-toggle="list" href="#customer" role="tab">일반 회원</a>
       <a class="list-group-item list-group-item-action" id="admin-list" data-bs-toggle="list" href="#admin" role="tab">사장님</a>
-    </div>
+    </div> -->
     <!-- 일반/사장 선택 버튼 끝 -->
 
     <!-- 입력 폼 -->
@@ -28,28 +28,31 @@
         <label for="email">이메일</label>
       </div>
       <div class="form-floating mb-2">
-        <input onkeyup="checkPassword()" type="password" class="form-control" id="password" placeholder="Password">
+        <input type="password" class="form-control" id="password" placeholder="Password">
         <label for="password">비밀번호</label>
       </div>
     </div>
     <!-- 입력 폼 끝 -->
 
     <!-- 회원/사장 회원가입 버튼 -->
-    <div class="tab-content mb-2" id="nav-tabContent">
+    <!-- <div class="tab-content mb-2" id="nav-tabContent">
       <div class="tab-pane fade show active" id="customer" role="tabpanel" aria-labelledby="customer-list">
         <div class="d-grid gap-2">
-          <button onclick="register(false)" class="btn btn-primary" type="button">일반 회원 로그인</button>
+          <button onclick="login()" class="btn btn-primary" type="button">일반 회원 로그인</button>
         </div>
       </div>
       <div class="tab-pane fade" id="admin" role="tabpanel" aria-labelledby="admin-list">
         <div class="d-grid gap-2">
-          <button onclick="register(true)" class="btn btn-success" type="button">사장님 로그인</button>
+          <button onclick="login()" class="btn btn-success" type="button">사장님 로그인</button>
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- 회원/사장 회원가입 버튼 끝 -->
+    <div class="d-grid gap-2 mb-2">
+      <button onclick="login()" class="btn btn-primary" type="button">로그인</button>
+    </div>
 
-    <div class="d-grid gap-2">
+    <div class="d-grid gap-2 mb-2">
       <button onclick="location.href='/users/register'" class="btn btn-outline-dark" type="button">아직 회원가입을 안하셨다면?</button>
     </div>
   </div>
