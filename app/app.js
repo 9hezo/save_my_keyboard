@@ -18,8 +18,5 @@ app.use(express.static(`${__dirname}/src/public`));
 const router = require('./src/routes');
 app.use('/api', router);
 app.use('/', router);
-app.use('/', (req, res) => {
-  res.render('index');
-});
 
 module.exports = app;

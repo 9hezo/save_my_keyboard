@@ -1,0 +1,19 @@
+<nav class="navbar bg-body-tertiary mb-5">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">키보드를 구해조!</a>
+    <div class="btn-group d-flex">
+
+      <% if (!locals.userInfo) { %>
+        <button onclick="location.href='/users/login'" type="button" class="btn btn-outline-dark">로그인</button>
+      <% } else {%>
+        <button onclick="logout()" type="button" class="btn btn-outline-dark">로그아웃</button>
+      <% } %>
+      <button onclick="location.href='/'" type="button" class="btn btn-outline-dark">메인</button>
+      <button type="button" class="btn btn-outline-dark">마이</button>
+      <button type="button" class="btn btn-outline-dark">리뷰</button>
+      <button type="button" class="btn btn-outline-dark">윤활</button>
+    </div>
+  </div>
+</nav>
+
+<script src="/js/components/nav.js" defer></script>

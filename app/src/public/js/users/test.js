@@ -4,6 +4,6 @@ const loginBtn = document.querySelector('#test');
 
 loginBtn.addEventListener('click', login);
 
-function login(){
+function login() {
   console.log('hihi');
 }
