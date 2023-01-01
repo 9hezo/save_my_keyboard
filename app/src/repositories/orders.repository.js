@@ -12,6 +12,6 @@ class OrdersRepository {
   
       return createOrderData;
     }
-  }
+}
 
 module.exports = OrdersRepository;

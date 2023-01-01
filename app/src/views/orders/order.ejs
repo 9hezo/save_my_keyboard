@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  <title>윤활 신청 페이지</title>
+</head>
+<style>
+    @font-face{
+      font-family:'bitbit';
+      src:url('//cdn.df.nexon.com/img/common/font/DNFBitBit-Regular.woff'),url('//cdn.df.nexon.com/img/common/font/DNFBitBit-Regular.woff2') ;
+    }
+  
+    * {
+      font-family:'bitbit';
+    }
+  </style>
+  
+  <body>
+      <div class="header" style="display: flex; height: 5rem;">
+          <h1 style="flex: 1;"> 키보드를 구해조 </h1>
+          <ul class="nav justify-content-end" style="flex: 1;">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">HOME</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">MYPAGE</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">REVIEW</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled">ETC</a>
+            </li>
+          </ul>
+      </div>
+
+      <div class="main" style="width: 50%; height: 30rem; background-color: #eeeeee; border: solid 1px; margin-left: 20rem;">
+            <h2 style="margin: 1rem auto 3rem 5rem; "> 윤활 서비스 신청 </h2>
+            
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="kinds">키보드 종류</label>
+                <select class="form-select" id="kinds">
+                  <option selected>종류</option>
+                  <option value="1">죄송한데 전</option>
+                  <option value="2">키보드 종류를</option>
+                  <option value="3">잘 모릅니다.</option>
+                </select>
+            </div>
+            
+            <div class="input-group mb-3">
+                <input type="file" class="form-control" id="inputGroupFile02">
+                <label class="input-group-text" for="inputGroupFile02">Upload</label>
+            </div>
+
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="kinds">픽업 시간 선택</label>
+                <select class="form-select" id="kinds">
+                  <option selected>00시</option>
+                  <option value="1">09시</option>
+                  <option value="2">12시</option>
+                  <option value="3">18시</option>
+                </select>
+            </div>
+            
+            <div class="row mb-3">
+                <label for="inputEmail3" class="col-sm-2 col-form-label" style="margin-left: 1rem">요청사항</label>
+                <div class="col-sm-10">
+                  <input type="details" class="form-control" id="datails">
+                </div>
+            </div>
+
+            <button class="btn btn-primary" type="submit" style="margin: 3rem 0px 2rem 8rem; padding-left: 10rem; padding-right: 10rem;">신청 완료</button>
+      </div>
+</body>
+</html>

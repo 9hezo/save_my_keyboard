@@ -3,6 +3,10 @@ const OrdersService = require('../services/orders.service');
 class OrdersController{
     ordersService = new OrdersService();
 
+    output_orders = (req, res) => {
+        res.render('orders/order');
+    };
+
     // getorders = async (req, res, next) => {
     //     const { order_id } = req.params;
     //     const ownesrOrder = await this.ordersService.findOrderById(order_id);
