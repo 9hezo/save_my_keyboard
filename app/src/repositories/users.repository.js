@@ -1,5 +1,3 @@
-'use strict';
-
 class UsersRepository {
   constructor(usersModel) {
     this.usersModel = usersModel;
