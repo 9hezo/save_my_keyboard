@@ -22,6 +22,14 @@ class UsersRepository {
       console.log(err);
     }
   };
+
+  findUserById = async (id) => {
+    try {
+      return await this.usersModel.findByPk(id);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 }
 
 module.exports = UsersRepository;

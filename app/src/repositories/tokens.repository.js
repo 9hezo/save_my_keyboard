@@ -14,6 +14,14 @@ class TokensRepository {
       return -1;
     }
   };
+
+  findOneToken = async (refreshToken) => {
+    try {
+      return await this.tokensModel.findOne({ where: { refreshToken } });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 }
 
 module.exports = TokensRepository;

@@ -4,13 +4,13 @@ require('dotenv').config();
 const bcrypt = require('bcrypt');
 
 const UsersRepository = require('../repositories/users.repository');
-const TokenStorage = require('../repositories/tokens.repository');
+const TokensRepository = require('../repositories/tokens.repository');
 const TokenManager = require('../config/TokenManager');
 const { User, Token } = require('../sequelize/models');
 
 class UsersService {
   usersRepository = new UsersRepository(User);
-  tokenStorage = new TokenStorage(Token);
+  tokensRepository = new TokensRepository(Token);
 
   createUser = async (email, password, name, phone, address, admin, point) => {
     try {
@@ -49,7 +49,7 @@ class UsersService {
       const refreshToken = await TokenManager.createRefreshToken();
 
       // refreshToken 저장
-      const result = await this.tokenStorage.saveToken(refreshToken, user.id);
+      const result = await this.tokensRepository.saveToken(refreshToken, user.id);
 
       const response =
         result > 0
@@ -64,6 +64,10 @@ class UsersService {
 
   findOneUser = async (email) => {
     return await this.usersRepository.findOneUser(email);
+  };
+
+  findUserById = async (id) => {
+    return await this.usersRepository.findUserById(id);
   };
 
   encryptPassword = async (password) => {
