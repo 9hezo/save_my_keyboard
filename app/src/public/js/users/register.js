@@ -7,7 +7,6 @@ const name = document.querySelector('#name');
 const phone = document.querySelector('#phone');
 const address = document.querySelector('#address');
 
-
 function checkPassword() {
   password.classList.remove('is-invalid');
   confirmPassword.classList.remove('is-invalid');
@@ -20,7 +19,6 @@ function checkPassword() {
 }
 
 function register(admin) {
-
   if (!email.value | !password.value | !confirmPassword.value | !name.value | !phone.value | !address.value) {
     return alert('빈 입력값이 있습니다.');
   }
@@ -34,36 +32,34 @@ function register(admin) {
     return alert('핸드폰 번호를 정확히 입력해주세요.');
   }
 
-
   const req = {
-    email: email.value, 
-    password: password.value, 
-    name: name.value, 
-    phone: phone.value, 
-    address: address.value, 
-    admin, 
+    email: email.value,
+    password: password.value,
+    name: name.value,
+    phone: phone.value,
+    address: address.value,
+    admin,
   };
 
   fetch('/api/users/register', {
-    method: 'POST', 
+    method: 'POST',
     headers: {
-        'Content-Type': 'application/json', 
-    }, 
-    body: JSON.stringify(req)
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(req),
   })
-  .then( async (res) => {
-    const code = res.status;
+    .then(async (res) => {
+      const code = res.status;
 
-    res = await res.json();
-    alert(res.message);
+      res = await res.json();
+      alert(res.message);
 
-    if (code === 201) {
-      location.href='/';
-    }
-  })
-  .catch((err) => {
+      if (code === 201) {
+        location.href = '/';
+      }
+    })
+    .catch((err) => {
       // console.error(new Error('회원가입 중 에러 발생'));
       console.log('err: ', err);
-  })
-
+    });
 }

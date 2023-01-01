@@ -31,6 +31,23 @@ class UsersController {
     const response = await this.usersService.createUser(email, password, name, phone, address, admin, point);
     res.status(response.code).json({ message: response.message });
   };
+
+  login = async (req, res) => {
+    let { email, password } = req.body;
+
+    const response = await this.usersService.login(email, password);
+    if (response.code == 200) {
+      res.cookie('accessToken', response.accessToken);
+      res.cookie('refreshToken', response.refreshToken);
+    }
+    res.status(response.code).json({ message: response.message });
+  };
+
+  logout = async (req, res) => {
+    res.clearCookie('accessToken');
+    res.clearCookie('refreshToken');
+    return res.status(200).json({ message: '로그아웃 되었습니다.' });
+  };
 }
 
 module.exports = UsersController;
