@@ -5,6 +5,10 @@ const UsersService = require('../services/users.service');
 class UsersController {
   usersService = new UsersService();
 
+  output_register = (req, res) => {
+    res.render('users/register');
+  };
+
   output_login = (req, res) => {
     res.render('users/login');
   };
