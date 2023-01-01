@@ -6,11 +6,21 @@ class UsersController {
   usersService = new UsersService();
 
   output_register = (req, res) => {
-    res.render('users/register');
+    if (res.locals.userInfo) {
+      const userInfo = res.locals.userInfo;
+      res.render('users/register', { userInfo: { name: userInfo.name, point: userInfo.point } });
+    } else {
+      res.render('users/register');
+    }
   };
 
   output_login = (req, res) => {
-    res.render('users/login');
+    if (res.locals.userInfo) {
+      const userInfo = res.locals.userInfo;
+      res.render('users/login', { userInfo: { name: userInfo.name, point: userInfo.point } });
+    } else {
+      res.render('users/login');
+    }
   };
 
   createUser = async (req, res) => {

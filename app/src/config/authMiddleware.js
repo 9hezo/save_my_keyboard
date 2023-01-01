@@ -5,7 +5,6 @@ const UsersService = require('../services/users.service');
 const TokenManager = require('./TokenManager');
 
 module.exports = async (req, res, next) => {
-  console.log('middleware 들어옴');
   const tokensService = new TokensService();
   const usersService = new UsersService();
 
@@ -20,6 +19,8 @@ module.exports = async (req, res, next) => {
 
   if (!isRefreshTokenValidate) {
     console.log('Refresh Token이 만료되었습니다.');
+    res.clearCookie('accessToken');
+    res.clearCookie('refreshToken');
     return next();
   }
 
