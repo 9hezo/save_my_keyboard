@@ -1,14 +1,14 @@
 'use strict';
 
 const express = require('express');
+const { Model } = require('sequelize');
 const router = express.Router();
 
 const ReviewsController = require('../controllers/reviews.controller');
 const reviewsController = new ReviewsController();
 
 router.get('/', reviewsController.getReviews);
-
-router.post('/1', reviewsController.createReviews);
+router.post('/', reviewsController.createtReviews);
 
 // app.get('/list', (req, res) => {
 //   db.collection('post')

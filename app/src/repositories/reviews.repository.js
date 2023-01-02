@@ -1,15 +1,18 @@
 'use strict';
 
-const { Reviews } = require('../sequelize/models/reviews');
+// const { Reviews } = require('../models');
 
 class ReviewsRepository {
-  findAllReviews = async () => {
-    const reviews = await Reviews.findAll();
-    return reviews;
+  constructor(reviewsModel) {
+    this.reviewsModel = reviewsModel;
+  }
+
+  findAllReviews = async (orderId, content, score, imageUrl) => {
+    return await this.reviewsModel.findAll({ where: orderId, content, score, imageUrl });
   };
 
-  createReviews = async (orderId, content, score, imageURL) => {
-    const createReviewData = await Reviews.create({ orderId, content, score, imageURL });
+  createReviews = async (orderId, content, score, imageUrl) => {
+    const createReviewData = await this.reviewsModel.create({ orderId, content, score, imageUrl });
 
     return createReviewData;
   };

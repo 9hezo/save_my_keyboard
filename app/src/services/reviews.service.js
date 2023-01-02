@@ -1,39 +1,48 @@
 'use strict';
 
 const ReviewsRepository = require('../repositories/reviews.repository');
+const { Review } = require('../sequelize/models');
 // const { Users } = require('../models');
 
 class ReviewsService {
-  reviewsRepository = new ReviewsRepository();
+  reviewsRepository = new ReviewsRepository(Review);
 
   findAllReviews = async () => {
-    console.log('hihi');
     const allReviews = await this.reviewsRepository.findAllReviews();
-    console.log('hihi');
+
+    console.log(allReviews);
+
+    allReviews.sort((a, b) => {
+      return b.createdAt - a.createdAt;
+    });
 
     return allReviews.map((reviews) => {
       return {
         orderId: reviews.orderId,
         content: reviews.content,
         score: reviews.score,
-        imageURL: reviews.imageURL,
+        imageUrl: reviews.imageUrl,
+        createdAt: reviews.createdAt,
+        updatedAt: reviews.updatedAt,
       };
     });
   };
 
-  createReviews = async (orderId, content, score, imageURL) => {
-    const createReviewData = await this.reviewsRepository.createReivew(
+  createReviews = async (orderId, content, score, imageUrl) => {
+    const createReviewData = await this.reviewsRepository.createReviews(
       orderId,
       content,
       score,
-      imageURL
+      imageUrl
     );
 
     return {
       orderId: createReviewData.orderId,
       content: createReviewData.content,
       score: createReviewData.score,
-      imageURL: createReviewData.imageURL,
+      imageUrl: createReviewData.imageUrl,
+      createdAt: Review.createdAt,
+      updatedAt: Review.updatedAt,
     };
   };
 }

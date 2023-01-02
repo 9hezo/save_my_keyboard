@@ -18,50 +18,14 @@
   <body>
     <h4 class="m1-2 my-3 text-center">서버에서 가져온 할 일 리스트</h4>
 
+    <%= reviewsInfo %>
+
     <div class="container input-group mb-2">
       <input id="search-input" class="form-control" />
       <button id="search" class="input-group-append btn-sm btn-danger">검색</button>
     </div>
 
-    <script>
-      $('#search').click(function () {
-        var 입력한값 = $('#search-input').val();
-        window.location.replace('/search?value=' + 입력한값);
-      });
-    </script>
-
-    <div class="container">
-      <ul class="list-group">
-        <% for (var i = 0 ; i < posts.length ; i ++){ %>
-        <li class="list-group-item">
-          <p>글 번호 :<%= posts[i]._id %></p>
-          <h4>할일 제목: <%= posts[i].제목 %></h4>
-          <p>할일 마감 날짜: <%= posts[i].날짜 %></p>
-          <button class="delete btn btn-danger" data-id="<%= posts[i]._id %>">삭제</button>
-        </li>
-        <% }%>
-      </ul>
-    </div>
-
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script>
-      $('.delete').click(function (e) {
-        var 글번호 = e.target.dataset.id;
-        var 지금누른거 = $(this);
-        $.ajax({
-          method: 'DELETE',
-          url: '/delete',
-          data: { _id: 글번호 },
-        })
-          .done(function (결과) {
-            console.log('성공했어염');
-            지금누른거.parent('li').fadeOut();
-          })
-          .fail(function (xhr, textStatus, errorThrown) {
-            console.log(xhr, textStatus, errorThrown);
-          });
-      });
-    </script>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

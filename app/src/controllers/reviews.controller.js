@@ -5,22 +5,32 @@ const ReviewsService = require('../services/reviews.service');
 class ReviewsController {
   reviewsService = new ReviewsService();
 
-  getReviews = async (req, res) => {
-    const reviews = await this.reviewsService.findAllReviews;
-    console.log('hi');
-    res.status(200).json({ reviews });
+  getReviews = async (req, res, next) => {
+    let { orderId, content, score, imageUrl } = req.body;
+    const reviews = await this.reviewsService.findAllReviews(orderId, content, score, imageUrl);
+
+    // res.status(200).json({ reviews });
+    res.render('review', {
+      reviewsInfo: {
+        orderId: reviews.orderId,
+        content: reviews.content,
+        score: reviews.score,
+        imageUrl: reviews.imageUrl,
+      },
+    });
   };
 
-  createReviews = async (req, res) => {
+  createtReviews = async (req, res, next) => {
     const { orderId, content, score, imageURL } = req.body;
-    const createReviewData = await this.reviewsService.createReviews(
+
+    const createReviewsData = await this.reviewsService.createReviews(
       orderId,
       content,
       score,
       imageURL
     );
 
-    res.status(201).json({ data: createReviewData });
+    return res.status(201).json({ data: createReviewsData });
   };
 }
 

@@ -13,6 +13,7 @@ router.get('/login', authMiddleware, usersController.output_login);
 
 router.post('/register', loginCheckMiddleware, usersController.createUser);
 router.post('/login', loginCheckMiddleware, usersController.login);
+
 router.get('/logout', usersController.logout);
 
 module.exports = router;
