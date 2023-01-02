@@ -9,6 +9,13 @@ class OrdersController{
         res.render('orders/order');
     }
 
+    getlists = async (req, res) => {
+        
+        const Order = await this.ordersService.findAllLists();
+
+        res.status(201).json({ data: Order });
+    }
+
     getorders = async (req, res) => {
         const userInfo = res.locals.userInfo;
         const ownerId = userInfo.id;

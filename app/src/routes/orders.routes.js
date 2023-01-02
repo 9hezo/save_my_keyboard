@@ -10,10 +10,9 @@ const authMiddleware = require('../config/authMiddleware');
 
 router.get('/', ordersController.output_orders);
 
-router.get('/', authMiddleware, ordersController.getorders);
+router.get('/lists', authMiddleware, ordersController.getlists);
+router.get('/mylist', authMiddleware, ordersController.getorders);
 router.post('/', authMiddleware, ordersController.createOrder);
 
-// router.patch('/:orderId', ordersController.changeOrder);
-// router.delete('/:orderId', ordersController.eraseOrder);
 
 module.exports = router;

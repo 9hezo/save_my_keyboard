@@ -2,11 +2,30 @@
 
 const OrdersRepository = require('../repositories/orders.repository');
 const { Order } = require('../sequelize/models');
-// const user = require('../sequelize/models/user');
 
 class OrdersService {
     ordersRepository = new OrdersRepository(Order);
 
+    findAllLists = async () => {
+        const allLists = await this.ordersRepository.findAllLists();
+
+        allLists.sort((a, b) => {
+            return b.createdAt - a.createdAt;
+        });
+
+        return allLists.map((orders) => {
+            return{
+                ownerId: orders.ownerId,
+                kinds: orders.kinds,
+                details: orders.details,
+                pickup: orders.pickup, 
+                imageUrl: orders.imageUrl,
+                createdAt: orders.createdAt,
+                updatedAt: orders.updatedAt
+            };
+        });
+    };
+    
     findOrderById = async (ownerId) => {
         const allordersById = await this.ordersRepository.findOrderById(ownerId);
         
