@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
   <title>윤활 신청 페이지</title>
+  <link rel="icon" href="data:,">
 </head>
 <style>
     @font-face{
@@ -39,15 +40,10 @@
 
       <div class="main" style="width: 50%; height: 30rem; background-color: #eeeeee; border: solid 1px; margin-left: 20rem;">
             <h2 style="margin: 1rem auto 3rem 5rem; "> 윤활 서비스 신청 </h2>
-            
+
             <div class="input-group mb-3">
-                <label class="input-group-text" for="kinds">키보드 종류</label>
-                <select class="form-select" id="kinds">
-                  <option selected>종류</option>
-                  <option value="1">죄송한데 전</option>
-                  <option value="2">키보드 종류를</option>
-                  <option value="3">잘 모릅니다.</option>
-                </select>
+              <span class="input-group-text" id="kinds">키보드 종류</span>
+              <input type="text" class="form-control" id="kinds" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
             </div>
             
             <div class="input-group mb-3">
@@ -55,14 +51,9 @@
                 <label class="input-group-text" for="inputGroupFile02">Upload</label>
             </div>
 
-            <div class="input-group mb-3">
-                <label class="input-group-text" for="kinds">픽업 시간 선택</label>
-                <select class="form-select" id="kinds">
-                  <option selected>00시</option>
-                  <option value="1">09시</option>
-                  <option value="2">12시</option>
-                  <option value="3">18시</option>
-                </select>
+            <div class="pickup" style="display: flex;">
+                <div style="flex: 1;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;픽업시간</div>
+                <input type="datetime-local" style="flex: 6;" name="starttime">
             </div>
             
             <div class="row mb-3">

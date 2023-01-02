@@ -3,17 +3,21 @@
 const { Order } = require('../sequelize/models');
 
 class OrdersRepository {
-    createOrder = async (ownerId, kinds, details, imageURL, pickup) => {
-      const response = await Order.create({ownerId, kinds, details, imageURL, pickup});
-
-      return response;
+    constructor(Model) {
+      this.Model = Model;
     }
 
-    // findOrderById = async () => {
-    //   const order = await Order.findOrderById();
-  
-    //   return order;
-    // }
+    findOrderById = async (ownerId) => {
+      const orders = await this.Model.findAll({ where: { ownerId: ownerId } });
+
+      return orders;
+    };
+
+    createOrder = async (ownerId, kinds, details, pickup, imageUrl) => {
+      const response = await Order.create({ ownerId, kinds, details, pickup, imageUrl });
+
+      return response;
+    };
 }
 
 module.exports = OrdersRepository;
