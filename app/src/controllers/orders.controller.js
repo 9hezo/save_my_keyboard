@@ -7,20 +7,21 @@ class OrdersController{
         res.render('orders/order');
     };
 
-    // getorders = async (req, res, next) => {
-    //     const { order_id } = req.params;
-    //     const ownesrOrder = await this.ordersService.findOrderById(order_id);
-
-    //     res.status(200).json({ data: ownersOrder });
-    // };
-
-    createOrder = async (req, res, next) => {
+    createOrder = async (req, res) => {
         const { ownerId, kinds, details, pickup, imageURL } = req.body;
-        const createOrderData = await this.ordersService.createOrder(ownerId, kinds, details, pickup, imageURL);
 
-        res.status(201).json({ createOrderData });
-        // res.status(response.code).json({ message: response.message });
+        const response = await this.ordersService.createOrder(ownerId, kinds, details, pickup, imageURL);
+
+        res.status(response.code).json({ message: response.message });
     };
+
+    // getorders = async (req, res) => {
+    //     const { id } = req.params;
+
+    //     const response = await this.ordersService.findOrderById(orderId);
+
+    //     res.status(response.code).json({ message: response.message });
+    // };
 }
 
 module.exports = OrdersController;
