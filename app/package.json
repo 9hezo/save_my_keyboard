@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon ./bin/server.js",
-    "format": "prettier --write '**/*.js'",
+    "format": "prettier --write \"**/*.js\"",
     "test": "jest --forceExit",
     "test:silent": "jest --silent --forceExit",
     "test:coverage": "jest --coverage --forceExit",
@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "jest": "^29.3.1",
+    "prettier": "^2.8.1",
     "sequelize-cli": "^6.5.2",
     "supertest": "^6.3.3"
   }

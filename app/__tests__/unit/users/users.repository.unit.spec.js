@@ -1,12 +1,12 @@
 const UsersRepository = require('../../../src/repositories/users.repository');
 
-let mockModel = {
+const mockUsersModel = {
   create: jest.fn(),
   findOne: jest.fn(),
   findByPk: jest.fn(),
 };
 
-const usersRepository = new UsersRepository(mockModel);
+const usersRepository = new UsersRepository(mockUsersModel);
 
 describe('users.repository Unit Test', () => {
   beforeEach(() => {
@@ -14,7 +14,7 @@ describe('users.repository Unit Test', () => {
   });
 
   test('users.repository createUser Method success', async () => {
-    mockModel.create = jest.fn(() => {
+    mockUsersModel.create = jest.fn(() => {
       return { id: 1 };
     });
 
@@ -38,8 +38,8 @@ describe('users.repository Unit Test', () => {
     );
 
     expect(result).toEqual(1);
-    expect(mockModel.create).toHaveBeenCalledTimes(1);
-    expect(mockModel.create).toHaveBeenCalledWith({
+    expect(mockUsersModel.create).toHaveBeenCalledTimes(1);
+    expect(mockUsersModel.create).toHaveBeenCalledWith({
       email: params.email,
       password: params.password,
       name: params.name,
@@ -51,26 +51,24 @@ describe('users.repository Unit Test', () => {
   });
 
   test('users.repository findOneUser Method success', async () => {
-    mockModel.findOne = jest.fn(() => {
-      return 'test'
+    mockUsersModel.findOne = jest.fn(() => {
+      return 'test';
     });
     const result = await usersRepository.findOneUser('test@gmail.com');
 
     expect(result).toEqual('test');
-    expect(mockModel.findOne).toHaveBeenCalledTimes(1);
-    expect(mockModel.findOne).toHaveBeenCalledWith({ where: { email: 'test@gmail.com' } });
+    expect(mockUsersModel.findOne).toHaveBeenCalledTimes(1);
+    expect(mockUsersModel.findOne).toHaveBeenCalledWith({ where: { email: 'test@gmail.com' } });
   });
 
   test('users.repository findUserById Method success', async () => {
-    mockModel.findByPk = jest.fn(() => {
-      return 'test'
+    mockUsersModel.findByPk = jest.fn(() => {
+      return 'test';
     });
     const result = await usersRepository.findUserById(1);
 
     expect(result).toEqual('test');
-    expect(mockModel.findByPk).toHaveBeenCalledTimes(1);
-    expect(mockModel.findByPk).toHaveBeenCalledWith(1);
-
+    expect(mockUsersModel.findByPk).toHaveBeenCalledTimes(1);
+    expect(mockUsersModel.findByPk).toHaveBeenCalledWith(1);
   });
-
 });
