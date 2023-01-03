@@ -42,8 +42,11 @@ module.exports = async (req, res, next) => {
   } else {
     userId = TokenManager.getAccessTokenPayload(accessToken).userId;
   }
-
+  // console.log('abc');
+  // console.log(req.path);
+  // console.log('userId:', userId);
   const userInfo = await usersService.findUserById(userId);
+  // console.log('userInfo:', userInfo);
   res.locals.userInfo = userInfo;
   next();
 };
