@@ -58,7 +58,7 @@ class UsersService {
       return response;
     } catch (err) {
       console.log('users.service error: ', err);
-      return { code: 500, message: '회원 가입에 실패하였습니다.' };
+      return { code: 500, message: '로그인에 실패하였습니다.' };
     }
   };
 
