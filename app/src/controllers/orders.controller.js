@@ -9,23 +9,20 @@ class OrdersController {
     res.render('orders/order');
   };
 
-  output_orderlists = (req, res) => {
-    res.render('orders/orderlists');
-  };
-
+  // 사장
   getlists = async (req, res) => {
-    const Order = await this.ordersService.findAllLists();
-
-    res.status(201).json({ data: Order });
+    const order = await this.ordersService.findAllLists();
+    res.render('orders/orderlists', { data: order })
   };
 
+  // 손님
   getorders = async (req, res) => {
     const userInfo = res.locals.userInfo;
     const ownerId = userInfo.id;
 
-    const Order = await this.ordersService.findOrderById(ownerId);
+    const order = await this.ordersService.findOrderById(ownerId);
 
-    res.status(201).json({ data: Order });
+    res.render('orders/mylists', { data: order });
   };
 
   createOrder = async (req, res) => {

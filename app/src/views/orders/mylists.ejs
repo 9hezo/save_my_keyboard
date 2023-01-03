@@ -10,7 +10,7 @@
       integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
       crossorigin="anonymous"
     />
-    <title>사장 윤활 신청 목록 페이지</title>
+    <title>손님 윤활 신청 목록 페이지</title>
     <link rel="icon" href="data:," />
     <script
       src="https://code.jquery.com/jquery-3.5.1.js"
@@ -50,12 +50,15 @@
         let date = new Date(data[i].pickup).toLocaleDateString();
         let status_str = data[i].status;
         if (status_str === 0) {
-          status_str = "수거 완료";
+          status_str = "대기 중";
         } else if (status_str === 1) {
-          status_str = "배송 중";
+          status_str = "수거 중";
         } else if (status_str === 2) {
+          status_str = "수거 완료";
+        } else if (status_str === 3) {
+          status_str = "배송 중";
+        } else if (status_str === 4) {
           status_str = "배송 완료";
-          // point += 10000
         }
 
         let temp_html = `<tr>
