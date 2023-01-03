@@ -1,72 +1,84 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-  <title>윤활 신청 페이지</title>
-  <link rel="icon" href="data:,">
-</head>
-<style>
-    @font-face{
-      font-family:'bitbit';
-      src:url('//cdn.df.nexon.com/img/common/font/DNFBitBit-Regular.woff'),url('//cdn.df.nexon.com/img/common/font/DNFBitBit-Regular.woff2') ;
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+      crossorigin="anonymous"
+    />
+    <title>윤활 신청 페이지</title>
+    <link rel="icon" href="data:," />
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.js"
+      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+      crossorigin="anonymous"
+    ></script>
+    <script src="/js/orders/order.js" defer></script>
+  </head>
+  <style>
+    @font-face {
+      font-family: 'bitbit';
+      src: url('//cdn.df.nexon.com/img/common/font/DNFBitBit-Regular.woff'),
+        url('//cdn.df.nexon.com/img/common/font/DNFBitBit-Regular.woff2');
     }
-  
+
     * {
-      font-family:'bitbit';
+      font-family: 'bitbit';
     }
   </style>
-  <script>
-  </script>
-  
+  <script></script>
   <body>
-  <form action="/orders" method="post" enctype="multipart/form-data">
+    <%- include('../components/nav') %>
+    <!-- 입력 폼 -->
+    <div class="main" style="width: 50%; height: 30rem; background-color: #eeeeee; border: solid 1px; margin-left: 20rem">
+      <h2 style="margin: 1rem auto 3rem 5rem">윤활 서비스 신청</h2>
 
-    <div class="header" style="display: flex; height: 5rem;">
-      <h1 style="flex: 1;"> 키보드를 구해조 </h1>
-      <ul class="nav justify-content-end" style="flex: 1;">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">HOME</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">MYPAGE</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">REVIEW</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled">ETC</a>
-        </li>
-      </ul>
+      <div class="input-group mb-3">
+        <span class="input-group-text">키보드 종류</span>
+        <input
+          type="text"
+          class="form-control"
+          id="kinds"
+          placeholder="종류"
+          aria-label="Sizing example input"
+          aria-describedby="inputGroup-sizing-default"
+          required
+        />
+      </div>
+
+      <div class="input-group mb-3">
+        <input type="file" class="form-control" id="imageUrl" required />
+        <label class="input-group-text" for="imageUrl">Upload</label>
+      </div>
+
+      <div class="input-group mb-3">
+        <span class="input-group-text">요청 사항</span>
+        <input
+          type="text"
+          class="form-control"
+          id="details"
+          placeholder="ex 24일 오전까지 부탁드립니다."
+          aria-label="Sizing example input"
+          aria-describedby="inputGroup-sizing-default"
+          required
+        />
+      </div>
+
+      <div class="pickup" style="display: flex">
+        <div style="flex: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;픽업 날짜</div>
+        <input type="date" style="flex: 6" id="pickup" required />
+      </div>
+    <!-- 입력 폼 끝 -->
+    <!-- 윤활 신청 버튼 -->
+      <div class="btn" style="margin: 2rem auto 0rem 5rem">
+        <button onclick="orderlist()" class="btn btn-primary btn-lg" type="button">신청 완료</button>
+        <button onclick="location.href='/orders';" class="btn btn-secondary btn-lg" type="button">닫기</button>
+      </div>
+    <!-- 윤활 신청 버튼 끝 -->
     </div>
-
-    <div class="main" style="width: 50%; height: 30rem; background-color: #eeeeee; border: solid 1px; margin-left: 20rem;">
-          <h2 style="margin: 1rem auto 3rem 5rem; ">윤활 서비스 신청</h2>
-          
-          <div class="input-group mb-3">
-            <span class="input-group-text" id="kinds">키보드 종류</span>
-            <input type="text" name="kinds" class="form-control" id="kinds" placeholder="종류" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-          </div>
-          
-          <div class="input-group mb-3">
-              <input type="file" class="form-control" id="imageUrl">
-              <label class="input-group-text" for="inputGroupFile02">Upload</label>
-          </div>
-          
-          <div class="input-group mb-3">
-            <span class="input-group-text" id="details">요청 사항</span>
-            <input type="text" name="details" class="form-control" id="details" placeholder="ex) 24일 오전까지 부탁드립니다." aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-          </div>
-
-          <div class="pickup" style="display: flex;">
-            <div style="flex: 1;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;픽업 날짜</div>
-            <input type="date" style="flex: 6;" name="pickup">
-          </div>
-
-          <button class="btn btn-primary" type="button" onclick="location.href='/';" style="margin: 3rem 0px 2rem 8rem; padding-left: 10rem; padding-right: 10rem;">신청 완료</button>
-    </div>
-  </form>
-</body>
+  </body>
 </html>

@@ -2,41 +2,42 @@
 
 const OrdersService = require('../services/orders.service');
 
-class OrdersController{
-    ordersService = new OrdersService();
+class OrdersController {
+  ordersService = new OrdersService();
 
-    output_orders = (req, res) => {
-        res.render('orders/order');
-    }
+  output_orders = (req, res) => {
+    res.render('orders/order');
+  };
 
-    getlists = async (req, res) => {
-        
-        const Order = await this.ordersService.findAllLists();
+  output_orderlists = (req, res) => {
+    res.render('orders/orderlists');
+  };
 
-        res.status(201).json({ data: Order });
-    }
+  getlists = async (req, res) => {
+    const Order = await this.ordersService.findAllLists();
 
-    getorders = async (req, res) => {
-        const userInfo = res.locals.userInfo;
-        const ownerId = userInfo.id;
+    res.status(201).json({ data: Order });
+  };
 
-        const Order = await this.ordersService.findOrderById(ownerId);
+  getorders = async (req, res) => {
+    const userInfo = res.locals.userInfo;
+    const ownerId = userInfo.id;
 
-        res.status(201).json({ data: Order });
-    };
-    
-    createOrder = async (req, res) => {
-        const userInfo = res.locals.userInfo;
-        const ownerId = userInfo.id;
+    const Order = await this.ordersService.findOrderById(ownerId);
 
-        const { kinds, details, pickup, imageUrl } = req.body;
+    res.status(201).json({ data: Order });
+  };
 
-        const response = await this.ordersService.createOrder( ownerId, kinds, details, pickup, imageUrl );
+  createOrder = async (req, res) => {
+    const userInfo = res.locals.userInfo;
+    const ownerId = userInfo.id;
 
-        res.status(response.code).json({ message: response.message });
-    };
+    const { kinds, details, pickup, imageUrl } = req.body;
 
-    
+    const response = await this.ordersService.createOrder(ownerId, kinds, details, pickup, imageUrl);
+
+    res.status(response.code).json({ message: response.message });
+  };
 }
 
 module.exports = OrdersController;

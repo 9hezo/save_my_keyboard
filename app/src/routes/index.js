@@ -9,7 +9,6 @@ const ordersRouter = require('./orders.routes');
 router.use('/users', usersRouter);
 router.use('/orders', ordersRouter);
 
-
 router.use('/', authMiddleware, (req, res) => {
   if (res.locals.userInfo) {
     const userInfo = res.locals.userInfo;
