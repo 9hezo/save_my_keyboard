@@ -5,7 +5,9 @@ const router = express.Router();
 
 const authMiddleware = require('../config/authMiddleware');
 const usersRouter = require('./users.routes');
+const ordersRouter = require('./orders.routes');
 router.use('/users', usersRouter);
+router.use('/orders', ordersRouter);
 
 router.use('/', authMiddleware, (req, res) => {
   if (res.locals.userInfo) {
