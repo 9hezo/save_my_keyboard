@@ -103,6 +103,11 @@ class UsersService {
     const data = await this.ordersRepository.getOrderStatusZeroToThree(ownerId);
     return { code: 200, data: data[0] };
   };
+
+  getOrdersStatusEnd = async (ownerId) => {
+    const data = await this.ordersRepository.getOrdersStatusEnd(ownerId);
+    return { code: 200, data: data };
+  };
 }
 
 module.exports = UsersService;

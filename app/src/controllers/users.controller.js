@@ -87,6 +87,17 @@ class UsersController {
       return res.status(response.code).json({ message: response.message });
     }
   };
+
+  getOrdersStatusEnd = async (req, res) => {
+    const ownerId = res.locals.userInfo.id;
+
+    const response = await this.usersService.getOrdersStatusEnd(ownerId);
+    if (response.data) {
+      return res.status(response.code).json({ data: response.data });
+    } else {
+      return res.status(response.code).json({ message: response.message });
+    }
+  };
 }
 
 module.exports = UsersController;
