@@ -22,6 +22,7 @@ router.get('/', authMiddleware, ordersController.output_orders);
 
 router.post('/', authMiddleware, multer({ storage: storage }).array('files'), ordersController.createOrder);
 
+// 사장님 전체 목록 조회
 router.get('/lists', authMiddleware, ordersController.getlists);
 router.get('/mylist', authMiddleware, ordersController.getorders);
 
