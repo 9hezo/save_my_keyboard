@@ -23,6 +23,15 @@ class UsersController {
     }
   };
 
+  output_mypage = (req, res) => {
+     res.render('users/mypage');
+    };
+
+    output_admin = (req, res) => {
+      res.render('users/admin');
+     };
+
+
   createUser = async (req, res) => {
     let { email, password, name, phone, address, admin } = req.body;
     admin = admin || false;
