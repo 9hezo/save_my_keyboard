@@ -10,7 +10,7 @@
       integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
       crossorigin="anonymous"
     />
-    <title>사장 윤활 신청 목록 페이지</title>
+    <title>손님 윤활 신청 목록 페이지</title>
     <link rel="icon" href="data:," />
     <script
       src="https://code.jquery.com/jquery-3.5.1.js"
@@ -31,15 +31,14 @@
   </style>
   <body>
     <%- include('../components/nav') %>
-    <h1 style="margin-bottom: 2rem;">윤활 신청 내역</h1>
     <table>
       <thead>
         <tr>
           <td>종류</td>
           <td>요청사항</td>
           <td>픽업날짜</td>
+          <td>상태</td>
           <td>이미지</td>
-          <td>현황</td>
         </tr>
       </thead>
       <tbody id="orderlists"></tbody>
@@ -49,15 +48,25 @@
 
       for (let i = 0; i < data.length; i++) {
         let date = new Date(data[i].pickup).toLocaleDateString();
+        let status_str = data[i].status;
+        if (status_str === 0) {
+          status_str = "대기 중";
+        } else if (status_str === 1) {
+          status_str = "수거 중";
+        } else if (status_str === 2) {
+          status_str = "수거 완료";
+        } else if (status_str === 3) {
+          status_str = "배송 중";
+        } else if (status_str === 4) {
+          status_str = "배송 완료";
+        }
 
         let temp_html = `<tr>
                             <td>${data[i].kinds}</td>
                             <td>${data[i].details}</td>
                             <td>${date}</td>
+                            <td>${status_str}</td>
                             <td>${data[i].imageUrl}</td>
-                            <td>
-                              <button onclick="/orders/workerlists" type="button" class="btn btn-outline-success">수락</button>
-                            </td>
                         </tr>`;
         $('#orderlists').append(temp_html);
       }
