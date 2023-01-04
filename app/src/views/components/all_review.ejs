@@ -1,0 +1,64 @@
+<div class="container">
+  <div class="d-grid gap-2 mb-3">
+    <button onclick="location.href='reviews/write'" class="btn btn-primary" type="button">
+      리뷰 작성
+    </button>
+  </div>
+
+  <div>
+    <ul style="padding-left: 0">
+      <div class="card border-secondary border-2 mb-1" style="cursor: pointer">
+        <div class="d-flex">
+          <div class="p-2 flex-shrink-1">
+            <img
+              class="img-fluid rounded-start preview_image"
+              src="https://placeimg.com/100/100/any"
+            />
+          </div>
+          <div class="p-2 w-100">
+            <div class="card-body">
+              <h5 class="card-title"><%- JSON.stringify(data[0].orderId) %></h5>
+              <p class="card-text"><%- JSON.stringify(data[0].content) %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card border-secondary border-2 mb-1" style="cursor: pointer">
+        <div class="d-flex">
+          <div class="p-2 flex-shrink-1">
+            <img
+              class="img-fluid rounded-start preview_image"
+              src="https://placeimg.com/100/100/any"
+            />
+          </div>
+          <div class="p-2 w-100">
+            <div class="card-body">
+              <h5 class="card-title"><%- JSON.stringify(data[1].orderId) %></h5>
+              <p class="card-text"><%- JSON.stringify(data[1].content) %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card border-secondary border-2 mb-1" style="cursor: pointer">
+        <div class="d-flex">
+          <div class="p-2 flex-shrink-1">
+            <img
+              class="img-fluid rounded-start preview_image"
+              src="https://placeimg.com/100/100/any"
+            />
+          </div>
+          <div class="p-2 w-100">
+            <div class="card-body">
+              <h5 class="card-title"><%- JSON.stringify(data[2].orderId) %></h5>
+              <p class="card-text"><%- JSON.stringify(data[2].content) %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ul>
+  </div>
+
+  <%- include('./pagination') %>
+</div>

@@ -6,9 +6,15 @@ const router = express.Router();
 
 const ReviewsController = require('../controllers/reviews.controller');
 const reviewsController = new ReviewsController();
+const loginCheckMiddleware = require('../config/loginCheckMiddleware');
+const authMiddleware = require('../config/authMiddleware');
 
-router.get('/', reviewsController.getReviews);
-router.post('/', reviewsController.createtReviews);
+router.get('/', authMiddleware, reviewsController.getReviews);
+router.post('/', authMiddleware, reviewsController.createtReviews);
+
+router.get('/write', authMiddleware, (_, res) => {
+  res.render('write');
+});
 
 // app.get('/list', (req, res) => {
 //   db.collection('post')

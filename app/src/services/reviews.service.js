@@ -10,8 +10,6 @@ class ReviewsService {
   findAllReviews = async () => {
     const allReviews = await this.reviewsRepository.findAllReviews();
 
-    console.log(allReviews);
-
     allReviews.sort((a, b) => {
       return b.createdAt - a.createdAt;
     });
