@@ -7,14 +7,20 @@ const OrdersController = require('../controllers/orders.controller');
 const ordersController = new OrdersController();
 const authMiddleware = require('../config/authMiddleware');
 
+const WorkersController = require('../controllers/workers.controllers');
+const workersController = new WorkersController();
+
 // 페이지 불러오기
 router.get('/', ordersController.output_orders);
 
-// 사장님 전체 목록 조회
+// 사장님 윤활 신청 목록 페이지
 router.get('/lists', authMiddleware, ordersController.getlists);
 
-// 손님 본인 목록 조회
+// 손님 마이페이지
 router.get('/mylists', authMiddleware, ordersController.getorders);
+
+// 사장님 마이페이지
+router.get('/mypage2', authMiddleware, workersController.getorderlists);
 
 // 윤활 신청
 router.post('/', authMiddleware, ordersController.createOrder);

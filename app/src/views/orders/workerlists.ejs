@@ -10,7 +10,7 @@
       integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
       crossorigin="anonymous"
     />
-    <title>손님 윤활 신청 목록 페이지</title>
+    <title>사장 마이페이지</title>
     <link rel="icon" href="data:," />
     <script
       src="https://code.jquery.com/jquery-3.5.1.js"
@@ -31,21 +31,36 @@
   </style>
   <body>
     <%- include('../components/nav') %>
-    <table>
-      <thead>
-        <tr>
-          <td>종류</td>
-          <td>요청사항</td>
-          <td>픽업날짜</td>
-          <td>상태</td>
-          <td>이미지</td>
-        </tr>
-      </thead>
-      <tbody id="orderlists"></tbody>
-    </table>
+    <div>
+      진행 중
+      <table>
+        <thead>
+          <tr>
+            <td>이미지</td>
+            <td>상태</td>
+            <td></td>
+          </tr>
+        </thead>
+        <tbody id="worklists"></tbody>
+      </table>
+    </div>
+
+    <div>
+      히스토리
+      <table>
+        <thead>
+          <tr>
+            <td>이미지</td>
+            <td>상태</td>
+          </tr>
+        </thead>
+        <tbody id="worklists"></tbody>
+      </table>
+    </div>
+
     <script type="text/javascript">
       const data = <%- JSON.stringify(data) %>;
-
+      console.log('data',data);
       for (let i = 0; i < data.length; i++) {
         let date = new Date(data[i].pickup).toLocaleDateString();
         let status_str = data[i].status;
@@ -62,13 +77,13 @@
         }
 
         let temp_html = `<tr>
-                            <td>${data[i].kinds}</td>
-                            <td>${data[i].details}</td>
-                            <td>${date}</td>
-                            <td>${status_str}</td>
                             <td>${data[i].imageUrl}</td>
+                            <td>${status_str}</td>
+                            <td>
+                              <button type="button" class="btn btn-outline-success">상태 변경</button>
+                            </td>
                         </tr>`;
-        $('#orderlists').append(temp_html);
+        $('#worklists').append(temp_html);
       }
     </script>
   </body>

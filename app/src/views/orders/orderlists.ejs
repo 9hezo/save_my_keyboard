@@ -17,6 +17,7 @@
       integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
       crossorigin="anonymous"
     ></script>
+    <script src="/js/orders/worker.js" defer></script>
   </head>
   <style>
     @font-face {
@@ -56,7 +57,7 @@
                             <td>${date}</td>
                             <td>${data[i].imageUrl}</td>
                             <td>
-                              <button onclick="/orders/workerlists" type="button" class="btn btn-outline-success">수락</button>
+                              <button onclick="statusChange(${data[i].id})" class="btn btn-outline-success">수락</button>
                             </td>
                         </tr>`;
         $('#orderlists').append(temp_html);
