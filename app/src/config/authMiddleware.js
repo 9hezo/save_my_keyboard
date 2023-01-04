@@ -8,9 +8,12 @@ module.exports = async (req, res, next) => {
   const tokensService = new TokensService();
   const usersService = new UsersService();
 
+  console.log('path: ', req.path);
+
   const { accessToken, refreshToken } = req.cookies;
 
   if (!refreshToken || !accessToken) {
+    // console.log('refreshToken 또는 accessToken가 쿠키 목록에 존재하지 않습니다.');
     return next();
   }
 
@@ -42,11 +45,7 @@ module.exports = async (req, res, next) => {
   } else {
     userId = TokenManager.getAccessTokenPayload(accessToken).userId;
   }
-  // console.log('abc');
-  // console.log(req.path);
-  // console.log('userId:', userId);
   const userInfo = await usersService.findUserById(userId);
-  // console.log('userInfo:', userInfo);
   res.locals.userInfo = userInfo;
   next();
 };
