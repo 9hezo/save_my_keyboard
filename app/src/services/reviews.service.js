@@ -37,16 +37,7 @@ class ReviewsService {
     return { code: 201, message: '리뷰 작성에 성공하였습니다.' };
   };
 
-  updateReviews = async (kinds, content, score, imageUrl) => {
-    const updateReviewData = await this.reviewsRepository.updateReviews(
-      kinds,
-      content,
-      score,
-      imageUrl
-    );
-
-    return { code: 201, message: '주문에 성공하였습니다.' };
-  };
+ 
 }
 
 module.exports = ReviewsService;

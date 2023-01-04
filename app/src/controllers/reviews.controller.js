@@ -29,18 +29,7 @@ class ReviewsController {
     return res.status(201).json({ data: createReviewsData });
   };
 
-  updateReviews = async (req, res, next) => {
-    const { kinds, content, score, imageUrl } = req.body;
-
-    const updateReviewsData = await this.reviewsService.updateReviews(
-      kinds,
-      content,
-      score,
-      imageUrl
-    );
-
-    return res.status(201).json({ data: updateReviewsData });
-  }
+ 
 }
 
 module.exports = ReviewsController;

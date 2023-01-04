@@ -11,7 +11,7 @@ const authMiddleware = require('../config/authMiddleware');
 
 router.get('/', authMiddleware, reviewsController.getReviews);
 router.post('/', authMiddleware, reviewsController.createReviews);
-router.patch('/',authMiddleware, reviewsController.updateReviews)
+
 
 router.get('/write', authMiddleware, (_, res) => {
   res.render('reviews/write');
