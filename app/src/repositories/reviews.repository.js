@@ -7,12 +7,20 @@ class ReviewsRepository {
     this.reviewsModel = reviewsModel;
   }
 
-  findAllReviews = async (kinds, content, score, imageUrl) => {
-    return await this.reviewsModel.findAll({ where: kinds, content, score, imageUrl });
+  findAllReviews = async (orderId, content, score, imageUrl) => {
+    return await this.reviewsModel.findAll({ where: orderId, content, score, imageUrl });
   };
 
-  createReviews = async (kinds, content, score, imageUrl) => {
-    const createReviewData = await this.reviewsModel.create({ kinds, content, score, imageUrl });
+  
+
+  // findReviewById = async (ownerId) => {
+  //   const reviews = await this.reviewsModel.findAll({ where: { ownerId: ownerId } });
+
+  //   return reviews;
+  // };
+
+  createReviews = async (orderId, content, score, imageUrl) => {
+    const createReviewData = await this.reviewsModel.create({ orderId, content, score, imageUrl });
 
     return createReviewData;
   };
