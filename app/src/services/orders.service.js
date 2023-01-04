@@ -49,6 +49,10 @@ class OrdersService {
   };
 
   createOrder = async (ownerId, kinds, details, pickup, imageUrl) => {
+    const order = await this.ordersRepository.getOrderStatusZeroToThree(ownerId);
+    if (order) {
+      return { code: 401, message: '이미 대기 중이거나 진행 중인 윤활 신청이 있습니다.' };
+    }
     const response = await this.ordersRepository.createOrder(ownerId, kinds, details, pickup, imageUrl);
 
     return { code: 201, message: '주문에 성공하였습니다.' };
