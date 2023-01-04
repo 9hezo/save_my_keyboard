@@ -8,7 +8,7 @@ class UsersController {
   output_register = (req, res) => {
     if (res.locals.userInfo) {
       const userInfo = res.locals.userInfo;
-      res.render('users/register', { userInfo: { name: userInfo.name, point: userInfo.point } });
+      res.render('users/register', { userInfo: { name: userInfo.name, point: userInfo.point, admin: userInfo.admin } });
     } else {
       res.render('users/register');
     }
@@ -17,20 +17,29 @@ class UsersController {
   output_login = (req, res) => {
     if (res.locals.userInfo) {
       const userInfo = res.locals.userInfo;
-      res.render('users/login', { userInfo: { name: userInfo.name, point: userInfo.point } });
+      res.render('users/login', { userInfo: { name: userInfo.name, point: userInfo.point, admin: userInfo.admin } });
     } else {
       res.render('users/login');
     }
   };
 
   output_mypage = (req, res) => {
-     res.render('users/mypage');
-    };
+    if (res.locals.userInfo) {
+      const userInfo = res.locals.userInfo;
+      res.render('users/mypage', { userInfo: { name: userInfo.name, point: userInfo.point, admin: userInfo.admin } });
+    } else {
+      res.render('users/mypage');
+    }
+  };
 
-    output_admin = (req, res) => {
+  output_admin = (req, res) => {
+    if (res.locals.userInfo) {
+      const userInfo = res.locals.userInfo;
+      res.render('users/admin', { userInfo: { name: userInfo.name, point: userInfo.point, admin: userInfo.admin } });
+    } else {
       res.render('users/admin');
-     };
-
+    }
+  };
 
   createUser = async (req, res) => {
     let { email, password, name, phone, address, admin } = req.body;
@@ -66,6 +75,28 @@ class UsersController {
     res.clearCookie('accessToken');
     res.clearCookie('refreshToken');
     return res.status(200).json({ message: '로그아웃 되었습니다.' });
+  };
+
+  getOrderStatusZeroToThree = async (req, res) => {
+    const ownerId = res.locals.userInfo.id;
+
+    const response = await this.usersService.getOrderStatusZeroToThree(ownerId);
+    if (response.data) {
+      return res.status(response.code).json({ data: response.data });
+    } else {
+      return res.status(response.code).json({ message: response.message });
+    }
+  };
+
+  getOrdersStatusEnd = async (req, res) => {
+    const ownerId = res.locals.userInfo.id;
+
+    const response = await this.usersService.getOrdersStatusEnd(ownerId);
+    if (response.data) {
+      return res.status(response.code).json({ data: response.data });
+    } else {
+      return res.status(response.code).json({ message: response.message });
+    }
   };
 }
 

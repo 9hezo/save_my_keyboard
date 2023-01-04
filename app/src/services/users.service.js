@@ -5,12 +5,14 @@ const bcrypt = require('bcrypt');
 
 const UsersRepository = require('../repositories/users.repository');
 const TokensRepository = require('../repositories/tokens.repository');
+const OrdersRepository = require('../repositories/orders.repository');
 const TokenManager = require('../config/TokenManager');
-const { User, Token } = require('../sequelize/models');
+const { User, Token, Order } = require('../sequelize/models');
 
 class UsersService {
   usersRepository = new UsersRepository(User);
   tokensRepository = new TokensRepository(Token);
+  ordersRepository = new OrdersRepository(Order);
 
   createUser = async (email, password, name, phone, address, admin, point) => {
     try {
@@ -95,6 +97,16 @@ class UsersService {
         }
       });
     });
+  };
+
+  getOrderStatusZeroToThree = async (ownerId) => {
+    const data = await this.ordersRepository.getOrderStatusZeroToThree(ownerId);
+    return { code: 200, data: data[0] };
+  };
+
+  getOrdersStatusEnd = async (ownerId) => {
+    const data = await this.ordersRepository.getOrdersStatusEnd(ownerId);
+    return { code: 200, data: data };
   };
 }
 
