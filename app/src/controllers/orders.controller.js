@@ -26,7 +26,7 @@ class OrdersController {
   // 사장
   getlists = async (req, res) => {
     const order = await this.ordersService.findAllLists();
-    res.render('orders/orderlists', { data: order })
+    res.render('orders/orderlists', { data: order });
   };
 
   // 손님

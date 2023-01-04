@@ -28,7 +28,7 @@ function orderlist() {
 
       res = await res.json();
       alert(res.message);
-      
+
       if (code === 201) {
         location.href = '/orders/mylists';
       }

@@ -5,9 +5,14 @@ const router = express.Router();
 
 const multer = require('multer');
 const moment = require('moment');
+const fs = require('fs');
 const storage = multer.diskStorage({
-  destination: './src/public/uploads/orders',
-  filename: function (req, file, cb) {
+  destination: (req, file, cb) => {
+    const path = './src/public/uploads/orders';
+    fs.mkdirSync(path, { recursive: true });
+    cb(null, path);
+  },
+  filename: (req, file, cb) => {
     file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8');
     cb(null, moment().format('YYYYMMDDHHmmss') + '_' + file.originalname);
   },
@@ -24,6 +29,6 @@ router.post('/', authMiddleware, multer({ storage: storage }).array('files'), or
 
 // 사장님 전체 목록 조회
 router.get('/lists', authMiddleware, ordersController.getlists);
-router.get('/mylist', authMiddleware, ordersController.getorders);
+router.get('/mylists', authMiddleware, ordersController.getorders);
 
 module.exports = router;
