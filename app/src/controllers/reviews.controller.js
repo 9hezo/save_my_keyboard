@@ -6,20 +6,21 @@ class ReviewsController {
   reviewsService = new ReviewsService();
 
   getReviews = async (req, res, next) => {
-    let { orderId, content, score, imageUrl } = req.body;
-    const reviews = await this.reviewsService.findAllReviews(orderId, content, score, imageUrl);
+    let { kinds, content, score, imageUrl } = req.body;
+    const reviews = await this.reviewsService.findAllReviews(kinds, content, score, imageUrl);
 
     // res.status(200).json({ reviews });
-    res.render('./review', {
+    res.render('./reviews/review', {
       data: reviews,
     });
   };
 
-  createtReviews = async (req, res, next) => {
-    const { orderId, content, score, imageUrl } = req.body;
+  createReviews = async (req, res, next) => {
+    
+    const { kinds, content, score, imageUrl } = req.body;
 
     const createReviewsData = await this.reviewsService.createReviews(
-      orderId,
+      kinds,
       content,
       score,
       imageUrl
@@ -27,6 +28,19 @@ class ReviewsController {
 
     return res.status(201).json({ data: createReviewsData });
   };
+
+  updateReviews = async (req, res, next) => {
+    const { kinds, content, score, imageUrl } = req.body;
+
+    const updateReviewsData = await this.reviewsService.updateReviews(
+      kinds,
+      content,
+      score,
+      imageUrl
+    );
+
+    return res.status(201).json({ data: updateReviewsData });
+  }
 }
 
 module.exports = ReviewsController;

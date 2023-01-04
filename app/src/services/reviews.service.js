@@ -16,7 +16,7 @@ class ReviewsService {
 
     return allReviews.map((reviews) => {
       return {
-        orderId: reviews.orderId,
+        kinds: reviews.kinds,
         content: reviews.content,
         score: reviews.score,
         imageUrl: reviews.imageUrl,
@@ -26,22 +26,26 @@ class ReviewsService {
     });
   };
 
-  createReviews = async (orderId, content, score, imageUrl) => {
+  createReviews = async (kinds, content, score, imageUrl) => {
     const createReviewData = await this.reviewsRepository.createReviews(
-      orderId,
+      kinds,
       content,
       score,
       imageUrl
     );
 
-    return {
-      orderId: createReviewData.orderId,
-      content: createReviewData.content,
-      score: createReviewData.score,
-      imageUrl: createReviewData.imageUrl,
-      createdAt: Review.createdAt,
-      updatedAt: Review.updatedAt,
-    };
+    return { code: 201, message: '리뷰 작성에 성공하였습니다.' };
+  };
+
+  updateReviews = async (kinds, content, score, imageUrl) => {
+    const updateReviewData = await this.reviewsRepository.updateReviews(
+      kinds,
+      content,
+      score,
+      imageUrl
+    );
+
+    return { code: 201, message: '주문에 성공하였습니다.' };
   };
 }
 
