@@ -15,15 +15,6 @@ class ReviewsController {
     });
   };
 
-  // getMyReviews = async (req, res) => {
-  //   const userInfo = res.locals.userInfo;
-  //   const ownerId = userInfo.id;
-
-  //   const review = await this.reviewsService.findReviewById(ownerId);
-
-  //   res.render('reviews/myreviews', { data: review });
-  // };
-
   createReviews = async (req, res, next) => {
     const userInfo = res.locals.userInfo;
     const orderId = userInfo.id;
@@ -32,7 +23,7 @@ class ReviewsController {
 
     const createReviewsData = await this.reviewsService.createReviews(orderId, content, score, imageUrl);
 
-    return res.status(201).json({ data: createReviewsData });
+    res.status(createReviewsData.code).json({ data: createReviewsData });
   };
 
   deleteReviews = async (req, res) => {
