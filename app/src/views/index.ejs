@@ -12,7 +12,7 @@
   <%- include('components/nav') %>
 
   <% if (locals.userInfo) { %>
-    <h1><%= userInfo.name %>, <%= userInfo.point %></h1>
+    <h1><%= userInfo.name %>, <%= userInfo.point %>, <%= userInfo.admin %></h1>
   <% } %>
 
   <%- include('components/best_review') %>
