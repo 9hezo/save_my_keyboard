@@ -1,17 +1,27 @@
 <nav class="navbar bg-body-tertiary mb-5">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">키보드를 구해조!</a>
-    <div class="btn-group d-flex">
 
+    <% if (locals.userInfo) { %>
+      <div class="d-flex ">
+        <a class="navbar-brand"><%= userInfo.name %></a>
+        <a class="navbar-brand">포인트: <%= userInfo.point %></a>
+        <a class="navbar-brand"><span class="badge rounded-pill text-bg-primary"><%= userInfo.admin ? '사장' : '손님' %></span></a>
+      </div>
+
+    <% } %>
+
+    <div class="btn-group d-flex">
       <% if (!locals.userInfo) { %>
         <button onclick="location.href='/users/login'" type="button" class="btn btn-outline-dark">로그인</button>
       <% } else {%>
+        <% if (locals.userInfo.admin) { %>
+        <button onclick="location.href='/users/admin'" type="button" class="btn btn-outline-dark">마이페이지</button>
+        <% } else {%>
+        <button onclick="location.href='/users/mypage-user'" type="button" class="btn btn-outline-dark">마이페이지</button>
+        <% } %>
         <button onclick="logout()" type="button" class="btn btn-outline-dark">로그아웃</button>
       <% } %>
-      <button onclick="location.href='/'" type="button" class="btn btn-outline-dark">메인</button>
-      <button type="button" class="btn btn-outline-dark">마이</button>
-      <button type="button" class="btn btn-outline-dark">리뷰</button>
-      <button type="button" class="btn btn-outline-dark">윤활</button>
     </div>
   </div>
 </nav>
