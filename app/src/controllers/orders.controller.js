@@ -6,13 +6,27 @@ class OrdersController {
   ordersService = new OrdersService();
 
   output_orders = (req, res) => {
-    res.render('orders/order');
+    if (res.locals.userInfo) {
+      const userInfo = res.locals.userInfo;
+      res.render('orders/order', { userInfo: { name: userInfo.name, point: userInfo.point } });
+    } else {
+      res.render('orders/order');
+    }
+  };
+
+  output_orderlists = (req, res) => {
+    if (res.locals.userInfo) {
+      const userInfo = res.locals.userInfo;
+      res.render('orders/orderlists', { userInfo: { name: userInfo.name, point: userInfo.point } });
+    } else {
+      res.render('orders/orderlists');
+    }
   };
 
   // 사장
   getlists = async (req, res) => {
     const order = await this.ordersService.findAllLists();
-    res.render('orders/orderlists', { data: order })
+    res.render('orders/orderlists', { data: order });
   };
 
   // 손님
@@ -29,7 +43,8 @@ class OrdersController {
     const userInfo = res.locals.userInfo;
     const ownerId = userInfo.id;
 
-    const { kinds, details, pickup, imageUrl } = req.body;
+    const { kinds, details, pickup } = req.body;
+    const imageUrl = req.files[0].filename;
 
     const response = await this.ordersService.createOrder(ownerId, kinds, details, pickup, imageUrl);
 

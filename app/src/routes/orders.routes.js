@@ -2,21 +2,27 @@
 
 const express = require('express');
 const router = express.Router();
+require('dotenv').config();
 
 const OrdersController = require('../controllers/orders.controller');
 const ordersController = new OrdersController();
+const UploadManager = require('../config/UploadManager');
+const uploadManager = new UploadManager(process.env.MULTER_PATH_UPLOADS_ORDERS);
+
 const authMiddleware = require('../config/authMiddleware');
 
-// 페이지 불러오기
-router.get('/', ordersController.output_orders);
+router.get('/', authMiddleware, ordersController.output_orders);
+// router.get('/', ordersController.output_orderlists);
+
+router.post(
+  '/',
+  authMiddleware,
+  uploadManager.multer({ storage: uploadManager.storage }).array('files'),
+  ordersController.createOrder
+);
 
 // 사장님 전체 목록 조회
 router.get('/lists', authMiddleware, ordersController.getlists);
-
-// 손님 본인 목록 조회
 router.get('/mylists', authMiddleware, ordersController.getorders);
-
-// 윤활 신청
-router.post('/', authMiddleware, ordersController.createOrder);
 
 module.exports = router;
