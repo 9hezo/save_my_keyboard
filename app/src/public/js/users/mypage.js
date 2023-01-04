@@ -15,13 +15,17 @@ getOrderStatusZeroToThree = () => {
       }
 
       if (code === 200) {
-        const order = res.data;
-        document.querySelector('#order_img').src = '/uploads/orders/' + order.imageUrl;
-        document.querySelector('#order_kinds').innerHTML = order.kinds;
-        document.querySelector('#order_details').innerHTML = order.details;
+        if (res.data) {
+          const order = res.data;
+          document.querySelector('#order_img').src = '/uploads/orders/' + order.imageUrl;
+          document.querySelector('#order_kinds').innerHTML = order.kinds;
+          document.querySelector('#order_details').innerHTML = order.details;
 
-        const status_arr = ['대기 중', '수거 중', '수거 완료', '배송 중', '배송 완료', '취소 완료'];
-        document.querySelector('#order_status').innerHTML = status_arr[order.status];
+          const status_arr = ['대기 중', '수거 중', '수거 완료', '배송 중', '배송 완료', '취소 완료'];
+          document.querySelector('#order_status').innerHTML = status_arr[order.status];
+        } else {
+          document.querySelector('#orders_status_zeroToThree').remove();
+        }
       }
     })
     .catch((err) => {
@@ -68,8 +72,7 @@ getOrderStatusEnd = () => {
             </div>
           `;
           document.querySelector('#orders_status_end').insertAdjacentHTML('beforebegin', temp);
-        })
-
+        });
       }
     })
     .catch((err) => {

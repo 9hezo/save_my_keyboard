@@ -13,8 +13,7 @@ function getOrderStatusZeroToThree() {
       res = await res.json();
 
       if (code === 200) {
-        const order = res.data;
-        if (Object.keys(order).length > 0) {
+        if (res.data) {
           alert('이미 대기 중이거나 진행 중인 윤활 신청이 있습니다.');
           location.href = '/users/mypage-user';
         } else {
@@ -25,7 +24,7 @@ function getOrderStatusZeroToThree() {
     .catch((err) => {
       console.log('err: ', err);
     });
-};
+}
 
 const kinds = document.querySelector('#kinds');
 const details = document.querySelector('#details');
@@ -33,7 +32,7 @@ const pickup_date = document.querySelector('#pickup_date');
 const pickup_time = document.querySelector('#pickup_time');
 const imageUrl = document.querySelector('#imageUrl');
 
-function orderlist() {
+function orderRequest() {
   if (!kinds.value | !details.value | !pickup_date.value | !pickup_time.value) {
     return alert('빈 입력값이 있습니다.');
   }
@@ -56,11 +55,7 @@ function orderlist() {
       res = await res.json();
       alert(res.message);
 
-      if (code === 201) {
-        location.href = '/orders/mylists';
-      } else {
-        location.href = '/users/mypage-user';
-      }
+      location.href = '/users/mypage-user';
     })
     .catch((err) => {
       console.log('err: ', err);

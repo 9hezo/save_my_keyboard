@@ -6,8 +6,9 @@ const Sequelize = require('sequelize');
 const op = Sequelize.Op;
 
 class OrdersRepository {
-  constructor(ordersModel) {
+  constructor(ordersModel, usersModel) {
     this.ordersModel = ordersModel;
+    this.usersModel = usersModel;
   }
 
   findAllLists = async () => {
@@ -19,7 +20,13 @@ class OrdersRepository {
   };
 
   createOrder = async (ownerId, kinds, details, pickup, imageUrl) => {
-    return await this.ordersModel.create({ ownerId, kinds, details, pickup, imageUrl });
+    try {
+      const result = await this.ordersModel.create({ ownerId, kinds, details, pickup, imageUrl });
+      return result.id;
+    } catch (err) {
+      console.log(err);
+      return -1;
+    }
   };
 
   getOrderStatusZeroToThree = async (ownerId) => {
@@ -48,6 +55,15 @@ class OrdersRepository {
       type: QueryTypes.SELECT,
       replacements: [ownerId],
     });
+  };
+
+  pointDeduct = async (id, point) => {
+    try {
+      await this.usersModel.decrement({ point }, { where: { id } });
+      return true;
+    } catch (err) {
+      return false;
+    }
   };
 }
 
