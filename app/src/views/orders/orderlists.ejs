@@ -56,7 +56,9 @@
         // if( status_str === 0 ) {
         //   status_str = '수락';
         // }
-        let temp_html = `<tr>
+        if (data[i].status === 0) {
+          data[i].status = '수락'
+          let temp_html = `<tr>
                             <td>${data[i].kinds}</td>
                             <td>${data[i].details}</td>
                             <td>${date}</td>
@@ -65,7 +67,9 @@
                               <button onclick="statusChange(${data[i].ownerId})" class="btn btn-outline-success">${data[i].status}</button>
                             </td>
                         </tr>`;
-        $('#orderlists').append(temp_html);
+          $('#orderlists').append(temp_html);
+        }
+        
       }
     </script>
   </body>
