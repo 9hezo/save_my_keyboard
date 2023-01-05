@@ -8,27 +8,42 @@ class UsersController {
   output_register = (req, res) => {
     if (res.locals.userInfo) {
       const userInfo = res.locals.userInfo;
-      res.render('users/register', { userInfo: { name: userInfo.name, point: userInfo.point, admin: userInfo.admin } });
+      res.render('index', {
+        components: 'register',
+        userInfo: { name: userInfo.name, point: userInfo.point, admin: userInfo.admin },
+      });
     } else {
-      res.render('users/register');
+      res.render('index', {
+        components: 'register',
+      });
     }
   };
 
   output_login = (req, res) => {
     if (res.locals.userInfo) {
       const userInfo = res.locals.userInfo;
-      res.render('users/login', { userInfo: { name: userInfo.name, point: userInfo.point, admin: userInfo.admin } });
+      res.render('index', {
+        components: 'login',
+        userInfo: { name: userInfo.name, point: userInfo.point, admin: userInfo.admin },
+      });
     } else {
-      res.render('users/login');
+      res.render('index', {
+        components: 'login',
+      });
     }
   };
 
-  output_mypage = (req, res) => {
+  output_mypage_user = (req, res) => {
     if (res.locals.userInfo) {
       const userInfo = res.locals.userInfo;
-      res.render('users/mypage', { userInfo: { name: userInfo.name, point: userInfo.point, admin: userInfo.admin } });
+      res.render('index', {
+        components: 'mypage_user',
+        userInfo: { name: userInfo.name, point: userInfo.point, admin: userInfo.admin },
+      });
     } else {
-      res.render('users/mypage');
+      res.render('index', {
+        components: 'mypage_user',
+      });
     }
   };
 
