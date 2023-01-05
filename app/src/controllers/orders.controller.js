@@ -47,7 +47,7 @@ class OrdersController {
 
   updateStatus = async (req, res) => {
     const userInfo = res.locals.userInfo;
-    const ownerId = userInfo.id;
+    const ownerId = userInfo ? userInfo.id : null;
 
     const { orderId } = req.params;
     const { status_before, status_after } = req.body;

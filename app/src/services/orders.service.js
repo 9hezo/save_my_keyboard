@@ -44,6 +44,10 @@ class OrdersService {
   };
 
   updateStatus = async (orderId, ownerId, status_before, status_after) => {
+    if (!ownerId) {
+      return { code: 401, message: '수정 권한이 없습니다. (로그인 필요)' };
+    }
+
     // id=orderId, ownerId, status=status_before 에 해당하는 order가 존재하는지 체크
 
     // 존재할 시 update
