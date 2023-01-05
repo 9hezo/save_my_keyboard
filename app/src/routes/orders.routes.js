@@ -19,6 +19,7 @@ router.post(
   uploadManager.multer({ storage: uploadManager.storage }).array('files'),
   ordersController.createOrder
 );
+router.patch('/:orderId', authMiddleware, ordersController.updateStatus);
 
 // 사장님 전체 목록 조회
 router.get('/lists', authMiddleware, ordersController.getlists);

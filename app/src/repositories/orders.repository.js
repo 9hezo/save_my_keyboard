@@ -61,6 +61,10 @@ class OrdersRepository {
       return false;
     }
   };
+
+  updateStatus = async (id, status_before, status_after) => {
+    return await this.ordersModel.update({ status: status_after }, { where: { id, status: status_before } });
+  };
 }
 
 module.exports = OrdersRepository;
