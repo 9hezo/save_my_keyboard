@@ -7,7 +7,15 @@ class UsersRepository {
 
   createUser = async (email, password, name, phone, address, admin, point) => {
     try {
-      const result = await this.usersModel.create({ email, password, name, phone, address, admin, point });
+      const result = await this.usersModel.create({
+        email,
+        password,
+        name,
+        phone,
+        address,
+        admin,
+        point,
+      });
       return result.id; // 생성된 유저의 id값
     } catch (err) {
       console.log(err);

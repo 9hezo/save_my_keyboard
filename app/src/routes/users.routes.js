@@ -15,6 +15,7 @@ router.get('/admin', authMiddleware, usersController.output_admin);
 
 router.post('/register', loginCheckMiddleware, usersController.createUser);
 router.post('/login', loginCheckMiddleware, usersController.login);
+
 router.get('/logout', usersController.logout);
 router.get('/order', authMiddleware, usersController.getOrderStatusZeroToThree);
 router.get('/mypage', authMiddleware, usersController.getOrdersStatusEnd);

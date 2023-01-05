@@ -79,7 +79,7 @@ getOrderStatusEnd = (page) => {
                 </div>
                 <div class="p-1 col-2">
                   <button id="order_status" class="btn btn-success mb-2" style="width: 100px;">${status}</button>
-                  <button id="" class="btn btn-outline-primary" style="width: 100px;">리뷰남기기</button>
+                  <button onclick="location.href='/reviews/write'" id="" class="btn btn-outline-primary" style="width: 100px;">리뷰남기기</button>
                 </div>
               </div>
             </div>
