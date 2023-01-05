@@ -30,8 +30,10 @@ class OrdersService {
 
   alterStatus = async (ownerId, workerId) => {
     const changeStatus = await this.ordersRepository.updateStatusById(ownerId);
+    
     changeStatus.status = 1;
     changeStatus.workerId = workerId;
+
     const statusNow = await this.ordersRepository.statusUpdate(changeStatus);
     return statusNow;
   };
@@ -72,5 +74,21 @@ class OrdersService {
       }
     }
   };
+
+  addOrder = async (ownerId, kinds, details, pickup, imageUrl) => {
+    const order = await this.ordersRepository.getStatuschange(ownerId);
+    order.workerId = workerId;
+    await this.ordersRepository.createOrder(ownerId, kinds, details, pickup, imageUrl);
+    if (statusInductResult) {
+      return { code: 201, message: '주문에 성공하였습니다.' };
+    }
+  };
+
+  findOrderAllLists = async (id) => {
+    const workerlists = await this.ordersRepository.findOrderLists(id);
+
+    return { imageUrl: workerlists.imageUrl, status: workerlists.status };
+  };
+
 }
 module.exports = OrdersService;

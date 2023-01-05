@@ -51,11 +51,6 @@
       for (let i = 0; i < data.length; i++) {
         let date = new Date(data[i].pickup).toLocaleDateString();
         const status_str = data[i].status;
-        console.log(data[i].ownerId);
-        // console.log(status_str);
-        // if( status_str === 0 ) {
-        //   status_str = '수락';
-        // }
         if (data[i].status === 0) {
           data[i].status = '수락'
           let temp_html = `<tr>

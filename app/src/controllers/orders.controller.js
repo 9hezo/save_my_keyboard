@@ -36,14 +36,13 @@ class OrdersController {
 
   statusupdate = async (req,res) => {
     const userInfo = res.locals.userInfo;
-    console.log(userInfo);
     const workerId = userInfo.id;
     const { ownerId } = req.params;
+
     const changestatus = await this.ordersService.alterStatus(ownerId, workerId);
 
-    // res.status(200).json({ data: changestatus });
     res.render('orders/workerlists', { data: changestatus });
-  }
+  };
 
   // 손님
   getorders = async (req, res) => {
@@ -55,6 +54,7 @@ class OrdersController {
     res.render('orders/mylists', { data: order });
   };
 
+
   createOrder = async (req, res) => {
     const userInfo = res.locals.userInfo;
     const ownerId = userInfo.id;
@@ -65,6 +65,15 @@ class OrdersController {
     const response = await this.ordersService.createOrder(ownerId, kinds, details, pickup, imageUrl);
 
     res.status(response.code).json({ message: response.message });
+  };
+
+  getorderlists = async (req, res, next) => {
+    const userInfo = res.locals.userInfo;
+    const id = userInfo.id;
+
+    const worklist = await this.ordersService.findOrderAllLists(id);
+    // res.status(200).json({ data: worklist });
+    res.render('orders/workerlists', { data: worklist });
   };
 }
 

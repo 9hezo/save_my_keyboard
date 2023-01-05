@@ -28,10 +28,8 @@ router.post(
 router.get('/lists', authMiddleware, ordersController.getlists);
 
 // 사장님 마이페이지
-router.get('/mypage2', authMiddleware, workersController.getorderlists);
-router.get('/lists', authMiddleware, workersController.getOrderStatusZeroToThree);
-router.get('/mypage2', authMiddleware, workersController.getOrdersStatusEnd);
+router.get('/mypage2', authMiddleware, ordersController.getorderlists);
 
-router.put('/status/:ownerId', authMiddleware, ordersController.statusupdate);
+router.put('/mypage2/:ownerId', authMiddleware, ordersController.statusupdate);
 
 module.exports = router;

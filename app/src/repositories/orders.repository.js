@@ -75,6 +75,24 @@ class OrdersRepository {
       return false;
     }
   };
+
+  statusInduct = async (ownerId, status) => {
+    try {
+      await this.ordersModel.increment({ status }, { where: { ownerId, workerId } });
+      return true;
+    } catch (err) {
+      return false;
+    }
+  };
+
+  findOrderLists = async (id) => {
+    const lists = await Order.findOne({
+      where: { id, status: 0 },
+      attributes: ['imageUrl','status'],
+    });
+    return lists;
+  };
+
 }
 
 module.exports = OrdersRepository;
