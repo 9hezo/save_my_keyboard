@@ -11,7 +11,7 @@ const uploadManager = new UploadManager(process.env.MULTER_PATH_UPLOADS_ORDERS);
 
 const authMiddleware = require('../config/authMiddleware');
 
-router.get('/', authMiddleware, ordersController.output_orders);
+router.get('/request', authMiddleware, ordersController.output_request);
 
 router.post(
   '/',
@@ -22,6 +22,5 @@ router.post(
 
 // 사장님 전체 목록 조회
 router.get('/lists', authMiddleware, ordersController.getlists);
-router.get('/mylists', authMiddleware, ordersController.getorders);
 
 module.exports = router;
