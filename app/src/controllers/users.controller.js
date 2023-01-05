@@ -105,10 +105,11 @@ class UsersController {
 
   getOrdersStatusEnd = async (req, res) => {
     const ownerId = res.locals.userInfo.id;
+    const page = parseInt(req.query.p || 1);
 
-    const response = await this.usersService.getOrdersStatusEnd(ownerId);
+    const response = await this.usersService.getOrdersStatusEnd(ownerId, page);
     if (response.data) {
-      return res.status(response.code).json({ data: response.data });
+      return res.status(response.code).json({ data: response.data, pagination: response.pagination });
     } else {
       return res.status(response.code).json({ message: response.message });
     }
