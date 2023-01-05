@@ -22,6 +22,5 @@ router.post(
 
 // 사장님 전체 목록 조회
 router.get('/lists', authMiddleware, ordersController.getlists);
-router.get('/mylists', authMiddleware, ordersController.getorders);
 
 module.exports = router;

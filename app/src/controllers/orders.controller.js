@@ -29,16 +29,6 @@ class OrdersController {
     res.render('orders/orderlists', { data: order });
   };
 
-  // 손님
-  getorders = async (req, res) => {
-    const userInfo = res.locals.userInfo;
-    const ownerId = userInfo.id;
-
-    const order = await this.ordersService.findOrderById(ownerId);
-
-    res.render('orders/mylists', { data: order });
-  };
-
   createOrder = async (req, res) => {
     const userInfo = res.locals.userInfo;
     const ownerId = userInfo.id;

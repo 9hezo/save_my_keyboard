@@ -15,10 +15,6 @@ class OrdersRepository {
     return await this.ordersModel.findAll();
   };
 
-  findOrderById = async (ownerId) => {
-    return await this.ordersModel.findAll({ where: { ownerId: ownerId } });
-  };
-
   createOrder = async (ownerId, kinds, details, pickup, imageUrl) => {
     try {
       const result = await this.ordersModel.create({ ownerId, kinds, details, pickup, imageUrl });
