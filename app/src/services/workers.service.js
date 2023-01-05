@@ -10,6 +10,7 @@ class WorkersService {
 
     return { imageUrl: workerlists.imageUrl, status: workerlists.status };
   };
+
 }
 
 module.exports = WorkersService;

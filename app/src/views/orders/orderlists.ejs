@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="ko">
   <head>
-    <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -17,7 +17,7 @@
       integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
       crossorigin="anonymous"
     ></script>
-    <script src="/js/orders/worker.js" defer></script>
+    <script src="/js/orders/orderlists.js" defer></script>
   </head>
   <style>
     @font-face {
@@ -32,7 +32,7 @@
   </style>
   <body>
     <%- include('../components/nav') %>
-    <h1 style="margin-bottom: 2rem;">윤활 신청 내역</h1>
+    <h1 style="margin-bottom: 2rem">윤활 신청 내역</h1>
     <table>
       <thead>
         <tr>
@@ -50,14 +50,19 @@
 
       for (let i = 0; i < data.length; i++) {
         let date = new Date(data[i].pickup).toLocaleDateString();
-
+        const status_str = data[i].status;
+        console.log(data[i].ownerId);
+        // console.log(status_str);
+        // if( status_str === 0 ) {
+        //   status_str = '수락';
+        // }
         let temp_html = `<tr>
                             <td>${data[i].kinds}</td>
                             <td>${data[i].details}</td>
                             <td>${date}</td>
-                            <td>${data[i].imageUrl}</td>
+                            <td><img class="img-thumbnail" src="/uploads/orders/${data[i].imageUrl}" style="width: 100px;" /></td>
                             <td>
-                              <button onclick="statusChange(${data[i].id})" class="btn btn-outline-success">수락</button>
+                              <button onclick="statusChange(${data[i].ownerId})" class="btn btn-outline-success">${data[i].status}</button>
                             </td>
                         </tr>`;
         $('#orderlists').append(temp_html);

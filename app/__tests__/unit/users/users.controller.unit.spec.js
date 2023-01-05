@@ -16,8 +16,8 @@ const mockResponse = {
   json: jest.fn(),
   render: jest.fn(),
   locals: jest.fn(),
-  cookie: jest.fn(), 
-  clearCookie: jest.fn(), 
+  cookie: jest.fn(),
+  clearCookie: jest.fn(),
 };
 
 const usersController = new UsersController();
@@ -121,10 +121,7 @@ describe('users.controller Unit Test', () => {
     await usersController.login(mockRequest, mockResponse);
 
     expect(mockUsersService.login).toHaveBeenCalledTimes(1);
-    expect(mockUsersService.login).toHaveBeenCalledWith(
-      loginBodyParams.email,
-      loginBodyParams.password,
-    );
+    expect(mockUsersService.login).toHaveBeenCalledWith(loginBodyParams.email, loginBodyParams.password);
     expect(mockResponse.status).toHaveBeenCalledTimes(1);
     expect(mockResponse.status).toHaveBeenCalledWith(response.code);
     expect(mockResponse.json).toHaveBeenCalledTimes(1);
@@ -141,5 +138,4 @@ describe('users.controller Unit Test', () => {
     expect(mockResponse.json).toHaveBeenCalledTimes(1);
     expect(mockResponse.json).toHaveBeenCalledWith({ message: response.message });
   });
-
 });

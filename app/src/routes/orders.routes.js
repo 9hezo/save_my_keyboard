@@ -2,16 +2,27 @@
 
 const express = require('express');
 const router = express.Router();
+require('dotenv').config();
 
 const OrdersController = require('../controllers/orders.controller');
 const ordersController = new OrdersController();
+const UploadManager = require('../config/UploadManager');
+const uploadManager = new UploadManager(process.env.MULTER_PATH_UPLOADS_ORDERS);
+
 const authMiddleware = require('../config/authMiddleware');
 
 const WorkersController = require('../controllers/workers.controllers');
 const workersController = new WorkersController();
 
-// 페이지 불러오기
-router.get('/', ordersController.output_orders);
+// 윤활 주문
+router.get('/', authMiddleware, ordersController.output_orders);
+
+router.post(
+  '/',
+  authMiddleware,
+  uploadManager.multer({ storage: uploadManager.storage }).array('files'),
+  ordersController.createOrder
+);
 
 // 사장님 윤활 신청 목록 페이지
 router.get('/lists', authMiddleware, ordersController.getlists);
@@ -21,8 +32,9 @@ router.get('/mylists', authMiddleware, ordersController.getorders);
 
 // 사장님 마이페이지
 router.get('/mypage2', authMiddleware, workersController.getorderlists);
+router.get('/lists', authMiddleware, workersController.getOrderStatusZeroToThree);
+router.get('/mypage2', authMiddleware, workersController.getOrdersStatusEnd);
 
-// 윤활 신청
-router.post('/', authMiddleware, ordersController.createOrder);
+router.put('/status/:ownerId', authMiddleware, ordersController.statusupdate);
 
 module.exports = router;
