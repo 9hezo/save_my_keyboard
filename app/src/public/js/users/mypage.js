@@ -40,7 +40,7 @@ getOrderStatusZeroToThree = () => {
 getOrderStatusEnd = (page) => {
   page = parseInt(page || 1);
 
-  fetch('/api/users/mypage?p='+page, {
+  fetch('/api/users/mypage?p=' + page, {
     method: 'GET',
   })
     .then(async (res) => {
@@ -53,7 +53,7 @@ getOrderStatusEnd = (page) => {
 
       if (code === 200) {
         const orders = res.data;
-        setPagination(res.pagination);  // 페이지네이션
+        setPagination(res.pagination); // 페이지네이션
 
         document.querySelector('#orders_status_end').innerHTML = '';
         const status_arr = ['대기 중', '수거 중', '수거 완료', '배송 중', '배송 완료', '취소 완료'];
@@ -102,14 +102,14 @@ const setPagination = (obj) => {
   let temp = '';
   if (start_page != 1) {
     temp += `<li class="page-item" style="cursor: pointer;">
-              <a class="page-link" onclick="getOrderStatusEnd(${start_page-1})"><span aria-hidden="true">&laquo;</span></a>
+              <a class="page-link" onclick="getOrderStatusEnd(${start_page - 1})"><span aria-hidden="true">&laquo;</span></a>
             </li>`;
   } else {
     temp += `<li class="page-item disabled">
               <a class="page-link"><span aria-hidden="true">&laquo;</span></a>
             </li>`;
   }
-  for (let i=start_page;i<=end_page;i++) {
+  for (let i = start_page; i <= end_page; i++) {
     if (i == page) {
       temp += `<li class="page-item active" style="cursor: pointer;"><a class="page-link" onclick="getOrderStatusEnd(${i})">${i}</a></li>`;
     } else {
@@ -118,7 +118,7 @@ const setPagination = (obj) => {
   }
   if (end_page != total_page) {
     temp += `<li class="page-item" style="cursor: pointer;">
-              <a class="page-link" onclick="getOrderStatusEnd(${end_page+1})"><span aria-hidden="true">&raquo;</span></a>
+              <a class="page-link" onclick="getOrderStatusEnd(${end_page + 1})"><span aria-hidden="true">&raquo;</span></a>
             </li>`;
   } else {
     temp += `<li class="page-item disabled">

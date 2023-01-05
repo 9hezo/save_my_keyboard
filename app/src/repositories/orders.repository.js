@@ -52,7 +52,7 @@ class OrdersRepository {
                   ;`;
     return await sequelize.query(query, {
       type: QueryTypes.SELECT,
-      replacements: [ownerId, (page-1)*PAGE_LIMIT, PAGE_LIMIT],
+      replacements: [ownerId, (page - 1) * PAGE_LIMIT, PAGE_LIMIT],
     });
   };
 

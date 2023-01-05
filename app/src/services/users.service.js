@@ -7,6 +7,7 @@ const UsersRepository = require('../repositories/users.repository');
 const TokensRepository = require('../repositories/tokens.repository');
 const OrdersRepository = require('../repositories/orders.repository');
 const TokenManager = require('../config/TokenManager');
+const PaginationManager = require('../config/PaginationManager');
 const { User, Token, Order } = require('../sequelize/models');
 
 class UsersService {
@@ -105,28 +106,13 @@ class UsersService {
   };
 
   getOrdersStatusEnd = async (ownerId, page) => {
-    const PAGE_LIMIT = parseInt(process.env.PAGE_LIMIT);
-    const SECTION_LIMIT = parseInt(process.env.SECTION_LIMIT);
-
     const data = await this.ordersRepository.getOrdersStatusEnd(ownerId, page);
     const getOrdersStatusEndCountAllReturnValue = await this.ordersRepository.getOrdersStatusEndCountAll(ownerId);
     const count_all = getOrdersStatusEndCountAllReturnValue[0].count_all;
 
-    const total_page = parseInt(count_all / PAGE_LIMIT) + (count_all % PAGE_LIMIT != 0 ? 1 : 0)
+    const paginationManager = new PaginationManager(page, count_all);
 
-    let start_page = parseInt((page - 1) / SECTION_LIMIT) * SECTION_LIMIT;
-    if (start_page % SECTION_LIMIT === 0) {
-      start_page += 1
-    }
-    
-    let end_page = start_page + SECTION_LIMIT - 1;
-    if (end_page > total_page) {
-      end_page = total_page;
-    }
-
-    const pagination = { page, total_page, start_page, end_page };
-
-    return { code: 200, data, pagination };
+    return { code: 200, data, pagination: paginationManager.render() };
   };
 }
 
