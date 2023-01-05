@@ -11,9 +11,6 @@ const uploadManager = new UploadManager(process.env.MULTER_PATH_UPLOADS_ORDERS);
 
 const authMiddleware = require('../config/authMiddleware');
 
-const WorkersController = require('../controllers/workers.controllers');
-const workersController = new WorkersController();
-
 // 윤활 주문
 router.get('/request', authMiddleware, ordersController.output_request);
 

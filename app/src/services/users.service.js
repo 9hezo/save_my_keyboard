@@ -6,7 +6,6 @@ const bcrypt = require('bcrypt');
 const UsersRepository = require('../repositories/users.repository');
 const TokensRepository = require('../repositories/tokens.repository');
 const OrdersRepository = require('../repositories/orders.repository');
-const WorkersRepository= require('../repositories/workers.repository');
 const TokenManager = require('../config/TokenManager');
 const PaginationManager = require('../config/PaginationManager');
 const { User, Token, Order } = require('../sequelize/models');
@@ -15,7 +14,6 @@ class UsersService {
   usersRepository = new UsersRepository(User);
   tokensRepository = new TokensRepository(Token);
   ordersRepository = new OrdersRepository(Order);
-  WorkersRepository = new WorkersRepository(Order);
 
   createUser = async (email, password, name, phone, address, admin, point) => {
     try {
