@@ -16,7 +16,7 @@ class OrdersRepository {
   };
 
   updateStatusById = async (ownerId) => {
-    const keyboardbyid = await this.ordersModel.findOne({where: {ownerId: ownerId}});
+    const keyboardbyid = await this.ordersModel.findOne({ where: {ownerId: ownerId} });
     return keyboardbyid;
   }
 
@@ -96,6 +96,15 @@ class OrdersRepository {
   updateStatus = async (id, status_before, status_after) => {
     return await this.ordersModel.update({ status: status_after }, { where: { id, status: status_before } });
   };
+
+  orderlist = async(workerId) => {
+    const data = await this.ordersModel.findAll({ where: {workerId: workerId} });
+    return data;
+  }
+
+  // updateStatus2 = async (id, status_before, status_after) => {
+  //   return await this.ordersModel.update({ status: status_after }, { where: { id, status: status_before } });
+  // };
 
   statusInduct = async (ownerId, status) => {
     try {

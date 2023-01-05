@@ -41,7 +41,7 @@ class OrdersController {
 
     const changestatus = await this.ordersService.alterStatus(ownerId, workerId);
 
-    res.render('orders/workerlists', { data: changestatus });
+    res.render('users/admin', { data: changestatus });
   };
 
   // 손님
@@ -76,6 +76,24 @@ class OrdersController {
     const response = await this.ordersService.updateStatus(orderId, ownerId, status_before, status_after);
     res.status(response.code).json({ message: response.message });
   };
+
+  orderlist = async (req, res) => {
+    const workerId = res.locals.userInfo.id;
+    const orderlistdata = await this.ordersService.orderlist(workerId);
+    console.log(orderlistdata);
+    res.status(200).json({orderlistdata});
+  }
+
+  // updateStatus2 = async (req, res) => {
+  //   const userInfo = res.locals.userInfo;
+  //   const ownerId = userInfo ? userInfo.id : null;
+
+  //   const { orderId } = req.params;
+  //   const { status_before, status_after} = req.body;
+
+  //   const response = await this.ordersService.updateStatus2( orderId, ownerId, workerId, status_before, status_after);
+  //   res.status(response.code).json({ message: response.message });
+  // };
 
   getorderlists = async (req, res, next) => {
     const userInfo = res.locals.userInfo;
