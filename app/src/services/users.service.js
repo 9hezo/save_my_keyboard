@@ -8,6 +8,7 @@ const TokensRepository = require('../repositories/tokens.repository');
 const OrdersRepository = require('../repositories/orders.repository');
 const WorkersRepository= require('../repositories/workers.repository');
 const TokenManager = require('../config/TokenManager');
+const PaginationManager = require('../config/PaginationManager');
 const { User, Token, Order } = require('../sequelize/models');
 
 class UsersService {
@@ -106,9 +107,14 @@ class UsersService {
     return { code: 200, data: data[0] };
   };
 
-  getOrdersStatusEnd = async (ownerId) => {
-    const data = await this.ordersRepository.getOrdersStatusEnd(ownerId);
-    return { code: 200, data: data };
+  getOrdersStatusEnd = async (ownerId, page) => {
+    const data = await this.ordersRepository.getOrdersStatusEnd(ownerId, page);
+    const getOrdersStatusEndCountAllReturnValue = await this.ordersRepository.getOrdersStatusEndCountAll(ownerId);
+    const count_all = getOrdersStatusEndCountAllReturnValue[0].count_all;
+
+    const paginationManager = new PaginationManager(page, count_all);
+
+    return { code: 200, data, pagination: paginationManager.render() };
   };
 }
 

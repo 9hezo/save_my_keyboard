@@ -23,6 +23,7 @@ router.post(
   uploadManager.multer({ storage: uploadManager.storage }).array('files'),
   ordersController.createOrder
 );
+router.patch('/:orderId', authMiddleware, ordersController.updateStatus);
 
 // 사장님 윤활 신청 목록 페이지
 router.get('/lists', authMiddleware, ordersController.getlists);
