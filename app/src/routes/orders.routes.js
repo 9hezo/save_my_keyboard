@@ -15,7 +15,7 @@ const WorkersController = require('../controllers/workers.controllers');
 const workersController = new WorkersController();
 
 // 윤활 주문
-router.get('/', authMiddleware, ordersController.output_orders);
+router.get('/request', authMiddleware, ordersController.output_request);
 
 router.post(
   '/',
@@ -26,9 +26,6 @@ router.post(
 
 // 사장님 윤활 신청 목록 페이지
 router.get('/lists', authMiddleware, ordersController.getlists);
-
-// 손님 마이페이지
-router.get('/mylists', authMiddleware, ordersController.getorders);
 
 // 사장님 마이페이지
 router.get('/mypage2', authMiddleware, workersController.getorderlists);
