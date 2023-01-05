@@ -39,13 +39,30 @@ class OrdersRepository {
     });
   };
 
-  getOrdersStatusEnd = async (ownerId) => {
+  getOrdersStatusEnd = async (ownerId, page) => {
+    const PAGE_LIMIT = parseInt(process.env.PAGE_LIMIT);
+
     const query = `SELECT 
                     * FROM Orders 
                   WHERE status = 5 
                     OR status = 4 
                     AND ownerId = ?
                   ORDER BY id DESC
+                  LIMIT ?, ?
+                  ;`;
+    return await sequelize.query(query, {
+      type: QueryTypes.SELECT,
+      replacements: [ownerId, (page-1)*PAGE_LIMIT, PAGE_LIMIT],
+    });
+  };
+
+  getOrdersStatusEndCountAll = async (ownerId) => {
+    const query = `SELECT 
+                    COUNT(*) AS count_all 
+                  FROM Orders 
+                  WHERE status = 5 
+                    OR status = 4 
+                    AND ownerId = ?
                   ;`;
     return await sequelize.query(query, {
       type: QueryTypes.SELECT,

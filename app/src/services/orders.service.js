@@ -36,7 +36,6 @@ class OrdersService {
     const createResult = await this.ordersRepository.createOrder(ownerId, kinds, details, pickup, imageUrl);
     if (createResult > 0) {
       const pointDeductResult = await this.ordersRepository.pointDeduct(ownerId, process.env.ORDER_PRICE);
-      console.log('pointDeductResult: ', pointDeductResult);
       if (pointDeductResult) {
         return { code: 201, message: '주문에 성공하였습니다.' };
       }

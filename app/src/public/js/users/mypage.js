@@ -37,8 +37,10 @@ getOrderStatusZeroToThree = () => {
     });
 };
 
-getOrderStatusEnd = () => {
-  fetch('/api/users/mypage', {
+getOrderStatusEnd = (page) => {
+  page = parseInt(page || 1);
+
+  fetch('/api/users/mypage?p='+page, {
     method: 'GET',
   })
     .then(async (res) => {
@@ -51,6 +53,7 @@ getOrderStatusEnd = () => {
 
       if (code === 200) {
         const orders = res.data;
+        setPagination(res.pagination);  // 페이지네이션
 
         document.querySelector('#orders_status_end').innerHTML = '';
         const status_arr = ['대기 중', '수거 중', '수거 완료', '배송 중', '배송 완료', '취소 완료'];
@@ -81,11 +84,47 @@ getOrderStatusEnd = () => {
               </div>
             </div>
           `;
-          document.querySelector('#orders_status_end').insertAdjacentHTML('beforebegin', temp);
+          document.querySelector('#orders_status_end').insertAdjacentHTML('beforeend', temp);
         });
       }
     })
     .catch((err) => {
       console.log('err: ', err);
     });
+};
+
+const setPagination = (obj) => {
+  let page = parseInt(obj.page);
+  let total_page = parseInt(obj.total_page);
+  let start_page = parseInt(obj.start_page);
+  let end_page = parseInt(obj.end_page);
+
+  let temp = '';
+  if (start_page != 1) {
+    temp += `<li class="page-item" style="cursor: pointer;">
+              <a class="page-link" onclick="getOrderStatusEnd(${start_page-1})"><span aria-hidden="true">&laquo;</span></a>
+            </li>`;
+  } else {
+    temp += `<li class="page-item disabled">
+              <a class="page-link"><span aria-hidden="true">&laquo;</span></a>
+            </li>`;
+  }
+  for (let i=start_page;i<=end_page;i++) {
+    if (i == page) {
+      temp += `<li class="page-item active" style="cursor: pointer;"><a class="page-link" onclick="getOrderStatusEnd(${i})">${i}</a></li>`;
+    } else {
+      temp += `<li class="page-item" style="cursor: pointer;"><a class="page-link" onclick="getOrderStatusEnd(${i})">${i}</a></li>`;
+    }
+  }
+  if (end_page != total_page) {
+    temp += `<li class="page-item" style="cursor: pointer;">
+              <a class="page-link" onclick="getOrderStatusEnd(${end_page+1})"><span aria-hidden="true">&raquo;</span></a>
+            </li>`;
+  } else {
+    temp += `<li class="page-item disabled">
+              <a class="page-link"><span aria-hidden="true">&raquo;</span></a>
+            </li>`;
+  }
+  document.querySelector('.pagination').innerHTML = '';
+  document.querySelector('.pagination').insertAdjacentHTML('beforeend', temp);
 };
