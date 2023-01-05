@@ -5,12 +5,17 @@ const OrdersService = require('../services/orders.service');
 class OrdersController {
   ordersService = new OrdersService();
 
-  output_orders = (req, res) => {
+  output_request = (req, res) => {
     if (res.locals.userInfo) {
       const userInfo = res.locals.userInfo;
-      res.render('orders/order', { userInfo: { name: userInfo.name, point: userInfo.point } });
+      res.render('index', {
+        components: 'orderRequest',
+        userInfo: { name: userInfo.name, point: userInfo.point },
+      });
     } else {
-      res.render('orders/order');
+      res.render('index', {
+        components: 'orderRequest',
+      });
     }
   };
 

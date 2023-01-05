@@ -11,6 +11,7 @@
 <body>
   <%- include('components/nav') %>
 
+  <!-- users -->
   <% if (locals.components === 'register') { %>
     <%- include('users/register') %>
   <% } else if (locals.components === 'login') { %>
@@ -19,6 +20,10 @@
     <%- include('users/mypage_user') %>
   <% } else if (locals.components === 'admin') { %>
     <%- include('users/admin') %>
+  <!-- orders -->
+  <% } else if (locals.components === 'orderRequest') { %>
+    <%- include('orders/request') %>
+  <!-- main -->
   <% } else { %>
     <%- include('components/best_review') %>
   <% } %>

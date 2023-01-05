@@ -11,7 +11,7 @@ const uploadManager = new UploadManager(process.env.MULTER_PATH_UPLOADS_ORDERS);
 
 const authMiddleware = require('../config/authMiddleware');
 
-router.get('/', authMiddleware, ordersController.output_orders);
+router.get('/request', authMiddleware, ordersController.output_request);
 
 router.post(
   '/',
