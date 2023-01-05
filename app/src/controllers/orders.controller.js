@@ -5,12 +5,17 @@ const OrdersService = require('../services/orders.service');
 class OrdersController {
   ordersService = new OrdersService();
 
-  output_orders = (req, res) => {
+  output_request = (req, res) => {
     if (res.locals.userInfo) {
       const userInfo = res.locals.userInfo;
-      res.render('orders/order', { userInfo: { name: userInfo.name, point: userInfo.point } });
+      res.render('index', {
+        components: 'orderRequest',
+        userInfo: { name: userInfo.name, point: userInfo.point },
+      });
     } else {
-      res.render('orders/order');
+      res.render('index', {
+        components: 'orderRequest',
+      });
     }
   };
 
@@ -29,22 +34,12 @@ class OrdersController {
     res.render('orders/orderlists', { data: order });
   };
 
-  // 손님
-  getorders = async (req, res) => {
-    const userInfo = res.locals.userInfo;
-    const ownerId = userInfo.id;
-
-    const order = await this.ordersService.findOrderById(ownerId);
-
-    res.render('orders/mylists', { data: order });
-  };
-
   createOrder = async (req, res) => {
     const userInfo = res.locals.userInfo;
     const ownerId = userInfo.id;
 
     const { kinds, details, pickup } = req.body;
-    const imageUrl = req.files[0].filename;
+    const imageUrl = req.files.length > 0 ? req.files[0].filename : null;
 
     const response = await this.ordersService.createOrder(ownerId, kinds, details, pickup, imageUrl);
 
