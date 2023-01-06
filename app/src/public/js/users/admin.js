@@ -15,6 +15,11 @@ function orderList() {
           let details = rows[i].details
           let kinds = rows[i].kinds
           let status = rows[i].status
+          if (order.imageUrl) {
+            imageUrl = '/uploads/orders/' + order.imageUrl;
+          } else {
+            imageUrl = '/images/default.png';
+          }
 
           let temp_html = `<div class="card border-secondary border-2 mb-1">
                               <div class="row">
