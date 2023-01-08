@@ -8,18 +8,17 @@
       <a class="navbar-brand">포인트: <%= userInfo.point %></a>
       <a class="navbar-brand"><span class="badge rounded-pill text-bg-primary"><%= userInfo.admin ? '사장' : '손님' %></span></a>
     </div>
-
     <% } %>
 
     <div class="btn-group d-flex">
       <% if (!locals.userInfo) { %>
-      <button onclick="location.href='/users/login'" type="button" class="btn btn-outline-dark">로그인</button>
-      <button onclick="location.href='/users/register'" type="button" class="btn btn-outline-dark">회원가입</button>
+      <button onclick="location.href='/login'" type="button" class="btn btn-outline-dark">로그인</button>
+      <button onclick="location.href='/register'" type="button" class="btn btn-outline-dark">회원가입</button>
       <% } else {%> 
         <% if (locals.userInfo.admin) { %>
-        <button onclick="location.href='/users/admin'" type="button" class="btn btn-outline-dark">마이페이지</button>
+        <button onclick="location.href='/admin'" type="button" class="btn btn-outline-dark">마이페이지</button>
         <% } else {%>
-        <button onclick="location.href='/users/mypage_user'" type="button" class="btn btn-outline-dark">마이페이지</button>
+        <button onclick="location.href='/mypage_user'" type="button" class="btn btn-outline-dark">마이페이지</button>
         <% } %>
       <button onclick="logout()" type="button" class="btn btn-outline-dark">로그아웃</button>
       <% } %>

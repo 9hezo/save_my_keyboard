@@ -53,6 +53,9 @@ getOrderStatusEnd = (page) => {
 
       if (code === 200) {
         const orders = res.data;
+        if (orders.length == 0) {
+          return;
+        }
         setPagination(res.pagination); // 페이지네이션
 
         document.querySelector('#orders_status_end').innerHTML = '';
@@ -128,3 +131,5 @@ const setPagination = (obj) => {
   document.querySelector('.pagination').innerHTML = '';
   document.querySelector('.pagination').insertAdjacentHTML('beforeend', temp);
 };
+
+function cancelOrder() {}

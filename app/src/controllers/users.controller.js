@@ -5,57 +5,6 @@ const UsersService = require('../services/users.service');
 class UsersController {
   usersService = new UsersService();
 
-  output_register = (req, res) => {
-    if (res.locals.userInfo) {
-      const userInfo = res.locals.userInfo;
-      res.render('index', {
-        components: 'register',
-        userInfo: { name: userInfo.name, point: userInfo.point, admin: userInfo.admin },
-      });
-    } else {
-      res.render('index', {
-        components: 'register',
-      });
-    }
-  };
-
-  output_login = (req, res) => {
-    if (res.locals.userInfo) {
-      const userInfo = res.locals.userInfo;
-      res.render('index', {
-        components: 'login',
-        userInfo: { name: userInfo.name, point: userInfo.point, admin: userInfo.admin },
-      });
-    } else {
-      res.render('index', {
-        components: 'login',
-      });
-    }
-  };
-
-  output_mypage_user = (req, res) => {
-    if (res.locals.userInfo) {
-      const userInfo = res.locals.userInfo;
-      res.render('index', {
-        components: 'mypage_user',
-        userInfo: { name: userInfo.name, point: userInfo.point, admin: userInfo.admin },
-      });
-    } else {
-      res.render('index', {
-        components: 'mypage_user',
-      });
-    }
-  };
-
-  output_admin = (req, res) => {
-    if (res.locals.userInfo) {
-      const userInfo = res.locals.userInfo;
-      res.render('users/admin', { userInfo: { name: userInfo.name, point: userInfo.point, admin: userInfo.admin } });
-    } else {
-      res.render('users/admin');
-    }
-  };
-
   createUser = async (req, res) => {
     let { email, password, name, phone, address, admin } = req.body;
     admin = admin || false;
@@ -104,7 +53,9 @@ class UsersController {
   };
 
   getOrdersStatusEnd = async (req, res) => {
-    const ownerId = res.locals.userInfo.id;
+    const userInfo = res.locals.userInfo;
+    const ownerId = userInfo ? userInfo.id : null;
+
     const page = parseInt(req.query.p || 1);
 
     const response = await this.usersService.getOrdersStatusEnd(ownerId, page);

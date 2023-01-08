@@ -5,36 +5,17 @@ const OrdersService = require('../services/orders.service');
 class OrdersController {
   ordersService = new OrdersService();
 
-  output_request = (req, res) => {
-    if (res.locals.userInfo) {
-      const userInfo = res.locals.userInfo;
-      res.render('index', {
-        components: 'orderRequest',
-        userInfo: { name: userInfo.name, point: userInfo.point },
-      });
-    } else {
-      res.render('index', {
-        components: 'orderRequest',
-      });
-    }
-  };
+  // 안쓰이는듯
+  // output_orderlists = (req, res) => {
+  //   if (res.locals.userInfo) {
+  //     const userInfo = res.locals.userInfo;
+  //     res.render('orders/orderlists', { userInfo: { name: userInfo.name, point: userInfo.point } });
+  //   } else {
+  //     res.render('orders/orderlists');
+  //   }
+  // };
 
-  output_orderlists = (req, res) => {
-    if (res.locals.userInfo) {
-      const userInfo = res.locals.userInfo;
-      res.render('orders/orderlists', { userInfo: { name: userInfo.name, point: userInfo.point } });
-    } else {
-      res.render('orders/orderlists');
-    }
-  };
-
-  // 사장
-  getlists = async (req, res) => {
-    const order = await this.ordersService.findAllLists();
-    res.render('orders/orderlists', { data: order });
-  };
-
-  statusupdate = async (req,res) => {
+  statusupdate = async (req, res) => {
     const userInfo = res.locals.userInfo;
     const workerId = userInfo.id;
     const { ownerId } = req.params;
@@ -47,17 +28,16 @@ class OrdersController {
   // 손님
   getorders = async (req, res) => {
     const userInfo = res.locals.userInfo;
-    const ownerId = userInfo.id;
+    const ownerId = userInfo ? userInfo.id : null;
 
     const order = await this.ordersService.findOrderById(ownerId);
 
     res.render('orders/mylists', { data: order });
   };
 
-
   createOrder = async (req, res) => {
     const userInfo = res.locals.userInfo;
-    const ownerId = userInfo.id;
+    const ownerId = userInfo ? userInfo.id : null;
 
     const { kinds, details, pickup } = req.body;
     const imageUrl = req.files.length > 0 ? req.files[0].filename : null;
@@ -81,8 +61,8 @@ class OrdersController {
     const workerId = res.locals.userInfo.id;
     const orderlistdata = await this.ordersService.orderlist(workerId);
     console.log(orderlistdata);
-    res.status(200).json({orderlistdata});
-  }
+    res.status(200).json({ orderlistdata });
+  };
 
   // updateStatus2 = async (req, res) => {
   //   const userInfo = res.locals.userInfo;
