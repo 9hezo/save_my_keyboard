@@ -15,26 +15,6 @@ class OrdersController {
   //   }
   // };
 
-  statusupdate = async (req, res) => {
-    const userInfo = res.locals.userInfo;
-    const workerId = userInfo.id;
-    const { ownerId } = req.params;
-
-    const changestatus = await this.ordersService.alterStatus(ownerId, workerId);
-
-    res.render('users/admin', { data: changestatus });
-  };
-
-  // 손님
-  getorders = async (req, res) => {
-    const userInfo = res.locals.userInfo;
-    const ownerId = userInfo ? userInfo.id : null;
-
-    const order = await this.ordersService.findOrderById(ownerId);
-
-    res.render('orders/mylists', { data: order });
-  };
-
   createOrder = async (req, res) => {
     const userInfo = res.locals.userInfo;
     const ownerId = userInfo ? userInfo.id : null;
@@ -82,6 +62,26 @@ class OrdersController {
     const worklist = await this.ordersService.findOrderAllLists(id);
     // res.status(200).json({ data: worklist });
     res.render('orders/workerlists', { data: worklist });
+  };
+
+  statusupdate = async (req, res) => {
+    const userInfo = res.locals.userInfo;
+    const workerId = userInfo.id;
+    const { ownerId } = req.params;
+
+    const changestatus = await this.ordersService.alterStatus(ownerId, workerId);
+
+    res.render('users/admin', { data: changestatus });
+  };
+
+  // 손님
+  getorders = async (req, res) => {
+    const userInfo = res.locals.userInfo;
+    const ownerId = userInfo ? userInfo.id : null;
+
+    const order = await this.ordersService.findOrderById(ownerId);
+
+    res.render('orders/mylists', { data: order });
   };
 }
 

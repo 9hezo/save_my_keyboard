@@ -3,6 +3,8 @@ window.onload = () => {
   getOrderStatusEnd();
 };
 getOrderStatusZeroToThree = () => {
+  document.querySelector('.loading').style.display = 'block';
+
   fetch('/api/users/order', {
     method: 'GET',
   })
@@ -27,6 +29,10 @@ getOrderStatusZeroToThree = () => {
 
           const status_arr = ['대기 중', '수거 중', '수거 완료', '배송 중', '배송 완료', '취소 완료'];
           document.querySelector('#order_status').innerHTML = status_arr[order.status];
+
+          document.querySelector('#order_cancel').addEventListener('click', () => {
+            cancelOrder(order.id);
+          })
         } else {
           document.querySelector('#orders_status_zeroToThree').remove();
         }
@@ -34,10 +40,15 @@ getOrderStatusZeroToThree = () => {
     })
     .catch((err) => {
       console.log('err: ', err);
+    })
+    .finally(() => {
+      document.querySelector('.loading').style.display = 'none';
     });
 };
 
 getOrderStatusEnd = (page) => {
+  document.querySelector('.loading').style.display = 'block';
+
   page = parseInt(page || 1);
 
   fetch('/api/users/mypage?p=' + page, {
@@ -93,6 +104,9 @@ getOrderStatusEnd = (page) => {
     })
     .catch((err) => {
       console.log('err: ', err);
+    })
+    .finally(() => {
+      document.querySelector('.loading').style.display = 'none';
     });
 };
 
@@ -132,4 +146,30 @@ const setPagination = (obj) => {
   document.querySelector('.pagination').insertAdjacentHTML('beforeend', temp);
 };
 
-function cancelOrder() {}
+function cancelOrder(orderId) {
+  const req = {
+    status_before: 0,
+    status_after: 5,
+  };
+  fetch('/api/orders/'+orderId, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(req),
+  })
+    .then(async (res) => {
+      const code = res.status;
+
+      res = await res.json();
+      alert(res.message);
+
+      if (code === 200) {
+        getOrderStatusZeroToThree();
+        getOrderStatusEnd();
+      }
+    })
+    .catch((err) => {
+      console.log('err: ', err);
+    });
+}
