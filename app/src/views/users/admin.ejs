@@ -65,22 +65,40 @@
       <div class="d-grid gap-2">
         <button class="btn btn-dark" type="button">진행중인 요청</button>
       </div>
+        <div class="card border-secondary border-2 mb-1">
+        <div class="row">
+          <div class="ps-4 pt-2 col-2">
+            <img id="order_img" class="img-fluid rounded-start" src="https://placeimg.com/100/100/any" style="width: 100px;">
+          </div>
+          <div class="p-2 col-8">
+            <div class="card-body">
+              <h5 id="order_kinds" class="card-title"></h5>
+              <p id="order_details" class="card-text"></p>
+            </div>
+          </div>
+          <div class="p-1 col-2">
+            <button id="order_status" onclick="statuschange()" class="btn btn-success mb-2" style="width: 100px;"></button>
+            <!-- <button id="" class="btn btn-outline-danger" style="width: 100px;">취소하기</button> -->
+          </div>
+        </div>
+      </div>
     </div>
     <!-- 현재 요청 끝 -->
-
+  
     <!-- 신청 히스토리 시작 -->
     <div>
       <div class="d-grid gap-2">
         <button class="btn btn-dark" type="button">신청 히스토리</button>
       </div>
-
+  
       <!-- 신청 히스토리 -->
       <div id="orders_status_end"></div>
       <!-- 신청 히스토리 끝 -->
-
+  
       <!-- pagination -->
       <%- include('../components/pagination') %>
       <!-- pagination 끝 -->
+  
     </div>
     <!-- 신청 히스토리 끝 -->
   </div>
@@ -93,3 +111,5 @@
   <script src="/js/components/nav.js" defer></script>
   <script src="/js/users/admin.js" defer></script>
 </html>
+
+

@@ -21,16 +21,9 @@
               <h5 class="card-title">작성자 <%- JSON.stringify(data[i].orderId) %></h5>
               <p class="card-text"><%- JSON.stringify(data[i].content) %></p>
               <% if (locals.userInfo.id == data[i].orderId ) { %>
+              
               <button
-                onclick="location.href='reviews/write'"
-                class="btn btn-primary update"
-                type="button"
-                data-id="<%= data[i].orderId %>"
-              >
-                수정
-              </button>
-              <button
-                onclick="location.href='reviews/delete'"
+                onclick="location.href='/reviews'"
                 class="btn btn-primary delete"
                 type="button"
                 data-id="<%= data[i].orderId %>"
