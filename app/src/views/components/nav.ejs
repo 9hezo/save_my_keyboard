@@ -1,5 +1,5 @@
 <nav class="navbar bg-body-tertiary mb-5">
-  <div class="container-fluid">
+  <div class="container">
     <a class="navbar-brand" href="/">키보드를 구해조!</a>
 
     <% if (locals.userInfo) { %>
@@ -15,11 +15,12 @@
       <% if (!locals.userInfo) { %>
       <button onclick="location.href='/users/login'" type="button" class="btn btn-outline-dark">로그인</button>
       <button onclick="location.href='/users/register'" type="button" class="btn btn-outline-dark">회원가입</button>
-      <% } else {%> <% if (locals.userInfo.admin) { %>
-      <button onclick="location.href='/users/admin'" type="button" class="btn btn-outline-dark">마이페이지</button>
-      <% } else {%>
-      <button onclick="location.href='/users/mypage_user'" type="button" class="btn btn-outline-dark">마이페이지</button>
-      <% } %>
+      <% } else {%> 
+        <% if (locals.userInfo.admin) { %>
+        <button onclick="location.href='/users/admin'" type="button" class="btn btn-outline-dark">마이페이지</button>
+        <% } else {%>
+        <button onclick="location.href='/users/mypage_user'" type="button" class="btn btn-outline-dark">마이페이지</button>
+        <% } %>
       <button onclick="logout()" type="button" class="btn btn-outline-dark">로그아웃</button>
       <% } %>
       <button onclick="location.href='/reviews'" type="button" class="btn btn-outline-dark">리뷰 임시</button>
