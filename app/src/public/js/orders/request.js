@@ -15,7 +15,7 @@ function getOrderStatusZeroToThree() {
       if (code === 200) {
         if (res.data) {
           alert('이미 대기 중이거나 진행 중인 윤활 신청이 있습니다.');
-          location.href = '/users/mypage_user';
+          location.href = '/mypage_user';
         } else {
           console.log('신청 가능한 상태입니다.');
         }
@@ -54,7 +54,7 @@ function orderRequest() {
       res = await res.json();
       alert(res.message);
 
-      location.href = '/users/mypage_user';
+      location.href = '/mypage_user';
     })
     .catch((err) => {
       console.log('err: ', err);

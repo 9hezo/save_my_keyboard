@@ -3,10 +3,6 @@
 const express = require('express');
 const app = express();
 
-const http = require('http').createServer(app);
-const { Server } = require('socket.io');
-const io = new Server(http);
-
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -20,7 +16,6 @@ app.set('view engine', 'ejs');
 app.use(express.static(`${__dirname}/src/public`));
 
 const router = require('./src/routes');
-app.use('/api', router);
 app.use('/', router);
 
 module.exports = app;
