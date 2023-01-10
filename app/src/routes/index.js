@@ -3,21 +3,16 @@
 const express = require('express');
 const router = express.Router();
 
-const authMiddleware = require('../config/authMiddleware');
+// const authMiddleware = require('../config/authMiddleware');
+
 const usersRouter = require('./users.routes');
 const ordersRouter = require('./orders.routes');
 const reviewsRouter = require('./reviews.routes');
-router.use('/users', usersRouter);
-router.use('/reviews', reviewsRouter)
-router.use('/orders', ordersRouter);
+const ourputRouter = require('./output.routes');
 
-router.use('/', authMiddleware, (req, res) => {
-  if (res.locals.userInfo) {
-    const userInfo = res.locals.userInfo;
-    res.render('index', { userInfo: { name: userInfo.name, point: userInfo.point, admin: userInfo.admin } });
-  } else {
-    res.render('index');
-  }
-});
+router.use('/api/users', usersRouter);
+router.use('/api/orders', ordersRouter);
+router.use('/api/reviews', reviewsRouter);
+router.use('/', ourputRouter);
 
 module.exports = router;

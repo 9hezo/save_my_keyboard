@@ -30,14 +30,13 @@ class OrdersService {
 
   alterStatus = async (ownerId, workerId) => {
     const changeStatus = await this.ordersRepository.updateStatusById(ownerId);
-    
+
     changeStatus.status = 1;
     changeStatus.workerId = workerId;
 
     const statusNow = await this.ordersRepository.statusUpdate(changeStatus);
     return statusNow;
   };
-
 
   findOrderById = async (ownerId) => {
     const allordersById = await this.ordersRepository.findOrderById(ownerId);
@@ -109,7 +108,5 @@ class OrdersService {
 
     return { imageUrl: workerlists.imageUrl, status: workerlists.status };
   };
-
-  
 }
 module.exports = OrdersService;

@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Review.init(
-    { 
+    {
       orderId: DataTypes.INTEGER,
       content: DataTypes.TEXT,
       score: DataTypes.TINYINT,

@@ -16,14 +16,14 @@ class OrdersRepository {
   };
 
   updateStatusById = async (ownerId) => {
-    const keyboardbyid = await this.ordersModel.findOne({ where: {ownerId: ownerId} });
+    const keyboardbyid = await this.ordersModel.findOne({ where: { ownerId: ownerId } });
     return keyboardbyid;
-  }
+  };
 
   statusUpdate = async (changeStatus) => {
     const statusNow = await changeStatus.save();
-    return statusNow; 
-  }
+    return statusNow;
+  };
 
   findOrderById = async (ownerId) => {
     return await this.ordersModel.findAll({ where: { ownerId: ownerId } });
@@ -58,8 +58,8 @@ class OrdersRepository {
 
     const query = `SELECT 
                     * FROM Orders 
-                  WHERE status = 5 
-                    OR status = 4 
+                  WHERE (status = 5 
+                    OR status = 4)
                     AND ownerId = ?
                   ORDER BY id DESC
                   LIMIT ?, ?
@@ -74,8 +74,8 @@ class OrdersRepository {
     const query = `SELECT 
                     COUNT(*) AS count_all 
                   FROM Orders 
-                  WHERE status = 5 
-                    OR status = 4 
+                  WHERE (status = 5 
+                    OR status = 4)
                     AND ownerId = ?
                   ;`;
     return await sequelize.query(query, {
@@ -97,8 +97,8 @@ class OrdersRepository {
     return await this.ordersModel.update({ status: status_after }, { where: { id, status: status_before } });
   };
 
-  orderlist = async(workerId) => {
-    const data = await this.ordersModel.findAll({ where: {workerId: workerId} });
+  orderlist = async (workerId) => {
+    const data = await this.ordersModel.findAll({ where: { workerId: workerId } });
     return data;
   };
 
@@ -114,12 +114,10 @@ class OrdersRepository {
   findOrderLists = async (id) => {
     const lists = await Order.findOne({
       where: { id, status: 0 },
-      attributes: ['imageUrl','status'],
+      attributes: ['imageUrl', 'status'],
     });
     return lists;
   };
-
-  
 }
 
 module.exports = OrdersRepository;

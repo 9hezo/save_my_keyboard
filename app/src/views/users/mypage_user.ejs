@@ -12,6 +12,15 @@
 <% } %>
 
 <div class="container">
+  <!-- 불러오기 로딩중 -->
+  <div class="loading">
+    <div class="d-flex align-items-center mb-3 text-primary">
+      <strong>Loading...</strong>
+      <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+    </div>
+  </div>
+  <!-- 불러오기 로딩중 끝 -->
+
   <!-- 현재 요청 상태 -->
   <div id="orders_status_zeroToThree">
     <div class="d-grid gap-2">
@@ -30,7 +39,7 @@
         </div>
         <div class="p-1 col-2">
           <button id="order_status" class="btn btn-success mb-2" style="width: 100px;"></button>
-          <!-- <button id="" class="btn btn-outline-danger" style="width: 100px;">취소하기</button> -->
+          <button id="order_cancel" class="btn btn-outline-danger" style="width: 100px;">취소하기</button>
         </div>
       </div>
     </div>
@@ -44,7 +53,23 @@
     </div>
 
     <!-- 신청 히스토리 -->
-    <div id="orders_status_end"></div>
+    <div id="orders_status_end">
+      <div class="card border-secondary border-2 mb-1">
+        <div class="row">
+          <div class="ps-4 pt-2 col-2">
+          </div>
+          <div class="p-2 col-8">
+            <div class="card-body">
+              <h5 id="order_kinds" class="card-title">신청한 이력이 없습니다.</h5>
+              <p id="order_details" class="card-text"></p>
+            </div>
+          </div>
+          <div class="p-1 col-2">
+            <button onclick="location.href='/orders/request'" id="" class="btn btn-outline-primary" style="width: 100px;">윤활신청<br>하러가기</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- 신청 히스토리 끝 -->
 
     <!-- pagination -->
