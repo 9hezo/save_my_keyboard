@@ -82,18 +82,7 @@ class OrdersController {
     const orderlistdata = await this.ordersService.orderlist(workerId);
     console.log(orderlistdata);
     res.status(200).json({orderlistdata});
-  }
-
-  // updateStatus2 = async (req, res) => {
-  //   const userInfo = res.locals.userInfo;
-  //   const ownerId = userInfo ? userInfo.id : null;
-
-  //   const { orderId } = req.params;
-  //   const { status_before, status_after} = req.body;
-
-  //   const response = await this.ordersService.updateStatus2( orderId, ownerId, workerId, status_before, status_after);
-  //   res.status(response.code).json({ message: response.message });
-  // };
+  };
 
   getorderlists = async (req, res, next) => {
     const userInfo = res.locals.userInfo;

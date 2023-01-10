@@ -93,20 +93,7 @@ class OrdersService {
   orderlist = async (workerId) => {
     const orderlistdata = await this.ordersRepository.orderlist(workerId);
     return orderlistdata;
-  }
-
-  // updateStatus2 = async(orderId, ownerId, workerId, status_before, status_after) => {
-  //   if (!workerId) {
-  //     return { code: 401, message: '수정 권한이 없습니다. (로그인 필요)' };
-  //   }
-
-  //   const result = await this.ordersRepository.updateStatus2(orderId, ownerId, workerId, status_before, status_after);
-  //   if (result[0] > 0) {
-  //     return { code: 200, message: '수정 완료' };
-  //   } else {
-  //     return { code: 500, message: '주문 상태 변경 실패' };
-  //   }
-  // };
+  };
 
   addOrder = async (ownerId, kinds, details, pickup, imageUrl) => {
     const order = await this.ordersRepository.getStatuschange(ownerId);
