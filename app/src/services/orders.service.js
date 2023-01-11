@@ -1,6 +1,7 @@
 'use strict';
 
 require('dotenv').config();
+const SocketManager = require('../config/SocketManager');
 const OrdersRepository = require('../repositories/orders.repository');
 const { Order, User } = require('../sequelize/models');
 
@@ -70,6 +71,7 @@ class OrdersService {
     if (createResult > 0) {
       const pointDeductResult = await this.ordersRepository.pointDeduct(ownerId, process.env.ORDER_PRICE);
       if (pointDeductResult) {
+        SocketManager.alertNewOrder();
         return { code: 201, message: '주문에 성공하였습니다.' };
       }
     }
@@ -113,6 +115,7 @@ class OrdersService {
   //   }
   // };
 
+  // 안쓰는 함수
   addOrder = async (ownerId, kinds, details, pickup, imageUrl) => {
     const order = await this.ordersRepository.getStatuschange(ownerId);
     order.workerId = workerId;

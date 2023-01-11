@@ -32,7 +32,7 @@ getOrderStatusZeroToThree = () => {
 
           document.querySelector('#order_cancel').addEventListener('click', () => {
             cancelOrder(order.id);
-          })
+          });
         } else {
           document.querySelector('#orders_status_zeroToThree').remove();
         }
@@ -151,7 +151,7 @@ function cancelOrder(orderId) {
     status_before: 0,
     status_after: 5,
   };
-  fetch('/api/orders/'+orderId, {
+  fetch('/api/orders/' + orderId, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
