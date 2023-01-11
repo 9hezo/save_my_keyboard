@@ -18,13 +18,16 @@ router.post(
   ordersController.createOrder
 );
 
+// 주문 상태 변경
 router.patch('/:orderId', authMiddleware, ordersController.updateStatus);
 
-// 사장님 마이페이지
-router.get('/mypage2', authMiddleware, ordersController.getorderlists);
+// 윤활 신청 목록 페이지
+router.get('/lists', authMiddleware, ordersController.getorderlists);
 
+// 상태 업데이트
 router.put('/mypage2/:ownerId', authMiddleware, ordersController.statusupdate);
-
-router.get('/aa', authMiddleware, ordersController.orderlist);
+ 
+// 사장 마이페이지
+router.get('/admin', authMiddleware, ordersController.orderlist);
 
 module.exports = router;

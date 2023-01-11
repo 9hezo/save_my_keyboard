@@ -15,8 +15,10 @@ router.get('/login', authMiddleware, usersOutputController.login);
 router.get('/mypage_user', authMiddleware, usersOutputController.mypage_user);
 router.get('/admin', authMiddleware, usersOutputController.admin);
 
+// 윤활 서비스 신청 페이지
 router.get('/orders/request', authMiddleware, ordersOutputController.request);
-// 사장님 윤활 신청 목록 페이지
+
+// 윤활 신청 목록 페이지
 router.get('/orders/lists', authMiddleware, ordersOutputController.getlists);
 
 router.use('/', authMiddleware, (req, res) => {

@@ -46,9 +46,14 @@ class UsersOutputController {
   admin = (req, res) => {
     if (res.locals.userInfo) {
       const userInfo = res.locals.userInfo;
-      res.render('users/admin', { userInfo });
+      res.render('index', { 
+        components: 'admin', 
+        userInfo 
+      });
     } else {
-      res.render('users/admin');
+      res.render('index', {
+        components: 'admin'
+      });
     }
   };
 }

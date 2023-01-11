@@ -36,10 +36,10 @@
     <table>
       <thead>
         <tr>
+          <td>이미지</td>
           <td>종류</td>
           <td>요청사항</td>
           <td>픽업날짜</td>
-          <td>이미지</td>
           <td>현황</td>
         </tr>
       </thead>
@@ -54,10 +54,10 @@
         if (data[i].status === 0) {
           data[i].status = '수락'
           let temp_html = `<tr>
+                            <td><img class="img-thumbnail" src="/uploads/orders/${data[i].imageUrl}" style="width: 100px;" /></td>
                             <td>${data[i].kinds}</td>
                             <td>${data[i].details}</td>
                             <td>${date}</td>
-                            <td><img class="img-thumbnail" src="/uploads/orders/${data[i].imageUrl}" style="width: 100px;" /></td>
                             <td>
                               <button onclick="statusChange(${data[i].ownerId})" class="btn btn-outline-success">${data[i].status}</button>
                             </td>
