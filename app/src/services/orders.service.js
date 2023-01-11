@@ -64,6 +64,8 @@ class OrdersService {
     if (order.length > 0) {
       return { code: 401, message: '이미 대기 중이거나 진행 중인 윤활 신청이 있습니다.' };
     }
+
+    // 주문 요청과 포인트 차감 트랜잭션으로 묶기
     const createResult = await this.ordersRepository.createOrder(ownerId, kinds, details, pickup, imageUrl);
     if (createResult > 0) {
       const pointDeductResult = await this.ordersRepository.pointDeduct(ownerId, process.env.ORDER_PRICE);
@@ -82,6 +84,10 @@ class OrdersService {
 
     // 존재할 시 update
     const result = await this.ordersRepository.updateStatus(orderId, status_before, status_after);
+
+    // 0(대기 중) -> 5(취소 완료)일 경우 접속자(유저)에게 포인트 반환
+    // 3(배송 중) -> 4(배송 완료)일 경우 접속자(사장)에게 포인트 추가
+
     if (result[0] > 0) {
       return { code: 200, message: '수정 완료' };
     } else {
