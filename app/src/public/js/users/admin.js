@@ -15,8 +15,8 @@ function orderList() {
         let details = rows[i].details;
         let kinds = rows[i].kinds;
         let status = rows[i].status;
-        if (order.imageUrl) {
-          imageUrl = '/uploads/orders/' + order.imageUrl;
+        if (imageUrl) {
+          imageUrl = '/uploads/orders/' + imageUrl;
         } else {
           imageUrl = '/images/default.png';
         }

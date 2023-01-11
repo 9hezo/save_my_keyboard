@@ -19,7 +19,7 @@ router.get('/orders/request', authMiddleware, ordersOutputController.request);
 // 사장님 윤활 신청 목록 페이지
 router.get('/orders/lists', authMiddleware, ordersOutputController.getlists);
 
-router.use('/', authMiddleware, (req, res) => {
+router.get('/', authMiddleware, (req, res) => {
   if (res.locals.userInfo) {
     const userInfo = res.locals.userInfo;
     res.render('index', { userInfo });
@@ -27,5 +27,6 @@ router.use('/', authMiddleware, (req, res) => {
     res.render('index');
   }
 });
+router.get('/*', (req, res) => res.redirect('/'));
 
 module.exports = router;

@@ -1,6 +1,9 @@
 'use strict';
+const OrdersService = require('../services/orders.service');
 
 class OrdersOutputController {
+  ordersService = new OrdersService();
+
   request = (req, res) => {
     if (res.locals.userInfo) {
       const userInfo = res.locals.userInfo;
