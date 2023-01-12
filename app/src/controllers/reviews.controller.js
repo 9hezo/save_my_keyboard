@@ -16,21 +16,17 @@ class ReviewsController {
   };
 
   createReviews = async (req, res, next) => {
-    const userInfo = res.locals.userInfo;
-    const orderId = userInfo.id;
-
+    const orderId = res.locals.userInfo.id;
     const { content, score, imageUrl } = req.body;
 
     const createReviewsData = await this.reviewsService.createReviews(orderId, content, score, imageUrl);
-
     res.status(createReviewsData.code).json({ data: createReviewsData });
   };
 
   deleteReviews = async (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
 
     const deleteReviews = await this.reviewsService.deleteReviews(req.body);
-
     return res.status(201).json({ data: deleteReviews });
   };
 }

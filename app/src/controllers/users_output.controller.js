@@ -2,59 +2,31 @@
 
 class UsersOutputController {
   register = (req, res) => {
-    if (res.locals.userInfo) {
-      const userInfo = res.locals.userInfo;
-      res.render('index', {
-        components: 'register',
-        userInfo,
-      });
-    } else {
-      res.render('index', {
-        components: 'register',
-      });
-    }
+    res.render('index', {
+      components: 'register',
+      userInfo: res.locals.userInfo ? res.locals.userInfo : null,
+    });
   };
 
   login = (req, res) => {
-    if (res.locals.userInfo) {
-      const userInfo = res.locals.userInfo;
-      res.render('index', {
-        components: 'login',
-        userInfo,
-      });
-    } else {
-      res.render('index', {
-        components: 'login',
-      });
-    }
+    res.render('index', {
+      components: 'login',
+      userInfo: res.locals.userInfo ? res.locals.userInfo : null,
+    });
   };
 
   mypage_user = (req, res) => {
-    if (res.locals.userInfo) {
-      const userInfo = res.locals.userInfo;
-      res.render('index', {
-        components: 'mypage_user',
-        userInfo,
-      });
-    } else {
-      res.render('index', {
-        components: 'mypage_user',
-      });
-    }
+    res.render('index', {
+      components: 'mypage_user',
+      userInfo: res.locals.userInfo ? res.locals.userInfo : null,
+    });
   };
 
   admin = (req, res) => {
-    if (res.locals.userInfo) {
-      const userInfo = res.locals.userInfo;
-      res.render('index', {
-        components: 'admin',
-        userInfo,
-      });
-    } else {
-      res.render('index', {
-        components: 'admin',
-      });
-    }
+    res.render('index', {
+      components: 'admin',
+      userInfo: res.locals.userInfo ? res.locals.userInfo : null,
+    });
   };
 }
 
