@@ -5,17 +5,10 @@ class OrdersOutputController {
   ordersService = new OrdersService();
 
   request = (req, res) => {
-    if (res.locals.userInfo) {
-      const userInfo = res.locals.userInfo;
-      res.render('index', {
-        components: 'orderRequest',
-        userInfo,
-      });
-    } else {
-      res.render('index', {
-        components: 'orderRequest',
-      });
-    }
+    res.render('index', {
+      components: 'orderRequest',
+      userInfo: res.locals.userInfo ? res.locals.userInfo : null,
+    });
   };
 
   // 사장

@@ -42,7 +42,7 @@ class UsersController {
   };
 
   getOrderStatusZeroToThree = async (req, res) => {
-    const ownerId = res.locals.userInfo.id;
+    const ownerId = res.locals.userInfo ? res.locals.userInfo.id : null;
 
     const response = await this.usersService.getOrderStatusZeroToThree(ownerId);
     if (response.data) {
@@ -53,9 +53,7 @@ class UsersController {
   };
 
   getOrdersStatusEnd = async (req, res) => {
-    const userInfo = res.locals.userInfo;
-    const ownerId = userInfo ? userInfo.id : null;
-
+    const ownerId = res.locals.userInfo ? res.locals.userInfo.id : null;
     const page = parseInt(req.query.p || 1);
 
     const response = await this.usersService.getOrdersStatusEnd(ownerId, page);
