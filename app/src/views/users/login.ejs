@@ -1,14 +1,32 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <script src="/js/users/test.js" defer></script>
-</head>
-<body>
-  Login
-  <button id="test">버튼</button>
-</body>
-</html>
+<% if (locals.userInfo) { %>
+  <script>
+    alert('이미 로그인 되어 있습니다.');
+    location.href='/'
+  </script>
+<% } %>
+<script src="/js/users/login.js" defer></script>
+
+<div class="container">
+  <h1>로그인</h1>
+
+  <!-- 입력 폼 -->
+  <div>
+    <div class="form-floating mb-2">
+      <input type="email" class="form-control" id="email" placeholder="name@example.com">
+      <label for="email">이메일</label>
+    </div>
+    <div class="form-floating mb-2">
+      <input type="password" class="form-control" id="password" placeholder="Password">
+      <label for="password">비밀번호</label>
+    </div>
+  </div>
+  <!-- 입력 폼 끝 -->
+
+  <div class="d-grid gap-2 mb-2">
+    <button onclick="login()" class="btn btn-primary" type="button">로그인</button>
+  </div>
+
+  <div class="d-grid gap-2 mb-2">
+    <button onclick="location.href='/register'" class="btn btn-outline-dark" type="button">아직 회원가입을 안하셨다면?</button>
+  </div>
+</div>

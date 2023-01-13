@@ -1,0 +1,67 @@
+<% if (locals.userInfo) { %>
+  <script>
+    alert('이미 로그인 되어 있습니다.');
+    location.href='/'
+  </script>
+<% } %>
+<script src="/js/users/register.js" defer></script>
+
+<div class="container">
+  <h1>회원가입</h1>
+
+  <!-- 일반/사장 선택 버튼 -->
+  <div class="list-group list-group-horizontal text-center mb-2">
+    <a class="list-group-item list-group-item-action active" id="customer-list" data-bs-toggle="list" href="#customer" role="tab">일반 회원</a>
+    <a class="list-group-item list-group-item-action" id="admin-list" data-bs-toggle="list" href="#admin" role="tab">사장님</a>
+  </div>
+  <!-- 일반/사장 선택 버튼 끝 -->
+
+  <!-- 입력 폼 -->
+  <div>
+    <div class="form-floating mb-2">
+      <input type="email" class="form-control" id="email" placeholder="name@example.com">
+      <label for="email">이메일</label>
+    </div>
+    <div class="form-floating mb-2">
+      <input onkeyup="checkPassword()" type="password" class="form-control" id="password" placeholder="Password">
+      <label for="password">비밀번호</label>
+    </div>
+    <div class="form-floating mb-2">
+      <input onkeyup="checkPassword()" type="password" class="form-control" id="confirmPassword" placeholder="Password">
+      <label for="confirmPassword">비밀번호 확인</label>
+    </div>
+    <div class="form-floating mb-2">
+      <input type="text" class="form-control" id="name" placeholder="홍길동">
+      <label for="name">이름</label>
+    </div>
+    <div class="form-floating mb-2">
+      <input type="text" class="form-control" id="phone" placeholder="01012345678">
+      <label for="phone">핸드폰 번호 ex) 01012345678</label>
+    </div>
+    <div class="form-floating mb-2">
+      <textarea class="form-control" id="address" placeholder="주소입력"></textarea>
+      <label for="address">주소</label>
+    </div>
+  </div>
+  <!-- 입력 폼 끝 -->
+
+  <!-- 회원/사장 회원가입 버튼 -->
+  <div class="tab-content mb-2" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="customer" role="tabpanel" aria-labelledby="customer-list">
+      <div class="d-grid gap-2">
+        <button onclick="register(false)" class="btn btn-primary" type="button">일반 회원 가입</button>
+      </div>
+    </div>
+    <div class="tab-pane fade" id="admin" role="tabpanel" aria-labelledby="admin-list">
+      <div class="d-grid gap-2">
+        <button onclick="register(true)" class="btn btn-success" type="button">사장님 회원 가입</button>
+      </div>
+    </div>
+  </div>
+  <!-- 회원/사장 회원가입 버튼 끝 -->
+
+  <div class="d-grid gap-2 mb-2">
+    <button onclick="location.href='/login'" class="btn btn-outline-dark" type="button">이미 가입하셨다면?</button>
+  </div>
+</div>
+

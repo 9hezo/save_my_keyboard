@@ -1,0 +1,51 @@
+<style>
+  .alert {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin-bottom: 0;
+    width: 100%;
+
+    color: black;
+    background-color: chartreuse;
+    border-color: black;
+  }
+
+  @media screen and (min-width: 576px) {
+    .alert {
+      width: fit-content;
+      max-width: 480px;
+    }
+  }
+</style>
+
+<div class="alert fade" role="alert" id="alertNewOrder">새로운 윤활 요청이 들어왔습니다.</div>
+
+<% 
+if (locals.userInfo) {
+  if (locals.userInfo.admin) { 
+%>
+    <script>
+      const socket = new WebSocket(`ws://${window.location.host}`);
+
+      socket.addEventListener('open', () => {
+        console.log('Connected to Server ✅');
+      });
+      socket.addEventListener('close', () => {
+        console.log('Disconnected to Server ❌');
+      });
+
+      socket.addEventListener('message', (message) => {
+        const data = JSON.parse(message.data);
+        if (data.payload) {
+          document.querySelector('#alertNewOrder').classList.add('show');
+          setTimeout(() => {
+            document.querySelector('#alertNewOrder').classList.remove('show');
+          }, 5000);
+        }
+      });
+    </script>
+<% 
+  } 
+} 
+%>
