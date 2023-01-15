@@ -3,8 +3,8 @@
 const express = require('express');
 const router = express.Router();
 
-const loginCheckMiddleware = require('../config/loginCheckMiddleware');
-const authMiddleware = require('../config/authMiddleware');
+const loginCheckMiddleware = require('../middlewares/loginCheckMiddleware');
+const authMiddleware = require('../middlewares/authMiddleware');
 
 const UsersController = require('../controllers/users.controller');
 const usersController = new UsersController();

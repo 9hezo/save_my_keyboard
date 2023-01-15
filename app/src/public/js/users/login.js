@@ -27,6 +27,9 @@ function login() {
       alert(res.message);
 
       if (code === 200) {
+        document.cookie = `accessToken=${res.accessToken}`;
+        document.cookie = `refreshToken=${res.refreshToken}`;
+
         location.href = '/';
       }
     })

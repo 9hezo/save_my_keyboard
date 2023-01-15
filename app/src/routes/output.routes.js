@@ -3,7 +3,7 @@
 const express = require('express');
 const router = express.Router();
 
-const authMiddleware = require('../config/authMiddleware');
+const authMiddleware = require('../middlewares/authMiddleware');
 
 const UsersOutputController = require('../controllers/users_output.controller');
 const usersOutputController = new UsersOutputController();
@@ -20,12 +20,9 @@ router.get('/orders/request', authMiddleware, ordersOutputController.request);
 router.get('/orders/lists', authMiddleware, ordersOutputController.getlists);
 
 router.get('/', authMiddleware, (req, res) => {
-  if (res.locals.userInfo) {
-    const userInfo = res.locals.userInfo;
-    res.render('index', { userInfo });
-  } else {
-    res.render('index');
-  }
+  res.render('index', {
+    userInfo: res.locals.userInfo ? res.locals.userInfo : null,
+  });
 });
 router.get('/*', (req, res) => res.redirect('/'));
 

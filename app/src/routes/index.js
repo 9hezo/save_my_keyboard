@@ -3,8 +3,6 @@
 const express = require('express');
 const router = express.Router();
 
-// const authMiddleware = require('../config/authMiddleware');
-
 const usersRouter = require('./users.routes');
 const ordersRouter = require('./orders.routes');
 const reviewsRouter = require('./reviews.routes');

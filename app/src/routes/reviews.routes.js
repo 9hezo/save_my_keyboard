@@ -6,8 +6,8 @@ const router = express.Router();
 
 const ReviewsController = require('../controllers/reviews.controller');
 const reviewsController = new ReviewsController();
-const loginCheckMiddleware = require('../config/loginCheckMiddleware');
-const authMiddleware = require('../config/authMiddleware');
+const loginCheckMiddleware = require('../middlewares/loginCheckMiddleware');
+const authMiddleware = require('../middlewares/authMiddleware');
 
 // 리뷰 페이지 불러오기
 router.get('/', authMiddleware, reviewsController.getReviews);
