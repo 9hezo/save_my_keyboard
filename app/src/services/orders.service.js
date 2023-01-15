@@ -1,6 +1,5 @@
 'use strict';
 
-require('dotenv').config();
 const SocketManager = require('../config/SocketManager');
 const OrdersRepository = require('../repositories/orders.repository');
 const { Order, User } = require('../sequelize/models');
@@ -61,19 +60,25 @@ class OrdersService {
   };
 
   createOrder = async (ownerId, kinds, details, pickup, imageUrl) => {
-    const order = await this.ordersRepository.getOrderStatusZeroToThree(ownerId);
-    if (order.length > 0) {
-      return { code: 401, message: '이미 대기 중이거나 진행 중인 윤활 신청이 있습니다.' };
-    }
-
-    // 주문 요청과 포인트 차감 트랜잭션으로 묶기
-    const createResult = await this.ordersRepository.createOrder(ownerId, kinds, details, pickup, imageUrl);
-    if (createResult > 0) {
-      const pointDeductResult = await this.ordersRepository.pointDeduct(ownerId, process.env.ORDER_PRICE);
-      if (pointDeductResult) {
-        SocketManager.alertNewOrder();
-        return { code: 201, message: '주문에 성공하였습니다.' };
+    try {
+      const order = await this.ordersRepository.getOrderStatusZeroToThree(ownerId);
+      if (order.length > 0) {
+        return { code: 401, message: '이미 대기 중이거나 진행 중인 윤활 신청이 있습니다.' };
       }
+
+      const orderInfo = {
+        ownerId,
+        kinds,
+        details,
+        pickup,
+        imageUrl,
+      };
+      await this.ordersRepository.createOrder(orderInfo);
+
+      SocketManager.alertNewOrder();
+      return { code: 201, message: '주문에 성공하였습니다.' };
+    } catch (err) {
+      return { code: 403, message: err.message };
     }
   };
 
