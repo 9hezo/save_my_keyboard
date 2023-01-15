@@ -55,6 +55,9 @@ function register(admin) {
       alert(res.message);
 
       if (code === 201) {
+        document.cookie = `accessToken=${res.accessToken}`;
+        document.cookie = `refreshToken=${res.refreshToken}`;
+
         location.href = '/';
       }
     })

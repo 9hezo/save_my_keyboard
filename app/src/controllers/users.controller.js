@@ -20,8 +20,17 @@ class UsersController {
     // phone 숫자만인지, 자리수 맞는지
     // address 최대글자 확인
 
-    const response = await this.usersService.createUser(email, password, name, phone, address, admin, point);
-    res.status(response.code).json({ message: response.message });
+    const registerResponse = await this.usersService.createUser(email, password, name, phone, address, admin, point);
+    if (registerResponse.code !== 201) {
+      return res.status(registerResponse.code).json({ message: registerResponse.message });
+    }
+
+    const loginResponse = await this.usersService.login(email, password);
+    return res.status(registerResponse.code).json({
+      message: registerResponse.message,
+      accessToken: loginResponse.accessToken,
+      refreshToken: loginResponse.refreshToken,
+    });
   };
 
   login = async (req, res) => {
@@ -29,14 +38,15 @@ class UsersController {
 
     const response = await this.usersService.login(email, password);
 
-    if (response.code != 200) {
+    if (response.code !== 200) {
       return res.status(response.code).json({ message: response.message });
     }
 
-    return res.status(response.code).json({ 
-      message: response.message, 
-      accessToken: response.accessToken, 
-      refreshToken: response.refreshToken });
+    return res.status(response.code).json({
+      message: response.message,
+      accessToken: response.accessToken,
+      refreshToken: response.refreshToken,
+    });
   };
 
   logout = async (req, res) => {
