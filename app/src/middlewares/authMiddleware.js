@@ -2,7 +2,7 @@
 
 const TokensService = require('../services/tokens.service');
 const UsersService = require('../services/users.service');
-const TokenManager = require('./TokenManager');
+const TokenManager = require('../config/TokenManager');
 
 module.exports = async (req, res, next) => {
   const tokensService = new TokensService();

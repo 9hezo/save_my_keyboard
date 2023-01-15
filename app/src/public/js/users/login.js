@@ -25,8 +25,11 @@ function login() {
 
       res = await res.json();
       alert(res.message);
-
+      
       if (code === 200) {
+        document.cookie = `accessToken=${res.accessToken}`;
+        document.cookie = `refreshToken=${res.refreshToken}`;
+        
         location.href = '/';
       }
     })
