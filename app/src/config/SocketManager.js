@@ -21,13 +21,13 @@ class SocketManager {
   };
 
   static alertNewOrder = () => {
-      SocketManager.sockets.forEach((aSocket) => {
-        const data = {
-          type: 'newOrder',
-          payload: true,
-        };
-        aSocket.send(JSON.stringify(data));
-      });
+    SocketManager.sockets.forEach((aSocket) => {
+      const data = {
+        type: 'newOrder',
+        payload: true,
+      };
+      aSocket.send(JSON.stringify(data));
+    });
   };
 }
 
