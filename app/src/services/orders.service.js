@@ -66,14 +66,13 @@ class OrdersService {
         return { code: 401, message: '이미 대기 중이거나 진행 중인 윤활 신청이 있습니다.' };
       }
 
-      const orderInfo = {
+      await this.ordersRepository.createOrder({
         ownerId,
         kinds,
         details,
         pickup,
         imageUrl,
-      };
-      await this.ordersRepository.createOrder(orderInfo);
+      });
 
       SocketManager.alertNewOrder();
       return { code: 201, message: '주문에 성공하였습니다.' };
@@ -82,23 +81,18 @@ class OrdersService {
     }
   };
 
-  updateStatus = async (orderId, ownerId, status_before, status_after) => {
-    if (!ownerId) {
-      return { code: 401, message: '수정 권한이 없습니다. (로그인 필요)' };
-    }
+  updateStatus = async (orderId, userId, status_before, status_after) => {
+    try {
+      if (!userId) {
+        return { code: 401, message: '수정 권한이 없습니다. (로그인 필요)' };
+      }
 
-    // id=orderId, ownerId, status=status_before 에 해당하는 order가 존재하는지 체크
-
-    // 존재할 시 update
-    const result = await this.ordersRepository.updateStatus(orderId, status_before, status_after);
-
-    // 0(대기 중) -> 5(취소 완료)일 경우 접속자(유저)에게 포인트 반환
-    // 3(배송 중) -> 4(배송 완료)일 경우 접속자(사장)에게 포인트 추가
-
-    if (result[0] > 0) {
+      // 0(대기 중) -> 5(취소 완료)일 경우 접속자(유저)에게 포인트 반환
+      // 3(배송 중) -> 4(배송 완료)일 경우 접속자(사장)에게 포인트 추가
+      await this.ordersRepository.updateStatus(orderId, userId, status_before, status_after);
       return { code: 200, message: '수정 완료' };
-    } else {
-      return { code: 500, message: '주문 상태 변경 실패' };
+    } catch (err) {
+      return { code: 403, message: err.message };
     }
   };
 

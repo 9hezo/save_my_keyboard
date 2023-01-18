@@ -29,7 +29,7 @@ class OrdersRepository {
   };
 
   createOrder = async ({ ownerId, kinds, details, pickup, imageUrl }) => {
-    const transferPoint = process.env.ORDER_PRICE;
+    const transferPoint = parseInt(process.env.ORDER_PRICE);
 
     const transaction = await sequelize.transaction();
     try {
@@ -63,6 +63,54 @@ class OrdersRepository {
         throw new Error('유저의 포인트가 부족합니다.');
       }
       await userInfo.save({ transaction });
+
+      await transaction.commit();
+    } catch (err) {
+      await transaction.rollback();
+      throw new Error(err.message);
+    }
+  };
+
+  updateStatus = async (id, userId, status_before, status_after) => {
+    const transferPoint = parseInt(process.env.ORDER_PRICE);
+
+    const transaction = await sequelize.transaction();
+    try {
+      if ((status_before == 0 && status_after === 5) || (status_before == 3 && status_after === 4)) {
+        const userInfo = await this.usersModel.findOne(
+          {
+            attributes: ['id', 'point'],
+            where: {
+              id: userId,
+            },
+          },
+          { transaction }
+        );
+
+        if (!userInfo) {
+          throw new Error('유저가 존재하지 않습니다.');
+        }
+
+        userInfo.point += transferPoint;
+        await userInfo.save({ transaction });
+      }
+      const orderInfo = await this.ordersModel.findOne(
+        {
+          attributes: ['id', 'status'],
+          where: {
+            id,
+            status: status_before,
+          },
+        },
+        { transaction }
+      );
+
+      if (!orderInfo) {
+        throw new Error('요청한 상태의 주문이 존재하지 않습니다.');
+      }
+
+      orderInfo.status = status_after;
+      await orderInfo.save({ transaction });
 
       await transaction.commit();
     } catch (err) {
@@ -114,10 +162,6 @@ class OrdersRepository {
       type: QueryTypes.SELECT,
       replacements: [ownerId],
     });
-  };
-
-  updateStatus = async (id, status_before, status_after) => {
-    return await this.ordersModel.update({ status: status_after }, { where: { id, status: status_before } });
   };
 
   orderlist = async (workerId) => {

@@ -26,12 +26,12 @@ class OrdersController {
   };
 
   updateStatus = async (req, res) => {
-    const ownerId = res.locals.userInfo ? res.locals.userInfo.id : null;
+    const userId = res.locals.userInfo ? res.locals.userInfo.id : null;
 
     const { orderId } = req.params;
     const { status_before, status_after } = req.body;
 
-    const response = await this.ordersService.updateStatus(orderId, ownerId, status_before, status_after);
+    const response = await this.ordersService.updateStatus(orderId, userId, status_before, status_after);
     res.status(response.code).json({ message: response.message });
   };
 
