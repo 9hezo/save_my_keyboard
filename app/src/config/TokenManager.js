@@ -13,6 +13,12 @@ class TokenManager {
     });
   }
 
+  // static createAccessToken = async (userId) => {
+  //   const expiresIn = process.env.JWT_ACCESS_EXPIRES;
+  //   const accessToken = await jwt.sign({ userId }, SECRET_KEY, { expiresIn });
+  //   return accessToken;
+  // }
+
   static createRefreshToken() {
     return new Promise((resolve, reject) => {
       const expiresIn = process.env.JWT_REFRESH_EXPIRES;
@@ -20,6 +26,12 @@ class TokenManager {
       resolve(refreshToken);
     });
   }
+
+  // static createRefreshToken = () => {
+  //   const expiresIn = process.env.JWT_REFRESH_EXPIRES;
+  //     const refreshToken = jwt.sign({}, SECRET_KEY, { expiresIn });
+  //     return refreshToken;
+  // }
 
   static validateAccessToken(accessToken) {
     try {

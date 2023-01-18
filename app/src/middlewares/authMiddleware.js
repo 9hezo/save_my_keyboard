@@ -37,8 +37,9 @@ module.exports = async (req, res, next) => {
       res.clearCookie('refreshToken');
       return next();
     }
-
     const newAccessToken = await TokenManager.createAccessToken(tokenInfo.userId);
+
+    // 클라이언트에서 저장하게 변경되어야함
     res.cookie('accessToken', newAccessToken);
 
     userId = TokenManager.getAccessTokenPayload(newAccessToken).userId;

@@ -148,8 +148,8 @@ const setPagination = (obj) => {
 
 function cancelOrder(orderId) {
   const req = {
-    status_before: 0,
-    status_after: 5,
+    status_before: 0, // 대기중
+    status_after: 5, // 취소 완료
   };
   fetch('/api/orders/' + orderId, {
     method: 'PATCH',
@@ -165,8 +165,7 @@ function cancelOrder(orderId) {
       alert(res.message);
 
       if (code === 200) {
-        getOrderStatusZeroToThree();
-        getOrderStatusEnd();
+        location.href = '/mypage_user'
       }
     })
     .catch((err) => {
