@@ -147,6 +147,7 @@ const setPagination = (obj) => {
 };
 
 function cancelOrder(orderId) {
+  console.log('orderId: ', orderId);
   const req = {
     status_before: 0, // 대기중
     status_after: 5, // 취소 완료
@@ -165,7 +166,7 @@ function cancelOrder(orderId) {
       alert(res.message);
 
       if (code === 200) {
-        location.href = '/mypage_user'
+        location.href = '/mypage_user';
       }
     })
     .catch((err) => {
