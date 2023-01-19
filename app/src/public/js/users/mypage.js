@@ -1,8 +1,8 @@
 window.onload = () => {
-  getOrderStatusZeroToThree();
-  getOrderStatusEnd();
+  getOrdersDoing();
+  getOrdersDone();
 };
-getOrderStatusZeroToThree = () => {
+const getOrdersDoing = () => {
   document.querySelector('.loading').style.display = 'block';
 
   fetch('/api/users/order', {
@@ -46,7 +46,7 @@ getOrderStatusZeroToThree = () => {
     });
 };
 
-getOrderStatusEnd = (page) => {
+const getOrdersDone = (page) => {
   document.querySelector('.loading').style.display = 'block';
 
   page = parseInt(page || 1);
@@ -119,7 +119,7 @@ const setPagination = (obj) => {
   let temp = '';
   if (start_page != 1) {
     temp += `<li class="page-item" style="cursor: pointer;">
-              <a class="page-link" onclick="getOrderStatusEnd(${start_page - 1})"><span aria-hidden="true">&laquo;</span></a>
+              <a class="page-link" onclick="getOrdersDone(${start_page - 1})"><span aria-hidden="true">&laquo;</span></a>
             </li>`;
   } else {
     temp += `<li class="page-item disabled">
@@ -128,14 +128,14 @@ const setPagination = (obj) => {
   }
   for (let i = start_page; i <= end_page; i++) {
     if (i == page) {
-      temp += `<li class="page-item active" style="cursor: pointer;"><a class="page-link" onclick="getOrderStatusEnd(${i})">${i}</a></li>`;
+      temp += `<li class="page-item active" style="cursor: pointer;"><a class="page-link" onclick="getOrdersDone(${i})">${i}</a></li>`;
     } else {
-      temp += `<li class="page-item" style="cursor: pointer;"><a class="page-link" onclick="getOrderStatusEnd(${i})">${i}</a></li>`;
+      temp += `<li class="page-item" style="cursor: pointer;"><a class="page-link" onclick="getOrdersDone(${i})">${i}</a></li>`;
     }
   }
   if (end_page != total_page) {
     temp += `<li class="page-item" style="cursor: pointer;">
-              <a class="page-link" onclick="getOrderStatusEnd(${end_page + 1})"><span aria-hidden="true">&raquo;</span></a>
+              <a class="page-link" onclick="getOrdersDone(${end_page + 1})"><span aria-hidden="true">&raquo;</span></a>
             </li>`;
   } else {
     temp += `<li class="page-item disabled">
@@ -146,7 +146,8 @@ const setPagination = (obj) => {
   document.querySelector('.pagination').insertAdjacentHTML('beforeend', temp);
 };
 
-function cancelOrder(orderId) {
+const cancelOrder = (orderId) => {
+  console.log('orderId: ', orderId);
   const req = {
     status_before: 0, // 대기중
     status_after: 5, // 취소 완료
@@ -165,7 +166,7 @@ function cancelOrder(orderId) {
       alert(res.message);
 
       if (code === 200) {
-        location.href = '/mypage_user'
+        location.href = '/mypage_user';
       }
     })
     .catch((err) => {

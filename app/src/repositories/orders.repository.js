@@ -28,98 +28,70 @@ class OrdersRepository {
     return await this.ordersModel.findAll({ where: { ownerId: ownerId } });
   };
 
-  createOrder = async ({ ownerId, kinds, details, pickup, imageUrl }) => {
-    const transferPoint = parseInt(process.env.ORDER_PRICE);
-
-    const transaction = await sequelize.transaction();
-    try {
-      const userInfo = await this.usersModel.findOne(
-        {
-          attributes: ['id', 'point'],
-          where: {
-            id: ownerId,
-          },
-        },
-        { transaction }
-      );
-
-      if (!userInfo) {
-        throw new Error('유저가 존재하지 않습니다.');
-      }
-
-      await this.ordersModel.create(
-        {
-          ownerId,
-          kinds,
-          details,
-          pickup,
-          imageUrl,
-        },
-        { transaction }
-      );
-
-      userInfo.point -= transferPoint;
-      if (userInfo.point < 0) {
-        throw new Error('유저의 포인트가 부족합니다.');
-      }
-      await userInfo.save({ transaction });
-
-      await transaction.commit();
-    } catch (err) {
-      await transaction.rollback();
-      throw new Error(err.message);
-    }
+  createOrder = async (transaction, { ownerId, kinds, details, pickup, imageUrl }) => {
+    await this.ordersModel.create({ ownerId, kinds, details, pickup, imageUrl }, { transaction });
   };
 
-  updateStatus = async (id, userId, status_before, status_after) => {
-    const transferPoint = parseInt(process.env.ORDER_PRICE);
+  decreasePoint = async (transaction, id, transferPoint) => {
+    const userInfo = await this.usersModel.findOne(
+      {
+        attributes: ['id', 'point'],
+        where: { id },
+      },
+      { transaction }
+    );
 
-    const transaction = await sequelize.transaction();
-    try {
-      if ((status_before == 0 && status_after === 5) || (status_before == 3 && status_after === 4)) {
-        const userInfo = await this.usersModel.findOne(
-          {
-            attributes: ['id', 'point'],
-            where: {
-              id: userId,
-            },
-          },
-          { transaction }
-        );
-
-        if (!userInfo) {
-          throw new Error('유저가 존재하지 않습니다.');
-        }
-
-        userInfo.point += transferPoint;
-        await userInfo.save({ transaction });
-      }
-      const orderInfo = await this.ordersModel.findOne(
-        {
-          attributes: ['id', 'status'],
-          where: {
-            id,
-            status: status_before,
-          },
-        },
-        { transaction }
-      );
-
-      if (!orderInfo) {
-        throw new Error('요청한 상태의 주문이 존재하지 않습니다.');
-      }
-
-      orderInfo.status = status_after;
-      await orderInfo.save({ transaction });
-
-      await transaction.commit();
-    } catch (err) {
-      await transaction.rollback();
-      throw new Error(err.message);
+    if (!userInfo) {
+      const err = new Error('유저가 존재하지 않습니다.');
+      throw err;
     }
+
+    userInfo.point -= transferPoint;
+    if (userInfo.point < 0) {
+      throw new Error('유저의 포인트가 부족합니다.');
+    }
+    await userInfo.save({ transaction });
   };
 
-  getOrderStatusZeroToThree = async (ownerId) => {
+  increasePoint = async (transaction, id, transferPoint) => {
+    console.log('22');
+    const userInfo = await this.usersModel.findOne(
+      {
+        attributes: ['id', 'point'],
+        where: { id },
+      },
+      { transaction }
+    );
+
+    if (!userInfo) {
+      const err = new Error('유저가 존재하지 않습니다.');
+      throw err;
+    }
+
+    userInfo.point += transferPoint;
+    await userInfo.save({ transaction });
+  };
+
+  updateStatus = async (transaction, { id, status_before, status_after }) => {
+    console.log('11');
+    console.log(id, status_before, status_after);
+    const orderInfo = await this.ordersModel.findOne(
+      {
+        attributes: ['id', 'status'],
+        where: { id, status: status_before },
+      },
+      { transaction }
+    );
+
+    if (!orderInfo) {
+      throw new Error('요청한 상태의 주문이 존재하지 않습니다.');
+    }
+
+    orderInfo.status = status_after;
+    await orderInfo.save({ transaction });
+  };
+
+  getOrdersDoing = async (ownerId) => {
     const query = `SELECT 
                     * FROM Orders 
                   WHERE status != 5 
@@ -133,7 +105,7 @@ class OrdersRepository {
     });
   };
 
-  getOrdersStatusEnd = async (ownerId, page) => {
+  getOrdersDone = async (ownerId, page) => {
     const PAGE_LIMIT = parseInt(process.env.PAGE_LIMIT);
 
     const query = `SELECT 
@@ -150,7 +122,7 @@ class OrdersRepository {
     });
   };
 
-  getOrdersStatusEndCountAll = async (ownerId) => {
+  getOrdersDoneCountAll = async (ownerId) => {
     const query = `SELECT 
                     COUNT(*) AS count_all 
                   FROM Orders 

@@ -15,8 +15,8 @@ router.post('/login', loginCheckMiddleware, usersController.login);
 
 router.get('/logout', usersController.logout);
 
-router.get('/order', authMiddleware, usersController.getOrderStatusZeroToThree);
+router.get('/order', authMiddleware, usersController.getOrdersDoing);
 
-router.get('/mypage', authMiddleware, usersController.getOrdersStatusEnd);
+router.get('/mypage', authMiddleware, usersController.getOrdersDone);
 
 module.exports = router;
