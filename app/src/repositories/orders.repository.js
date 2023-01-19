@@ -91,7 +91,7 @@ class OrdersRepository {
     await orderInfo.save({ transaction });
   };
 
-  getOrderStatusZeroToThree = async (ownerId) => {
+  getOrdersDoing = async (ownerId) => {
     const query = `SELECT 
                     * FROM Orders 
                   WHERE status != 5 
@@ -105,7 +105,7 @@ class OrdersRepository {
     });
   };
 
-  getOrdersStatusEnd = async (ownerId, page) => {
+  getOrdersDone = async (ownerId, page) => {
     const PAGE_LIMIT = parseInt(process.env.PAGE_LIMIT);
 
     const query = `SELECT 
@@ -122,7 +122,7 @@ class OrdersRepository {
     });
   };
 
-  getOrdersStatusEndCountAll = async (ownerId) => {
+  getOrdersDoneCountAll = async (ownerId) => {
     const query = `SELECT 
                     COUNT(*) AS count_all 
                   FROM Orders 

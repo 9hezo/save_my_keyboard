@@ -1,10 +1,10 @@
 'use strict';
 
 window.onload = () => {
-  getOrderStatusZeroToThree();
+  getOrdersDoing();
 };
 
-function getOrderStatusZeroToThree() {
+function getOrdersDoing() {
   fetch('/api/users/order', {
     method: 'GET',
   })

@@ -63,7 +63,7 @@ class OrdersService {
   createOrder = async (ownerId, kinds, details, pickup, imageUrl) => {
     const transaction = await sequelize.transaction();
     try {
-      const order = await this.ordersRepository.getOrderStatusZeroToThree(ownerId);
+      const order = await this.ordersRepository.getOrdersDoing(ownerId);
       if (order.length > 0) {
         return { code: 401, message: '이미 대기 중이거나 진행 중인 윤활 신청이 있습니다.' };
       }

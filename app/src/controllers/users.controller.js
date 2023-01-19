@@ -55,10 +55,10 @@ class UsersController {
     return res.status(200).json({ message: '로그아웃 되었습니다.' });
   };
 
-  getOrderStatusZeroToThree = async (req, res) => {
+  getOrdersDoing = async (req, res) => {
     const ownerId = res.locals.userInfo ? res.locals.userInfo.id : null;
 
-    const response = await this.usersService.getOrderStatusZeroToThree(ownerId);
+    const response = await this.usersService.getOrdersDoing(ownerId);
     if (response.data) {
       return res.status(response.code).json({ data: response.data });
     } else {
@@ -66,11 +66,11 @@ class UsersController {
     }
   };
 
-  getOrdersStatusEnd = async (req, res) => {
+  getOrdersDone = async (req, res) => {
     const ownerId = res.locals.userInfo ? res.locals.userInfo.id : null;
     const page = parseInt(req.query.p || 1);
 
-    const response = await this.usersService.getOrdersStatusEnd(ownerId, page);
+    const response = await this.usersService.getOrdersDone(ownerId, page);
     if (response.data) {
       return res.status(response.code).json({ data: response.data, pagination: response.pagination });
     } else {

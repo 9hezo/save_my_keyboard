@@ -100,15 +100,15 @@ class UsersService {
     });
   };
 
-  getOrderStatusZeroToThree = async (ownerId) => {
-    const data = await this.ordersRepository.getOrderStatusZeroToThree(ownerId);
+  getOrdersDoing = async (ownerId) => {
+    const data = await this.ordersRepository.getOrdersDoing(ownerId);
     return { code: 200, data: data[0] };
   };
 
-  getOrdersStatusEnd = async (ownerId, page) => {
-    const data = await this.ordersRepository.getOrdersStatusEnd(ownerId, page);
-    const getOrdersStatusEndCountAllReturnValue = await this.ordersRepository.getOrdersStatusEndCountAll(ownerId);
-    const count_all = getOrdersStatusEndCountAllReturnValue[0].count_all;
+  getOrdersDone = async (ownerId, page) => {
+    const data = await this.ordersRepository.getOrdersDone(ownerId, page);
+    const getOrdersDoneCountAllReturnValue = await this.ordersRepository.getOrdersDoneCountAll(ownerId);
+    const count_all = getOrdersDoneCountAllReturnValue[0].count_all;
 
     const paginationManager = new PaginationManager(page, count_all);
 
