@@ -2,6 +2,7 @@ window.onload = () => {
   getOrdersDoing();
   getOrdersDone();
 };
+
 const getOrdersDoing = () => {
   document.querySelector('.loading').style.display = 'block';
 
@@ -34,7 +35,7 @@ const getOrdersDoing = () => {
             cancelOrder(order.id);
           });
         } else {
-          document.querySelector('#orders_status_zeroToThree').remove();
+          document.querySelector('#orders_status_doing').remove();
         }
       }
     })
@@ -69,7 +70,7 @@ const getOrdersDone = (page) => {
         }
         setPagination(res.pagination); // 페이지네이션
 
-        document.querySelector('#orders_status_end').innerHTML = '';
+        document.querySelector('#orders_status_done').innerHTML = '';
         const status_arr = ['대기 중', '수거 중', '수거 완료', '배송 중', '배송 완료', '취소 완료'];
         orders.forEach((order) => {
           const status = status_arr[order.status];
@@ -98,7 +99,7 @@ const getOrdersDone = (page) => {
               </div>
             </div>
           `;
-          document.querySelector('#orders_status_end').insertAdjacentHTML('beforeend', temp);
+          document.querySelector('#orders_status_done').insertAdjacentHTML('beforeend', temp);
         });
       }
     })

@@ -82,14 +82,18 @@ class UsersService {
     return await bcrypt.compare(beforePassword, afterPassword);
   };
 
-  getOrdersDoing = async (ownerId) => {
-    const data = await this.ordersRepository.getOrdersDoing(ownerId);
-    return { code: 200, data: data[0] };
+  getOrdersDoing = async (userId, admin) => {
+    try {
+      const data = await this.ordersRepository.getOrdersDoing(userId, admin);
+      return { code: 200, data: data[0] };
+    } catch (err) {
+      return { code: 500, message: err.message };
+    }
   };
 
-  getOrdersDone = async (ownerId, page) => {
-    const data = await this.ordersRepository.getOrdersDone(ownerId, page);
-    const getOrdersDoneCountAllReturnValue = await this.ordersRepository.getOrdersDoneCountAll(ownerId);
+  getOrdersDone = async (ownerId, admin, page) => {
+    const data = await this.ordersRepository.getOrdersDone(ownerId, admin, page);
+    const getOrdersDoneCountAllReturnValue = await this.ordersRepository.getOrdersDoneCountAll(ownerId, admin);
     const count_all = getOrdersDoneCountAllReturnValue[0].count_all;
 
     const paginationManager = new PaginationManager(page, count_all);
