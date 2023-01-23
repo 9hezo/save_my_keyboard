@@ -21,8 +21,10 @@
   <% } else if (locals.components === 'mypage') { %>
   <%- include('users/mypage') %>
   <!-- orders -->
-  <% } else if (locals.components === 'orderRequest') { %>
+  <% } else if (locals.components === 'orders/request') { %>
   <%- include('orders/request') %>
+  <% } else if (locals.components === 'orders/list') { %>
+  <%- include('orders/list') %>
   <!-- main -->
   <% } else { %>
   <%- include('components/main') %>

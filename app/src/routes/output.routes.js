@@ -15,8 +15,7 @@ router.get('/login', authMiddleware, usersOutputController.login);
 router.get('/mypage', authMiddleware, usersOutputController.mypage);
 
 router.get('/orders/request', authMiddleware, ordersOutputController.request);
-// 사장님 윤활 신청 목록 페이지
-router.get('/orders/lists', authMiddleware, ordersOutputController.getlists);
+router.get('/orders/list', authMiddleware, ordersOutputController.list);
 
 router.get('/', authMiddleware, (req, res) => {
   res.render('index', {
