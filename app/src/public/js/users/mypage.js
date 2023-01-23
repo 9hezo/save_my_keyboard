@@ -172,4 +172,4 @@ const cancelOrder = (orderId) => {
     .catch((err) => {
       console.log('err: ', err);
     });
-}
+};

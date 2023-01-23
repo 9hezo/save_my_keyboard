@@ -75,29 +75,11 @@ class UsersService {
 
   encryptPassword = async (password) => {
     const saltRounds = parseInt(process.env.BCRYPT_SALT);
-    return new Promise((resolve, reject) => {
-      bcrypt.hash(password, saltRounds, (err, hash) => {
-        if (err) {
-          console.log(err);
-          reject(err);
-        } else {
-          resolve(hash);
-        }
-      });
-    });
+    return await bcrypt.hash(password, saltRounds);
   };
 
   checkPassword = async (beforePassword, afterPassword) => {
-    return new Promise((resolve, reject) => {
-      bcrypt.compare(beforePassword, afterPassword, (err, result) => {
-        if (err) {
-          console.log(err);
-          reject(err);
-        } else {
-          resolve(result);
-        }
-      });
-    });
+    return await bcrypt.compare(beforePassword, afterPassword);
   };
 
   getOrdersDoing = async (ownerId) => {
