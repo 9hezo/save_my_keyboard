@@ -20,11 +20,6 @@ router.post(
 
 router.patch('/:orderId', authMiddleware, ordersController.updateStatus);
 
-// 사장님 마이페이지
-router.get('/mypage2', authMiddleware, ordersController.getorderlists);
-
 router.put('/mypage2/:ownerId', authMiddleware, ordersController.statusupdate);
-
-router.get('/aa', authMiddleware, ordersController.orderlist);
 
 module.exports = router;

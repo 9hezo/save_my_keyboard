@@ -56,9 +56,12 @@ class UsersController {
   };
 
   getOrdersDoing = async (req, res) => {
-    const ownerId = res.locals.userInfo ? res.locals.userInfo.id : null;
+    if (!res.locals.userInfo) {
+      return res.status(403).json({ message: '권한이 없습니다.' });
+    }
+    const { id, admin } = res.locals.userInfo;
 
-    const response = await this.usersService.getOrdersDoing(ownerId);
+    const response = await this.usersService.getOrdersDoing(id, admin);
     if (response.data) {
       return res.status(response.code).json({ data: response.data });
     } else {
@@ -67,10 +70,13 @@ class UsersController {
   };
 
   getOrdersDone = async (req, res) => {
-    const ownerId = res.locals.userInfo ? res.locals.userInfo.id : null;
+    if (!res.locals.userInfo) {
+      return res.status(403).json({ message: '권한이 없습니다.' });
+    }
+    const { id, admin } = res.locals.userInfo;
     const page = parseInt(req.query.p || 1);
 
-    const response = await this.usersService.getOrdersDone(ownerId, page);
+    const response = await this.usersService.getOrdersDone(id, admin, page);
     if (response.data) {
       return res.status(response.code).json({ data: response.data, pagination: response.pagination });
     } else {

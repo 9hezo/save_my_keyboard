@@ -10,10 +10,6 @@ class OrdersRepository {
     this.usersModel = usersModel;
   }
 
-  findAllLists = async () => {
-    return await this.ordersModel.findAll();
-  };
-
   updateStatusById = async (ownerId) => {
     const keyboardbyid = await this.ordersModel.findOne({ where: { ownerId: ownerId } });
     return keyboardbyid;
@@ -22,10 +18,6 @@ class OrdersRepository {
   statusUpdate = async (changeStatus) => {
     const statusNow = await changeStatus.save();
     return statusNow;
-  };
-
-  findOrderById = async (ownerId) => {
-    return await this.ordersModel.findAll({ where: { ownerId: ownerId } });
   };
 
   createOrder = async (transaction, { ownerId, kinds, details, pickup, imageUrl }) => {
@@ -91,12 +83,12 @@ class OrdersRepository {
     await orderInfo.save({ transaction });
   };
 
-  getOrdersDoing = async (ownerId) => {
+  getOrdersDoing = async (ownerId, admin) => {
     const query = `SELECT 
                     * FROM Orders 
                   WHERE status != 5 
                     AND status != 4 
-                    AND ownerId = ?
+                    AND ${admin ? 'workerId' : 'ownerId'} = ?
                   LIMIT 1
                   ;`;
     return await sequelize.query(query, {
@@ -105,14 +97,13 @@ class OrdersRepository {
     });
   };
 
-  getOrdersDone = async (ownerId, page) => {
+  getOrdersDone = async (ownerId, admin, page) => {
     const PAGE_LIMIT = parseInt(process.env.PAGE_LIMIT);
 
     const query = `SELECT 
                     * FROM Orders 
-                  WHERE (status = 5 
-                    OR status = 4)
-                    AND ownerId = ?
+                  WHERE (${!admin ? 'status = 5 OR ' : ''}status = 4)
+                    AND ${admin ? 'workerId' : 'ownerId'} = ?
                   ORDER BY id DESC
                   LIMIT ?, ?
                   ;`;
@@ -122,44 +113,17 @@ class OrdersRepository {
     });
   };
 
-  getOrdersDoneCountAll = async (ownerId) => {
+  getOrdersDoneCountAll = async (ownerId, admin) => {
     const query = `SELECT 
                     COUNT(*) AS count_all 
                   FROM Orders 
-                  WHERE (status = 5 
-                    OR status = 4)
-                    AND ownerId = ?
+                  WHERE (${!admin ? 'status = 5 OR ' : ''}status = 4)
+                    AND ${admin ? 'workerId' : 'ownerId'} = ?
                   ;`;
     return await sequelize.query(query, {
       type: QueryTypes.SELECT,
       replacements: [ownerId],
     });
-  };
-
-  orderlist = async (workerId) => {
-    const data = await this.ordersModel.findAll({ where: { workerId: workerId } });
-    return data;
-  };
-
-  // updateStatus2 = async (id, status_before, status_after) => {
-  //   return await this.ordersModel.update({ status: status_after }, { where: { id, status: status_before } });
-  // };
-
-  statusInduct = async (ownerId, status) => {
-    try {
-      await this.ordersModel.increment({ status }, { where: { ownerId, workerId } });
-      return true;
-    } catch (err) {
-      return false;
-    }
-  };
-
-  findOrderLists = async (id) => {
-    const lists = await Order.findOne({
-      where: { id, status: 0 },
-      attributes: ['imageUrl', 'status'],
-    });
-    return lists;
   };
 }
 

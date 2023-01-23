@@ -14,12 +14,8 @@
       <% if (!locals.userInfo) { %>
       <button onclick="location.href='/login'" type="button" class="btn btn-outline-dark">로그인</button>
       <button onclick="location.href='/register'" type="button" class="btn btn-outline-dark">회원가입</button>
-      <% } else {%> 
-        <% if (locals.userInfo.admin) { %>
-        <button onclick="location.href='/admin'" type="button" class="btn btn-outline-dark">마이페이지</button>
-        <% } else {%>
-        <button onclick="location.href='/mypage_user'" type="button" class="btn btn-outline-dark">마이페이지</button>
-        <% } %>
+      <% } else { %>
+      <button onclick="location.href='/mypage'" type="button" class="btn btn-outline-dark">마이페이지</button>
       <button onclick="logout()" type="button" class="btn btn-outline-dark">로그아웃</button>
       <% } %>
       <button onclick="location.href='/reviews'" type="button" class="btn btn-outline-dark">리뷰</button>
