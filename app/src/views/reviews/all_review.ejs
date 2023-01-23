@@ -1,8 +1,5 @@
-<script
-  src="https://code.jquery.com/jquery-3.5.1.js"
-  integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-  crossorigin="anonymous"
-></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
 <div class="container">
   <div class="d-grid gap-2 mb-3">
     <button onclick="location.href='reviews/write'" class="btn btn-primary" type="button">리뷰 작성</button>
@@ -21,13 +18,8 @@
               <h5 class="card-title">작성자 <%- JSON.stringify(data[i].orderId) %></h5>
               <p class="card-text"><%- JSON.stringify(data[i].content) %></p>
               <% if (locals.userInfo.id == data[i].orderId ) { %>
-              
-              <button
-                onclick="location.href='/reviews'"
-                class="btn btn-primary delete"
-                type="button"
-                data-id="<%= data[i].orderId %>"
-              >
+
+              <button onclick="location.href='/reviews'" class="btn btn-primary delete" type="button" data-id="<%= data[i].orderId %>">
                 삭제
               </button>
               <% } %>
@@ -46,7 +38,9 @@
     $.ajax({
       method: 'DELETE',
       url: 'reviews/delete',
-      data: { orderId: deletebutton },
+      data: {
+        orderId: deletebutton
+      },
     }).done(function (result) {});
   });
 
@@ -56,7 +50,9 @@
     $.ajax({
       method: 'PATCH',
       url: 'reviews/update',
-      data: { orderId: updatebutton },
+      data: {
+        orderId: updatebutton
+      },
     }).done(function (result) {});
   });
 </script>

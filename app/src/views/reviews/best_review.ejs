@@ -1,66 +1,51 @@
-<div class="container">
-  <div class="d-grid gap-2 mb-3">
-    <% if (locals.userInfo) { %>
-      <div class="d-grid gap-2 mb-3">
-        <% if (locals.userInfo.admin) { %>
-        <button class="btn btn-primary" onclick="location.href='/orders/lists'" type="button">키보드 윤활 신청 목록 보기</button>
-        <% } else { %>
-        <button class="btn btn-primary" onclick="location.href='/orders/request'" type="button">키보드 윤활 신청하러 가기</button>
-        <% } %>
-      </div>
-      <% } %>
+<div>
+  <div class="d-grid gap-2">
+    <button class="btn btn-dark" type="button">베스트 리뷰</button>
   </div>
 
-  <div >
-    <div class="d-grid gap-2">
-      <button class="btn btn-dark" type="button">베스트 리뷰</button>
+  <ul style="padding-left: 0;">
+
+    <div class="card border-secondary border-2 mb-1" style="cursor: pointer;">
+      <div class="d-flex">
+        <div class="p-2 flex-shrink-1" >
+          <img class="img-fluid rounded-start preview_image" src="https://placeimg.com/100/100/any">
+        </div>
+        <div class="p-2 w-100">
+          <div class="card-body">
+            <h5 class="card-title">제목</h5>
+            <p class="card-text">내용</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card border-secondary border-2 mb-1" style="cursor: pointer;">
+      <div class="d-flex">
+        <div class="p-2 flex-shrink-1" >
+          <img class="img-fluid rounded-start preview_image" src="https://placeimg.com/100/100/any">
+        </div>
+        <div class="p-2 w-100">
+          <div class="card-body">
+            <h5 class="card-title">제목</h5>
+            <p class="card-text">내용</p>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <ul style="padding-left: 0;">
-
-      <div class="card border-secondary border-2 mb-1" style="cursor: pointer;">
-        <div class="d-flex">
-          <div class="p-2 flex-shrink-1" >
-            <img class="img-fluid rounded-start preview_image" src="https://placeimg.com/100/100/any">
-          </div>
-          <div class="p-2 w-100">
-            <div class="card-body">
-              <h5 class="card-title">제목</h5>
-              <p class="card-text">내용</p>
-            </div>
+    <div class="card border-secondary border-2 mb-1" style="cursor: pointer;">
+      <div class="d-flex">
+        <div class="p-2 flex-shrink-1" >
+          <img class="img-fluid rounded-start preview_image" src="https://placeimg.com/100/100/any">
+        </div>
+        <div class="p-2 w-100">
+          <div class="card-body">
+            <h5 class="card-title">제목</h5>
+            <p class="card-text">내용</p>
           </div>
         </div>
       </div>
-      
-      <div class="card border-secondary border-2 mb-1" style="cursor: pointer;">
-        <div class="d-flex">
-          <div class="p-2 flex-shrink-1" >
-            <img class="img-fluid rounded-start preview_image" src="https://placeimg.com/100/100/any">
-          </div>
-          <div class="p-2 w-100">
-            <div class="card-body">
-              <h5 class="card-title">제목</h5>
-              <p class="card-text">내용</p>
-            </div>
-          </div>
-        </div>
-      </div>
+    </div>
 
-      <div class="card border-secondary border-2 mb-1" style="cursor: pointer;">
-        <div class="d-flex">
-          <div class="p-2 flex-shrink-1" >
-            <img class="img-fluid rounded-start preview_image" src="https://placeimg.com/100/100/any">
-          </div>
-          <div class="p-2 w-100">
-            <div class="card-body">
-              <h5 class="card-title">제목</h5>
-              <p class="card-text">내용</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </ul>
-  </div>
-  
+  </ul>
 </div>
