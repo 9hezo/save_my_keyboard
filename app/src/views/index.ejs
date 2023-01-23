@@ -21,10 +21,8 @@
     <%- include('users/register') %> 
   <% } else if (locals.components === 'login') { %> 
     <%- include('users/login') %> 
-  <% } else if (locals.components === 'mypage_user') { %> 
-    <%- include('users/mypage_user') %>
-  <% } else if (locals.components === 'admin') { %> 
-    <%- include('users/admin') %>
+  <% } else if (locals.components === 'mypage') { %> 
+    <%- include('users/mypage') %>
   <!-- orders -->
   <% } else if (locals.components === 'orderRequest') { %> 
     <%- include('orders/request') %>

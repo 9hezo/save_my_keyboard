@@ -31,9 +31,13 @@ const getOrdersDoing = () => {
           const status_arr = ['대기 중', '수거 중', '수거 완료', '배송 중', '배송 완료', '취소 완료'];
           document.querySelector('#order_status').innerHTML = status_arr[order.status];
 
-          document.querySelector('#order_cancel').addEventListener('click', () => {
-            cancelOrder(order.id);
-          });
+          if (order.status === 0) {
+            const order_cancel = document.querySelector('#order_cancel');
+            order_cancel.style.display = 'block';
+            order_cancel.addEventListener('click', () => {
+              cancelOrder(order.id);
+            });
+          }
         } else {
           document.querySelector('#orders_status_doing').remove();
         }
@@ -84,21 +88,26 @@ const getOrdersDone = (page) => {
             <div class="card border-secondary border-2 mb-1">
               <div class="row">
                 <div class="ps-4 pt-2 col-2">
-                  <img id="order_img" class="img-fluid rounded-start" src="${imageUrl}" style="width: 100px;">
+                  <img class="img-fluid rounded-start" src="${imageUrl}" style="width: 100px;">
                 </div>
                 <div class="p-2 col-8">
                   <div class="card-body">
-                    <h5 id="order_kinds" class="card-title">${order.kinds}</h5>
-                    <p id="order_details" class="card-text">${order.details}</p>
+                    <h5 class="card-title">${order.kinds}</h5>
+                    <p class="card-text">${order.details}</p>
                   </div>
                 </div>
                 <div class="p-1 col-2">
-                  <button id="order_status" class="btn btn-success mb-2" style="width: 100px;">${status}</button>
-                  <button onclick="location.href='/reviews/write'" id="" class="btn btn-outline-primary" style="width: 100px;">리뷰남기기</button>
+                  <button class="btn btn-success mb-2" style="width: 100px;">${status}</button>
+                  ${
+                    !userInfo.admin & (order.status === 4)
+                      ? `<button onclick="writeReview(${order.id})" class="btn btn-outline-primary" style="width: 100px;">리뷰남기기</button>`
+                      : ''
+                  }
                 </div>
               </div>
             </div>
           `;
+
           document.querySelector('#orders_status_done').insertAdjacentHTML('beforeend', temp);
         });
       }
@@ -110,6 +119,11 @@ const getOrdersDone = (page) => {
       document.querySelector('.loading').style.display = 'none';
     });
 };
+
+function writeReview(orderId) {
+  alert(`준비중입니다.`);
+  console.log(`준비중입니다. orderId=${orderId}`);
+}
 
 const setPagination = (obj) => {
   let page = parseInt(obj.page);
@@ -167,7 +181,7 @@ const cancelOrder = (orderId) => {
       alert(res.message);
 
       if (code === 200) {
-        location.href = '/mypage_user';
+        location.href = '/mypage';
       }
     })
     .catch((err) => {

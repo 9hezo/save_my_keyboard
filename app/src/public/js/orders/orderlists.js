@@ -7,7 +7,7 @@ function statusChange(ownerId) {
     data: {},
     async: false,
     success: function (response) {
-      location.href = '/users/admin';
+      location.href = '/users/mypage';
     },
     error: function (error) {
       customAlert(error.responseJSON.errorMessage);

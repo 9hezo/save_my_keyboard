@@ -30,7 +30,7 @@ class OrdersController {
     const { ownerId } = req.params;
 
     const changestatus = await this.ordersService.alterStatus(ownerId, workerId);
-    res.render('users/admin', { data: changestatus });
+    res.render('users/mypage', { data: changestatus });
   };
 }
 

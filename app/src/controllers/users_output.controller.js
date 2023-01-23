@@ -15,16 +15,9 @@ class UsersOutputController {
     });
   };
 
-  mypage_user = (req, res) => {
+  mypage = (req, res) => {
     res.render('index', {
-      components: 'mypage_user',
-      userInfo: res.locals.userInfo ? res.locals.userInfo : null,
-    });
-  };
-
-  admin = (req, res) => {
-    res.render('index', {
-      components: 'admin',
+      components: 'mypage',
       userInfo: res.locals.userInfo ? res.locals.userInfo : null,
     });
   };

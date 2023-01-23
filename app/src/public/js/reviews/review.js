@@ -27,7 +27,7 @@ function reviewRequest() {
       res = await res.json();
       alert(res.message);
 
-      location.href = '/users/mypage-user';
+      location.href = '/users/mypage';
     })
     .catch((err) => {
       console.log('err: ', err);
