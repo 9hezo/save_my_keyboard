@@ -15,6 +15,13 @@ class OrdersController {
     res.status(response.code).json({ message: response.message });
   };
 
+  getOrdersWaiting = async (req, res) => {
+    const page = parseInt(req.query.p || 1);
+
+    const response = await this.ordersService.getOrdersWaiting(page);
+    res.status(response.code).json(response.data? { data: response.data } : { message: response.message });
+  }
+
   updateStatus = async (req, res) => {
     const userId = res.locals.userInfo ? res.locals.userInfo.id : null;
 

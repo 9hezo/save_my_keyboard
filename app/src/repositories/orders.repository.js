@@ -11,18 +11,27 @@ class OrdersRepository {
   }
 
   updateStatusById = async (ownerId) => {
-    const keyboardbyid = await this.ordersModel.findOne({ where: { ownerId: ownerId } });
-    return keyboardbyid;
+    return await this.ordersModel.findOne({ where: { ownerId: ownerId } });
   };
 
   statusUpdate = async (changeStatus) => {
-    const statusNow = await changeStatus.save();
-    return statusNow;
+    return await changeStatus.save();
   };
 
   createOrder = async (transaction, { ownerId, kinds, details, pickup, imageUrl }) => {
     await this.ordersModel.create({ ownerId, kinds, details, pickup, imageUrl }, { transaction });
   };
+
+  getOrdersWaiting = async (page) => {
+    const PAGE_LIMIT = parseInt(process.env.PAGE_LIMIT);
+
+    return await this.ordersModel.findAll({
+      where: { status: 0 }, 
+      order: [['id', 'ASC']], 
+      offset: (page - 1) * PAGE_LIMIT,
+      limit: PAGE_LIMIT
+    })
+  }
 
   decreasePoint = async (transaction, id, transferPoint) => {
     const userInfo = await this.usersModel.findOne(
@@ -46,7 +55,6 @@ class OrdersRepository {
   };
 
   increasePoint = async (transaction, id, transferPoint) => {
-    console.log('22');
     const userInfo = await this.usersModel.findOne(
       {
         attributes: ['id', 'point'],
@@ -65,8 +73,7 @@ class OrdersRepository {
   };
 
   updateStatus = async (transaction, { id, status_before, status_after }) => {
-    console.log('11');
-    console.log(id, status_before, status_after);
+    // console.log(id, status_before, status_after);
     const orderInfo = await this.ordersModel.findOne(
       {
         attributes: ['id', 'status'],

@@ -11,6 +11,8 @@ const authMiddleware = require('../middlewares/authMiddleware');
 const OrdersController = require('../controllers/orders.controller');
 const ordersController = new OrdersController();
 
+router.get('/', ordersController.getOrdersWaiting);
+
 router.post(
   '/',
   authMiddleware,
