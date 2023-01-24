@@ -1,5 +1,4 @@
-<!-- <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script> -->
-<script src="/js/orders/orderlists.js" defer></script>
+<script src="/js/orders/list.js" defer></script>
 
 <div class="container">
   <div class="d-grid gap-2">
@@ -15,7 +14,7 @@
     </div>
   
     <!-- 윤활 신청이 있을 시 -->
-    <div class="card border-secondary border-2 mb-1">
+    <!-- <div class="card border-secondary border-2 mb-1">
       <div class="row g-0">
         <div class="col-md-2 p-1">
           <img src="https://placeimg.com/100/100/any" class="img-fluid rounded-start">
@@ -31,81 +30,10 @@
           <button class="btn btn-outline-primary mb-2" style="width: 100px;">접수</button>
         </div>
       </div>
-    </div>
-  
-    <div class="card border-secondary border-2 mb-1">
-      <div class="row g-0">
-        <div class="col-md-2 p-1">
-          <img src="https://placeimg.com/100/100/any" class="img-fluid rounded-start">
-        </div>
-        <div class="col-md-8">
-          <div class="card-body">
-            <h5 class="card-title">키보드 종류</h5>
-            <p class="card-text">세부 요청사항이 들어가겠지</p>
-            <p class="card-text"><small class="text-muted">픽업날짜: <span>2023년 01월 23일 10시 30분</span></small></p>
-          </div>
-        </div>
-        <div class="col-md-2 p-1">
-          <button class="btn btn-outline-primary mb-2" style="width: 100px;">접수</button>
-        </div>
-      </div>
-    </div>
-  
-    <div class="card border-secondary border-2 mb-1">
-      <div class="row g-0">
-        <div class="col-md-2 p-1">
-          <img src="https://placeimg.com/100/100/any" class="img-fluid rounded-start">
-        </div>
-        <div class="col-md-8">
-          <div class="card-body">
-            <h5 class="card-title">키보드 종류</h5>
-            <p class="card-text">세부 요청사항이 들어가겠지</p>
-            <p class="card-text"><small class="text-muted">픽업날짜: <span>2023년 01월 23일 10시 30분</span></small></p>
-          </div>
-        </div>
-        <div class="col-md-2 p-1">
-          <button class="btn btn-outline-primary mb-2" style="width: 100px;">접수</button>
-        </div>
-      </div>
-    </div>
+    </div> -->
 
   </div>
+
+  <div id="scroll-end"></div>
 </div>
 
-
-<!-- <h1 style="margin-bottom: 2rem">윤활 신청 내역</h1>
-<table>
-  <thead>
-    <tr>
-      <td>종류</td>
-      <td>요청사항</td>
-      <td>픽업날짜</td>
-      <td>이미지</td>
-      <td>현황</td>
-    </tr>
-  </thead>
-  <tbody id="orderlists"></tbody>
-</table>
-
-<script type="text/javascript">
-  const data = < % -JSON.stringify(data) % > ;
-
-  for (let i = 0; i < data.length; i++) {
-    let date = new Date(data[i].pickup).toLocaleDateString();
-    const status_str = data[i].status;
-    if (data[i].status === 0) {
-      data[i].status = '수락'
-      let temp_html = `<tr>
-                            <td>${data[i].kinds}</td>
-                            <td>${data[i].details}</td>
-                            <td>${date}</td>
-                            <td><img class="img-thumbnail" src="/uploads/orders/${data[i].imageUrl}" style="width: 100px;" /></td>
-                            <td>
-                              <button onclick="statusChange(${data[i].ownerId})" class="btn btn-outline-success">${data[i].status}</button>
-                            </td>
-                        </tr>`;
-      $('#orderlists').append(temp_html);
-    }
-
-  }
-</script> -->

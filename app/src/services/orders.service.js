@@ -40,6 +40,15 @@ class OrdersService {
     }
   };
 
+  getOrdersWaiting = async (page) => {
+    try {
+      const getOrdersWaitingReturnValue = await this.ordersRepository.getOrdersWaiting(page);
+      return { code: 200, data: getOrdersWaitingReturnValue };
+    } catch (err) {
+      return { code: 500, message: err.message };
+    }
+  }
+
   updateStatus = async (orderId, userId, status_before, status_after) => {
     const transaction = await sequelize.transaction();
     try {
