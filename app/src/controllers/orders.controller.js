@@ -23,22 +23,29 @@ class OrdersController {
   }
 
   updateStatus = async (req, res) => {
-    const userId = res.locals.userInfo ? res.locals.userInfo.id : null;
+    if (!res.locals.userInfo) {
+      return res.status(401).json({ message: '권한이 없습니다.' });
+    }
 
+    const { id } = res.locals.userInfo;
     const { orderId } = req.params;
     const { status_before, status_after } = req.body;
 
-    const response = await this.ordersService.updateStatus(orderId, userId, status_before, status_after);
+    const response = await this.ordersService.updateStatus(orderId, id, status_before, status_after);
     res.status(response.code).json({ message: response.message });
   };
 
-  statusupdate = async (req, res) => {
-    const workerId = res.locals.userInfo.id;
-    const { ownerId } = req.params;
+  takeOrder = async (req, res) => {
+    if (!res.locals.userInfo) {
+      return res.status(401).json({ message: '권한이 없습니다.' });
+    }
 
-    const changestatus = await this.ordersService.alterStatus(ownerId, workerId);
-    res.render('users/mypage', { data: changestatus });
-  };
+    const { id, admin } = res.locals.userInfo;
+    const { orderId } = req.params;
+
+    const response = await this.ordersService.takeOrder(orderId, id, admin);
+    res.status(response.code).json({ message: response.message });
+  }
 }
 
 module.exports = OrdersController;

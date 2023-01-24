@@ -8,16 +8,6 @@ const { sequelize } = require('../sequelize/models/index');
 class OrdersService {
   ordersRepository = new OrdersRepository(Order, User);
 
-  alterStatus = async (ownerId, workerId) => {
-    const changeStatus = await this.ordersRepository.updateStatusById(ownerId);
-
-    changeStatus.status = 1;
-    changeStatus.workerId = workerId;
-
-    const statusNow = await this.ordersRepository.statusUpdate(changeStatus);
-    return statusNow;
-  };
-
   createOrder = async (ownerId, kinds, details, pickup, imageUrl) => {
     const transaction = await sequelize.transaction();
     try {
@@ -52,10 +42,6 @@ class OrdersService {
   updateStatus = async (orderId, userId, status_before, status_after) => {
     const transaction = await sequelize.transaction();
     try {
-      if (!userId) {
-        return { code: 401, message: '수정 권한이 없습니다. (로그인 필요)' };
-      }
-
       await this.ordersRepository.updateStatus(transaction, { id: orderId, status_before, status_after });
 
       if ((status_before == 0 && status_after === 5) || (status_before == 3 && status_after === 4)) {
@@ -71,5 +57,27 @@ class OrdersService {
       return { code: 403, message: err.message };
     }
   };
+
+  takeOrder = async (orderId, userId, isAdmin) => {
+    const transaction = await sequelize.transaction();
+    try {
+      if (!isAdmin) {
+        return { code: 403, message: '권한이 없습니다.' };
+      }
+
+      const getOrdersDoingReturnValue = await this.ordersRepository.getOrdersDoing(userId, isAdmin);
+      if (getOrdersDoingReturnValue.length > 0) {
+        throw new Error('이미 접수하여 진행 중인 윤활 신청이 있습니다.')
+      }
+      await this.ordersRepository.takeOrder(transaction, { orderId, userId });
+
+      await transaction.commit();
+
+      return { code: 200, message: '윤활 신청 접수 완료' };
+    } catch (err) {
+      await transaction.rollback();
+      return { code: 403, message: err.message };
+    }
+  }
 }
 module.exports = OrdersService;
