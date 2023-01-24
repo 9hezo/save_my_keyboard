@@ -23,7 +23,7 @@
 
 <% 
 if (locals.userInfo) {
-  if (locals.userInfo.admin) { 
+  if (locals.userInfo.isAdmin) { 
 %>
 <script>
   const socket = new WebSocket(`ws://${window.location.host}`);

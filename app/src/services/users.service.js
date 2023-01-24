@@ -15,7 +15,7 @@ class UsersService {
   tokensRepository = new TokensRepository(Token);
   ordersRepository = new OrdersRepository(Order);
 
-  createUser = async (email, password, name, phone, address, admin, point) => {
+  createUser = async (email, password, name, phone, address, isAdmin, point) => {
     try {
       const user = await this.findOneUser(email);
       if (user) {
@@ -24,7 +24,7 @@ class UsersService {
 
       password = await this.encryptPassword(password);
 
-      const result = await this.usersRepository.createUser(email, password, name, phone, address, admin, point);
+      const result = await this.usersRepository.createUser(email, password, name, phone, address, isAdmin, point);
       const response =
         result > 0
           ? { code: 201, message: '회원 가입에 성공하였습니다.' }
@@ -82,18 +82,18 @@ class UsersService {
     return await bcrypt.compare(beforePassword, afterPassword);
   };
 
-  getOrdersDoing = async (userId, admin) => {
+  getOrdersDoing = async (userId, isAdmin) => {
     try {
-      const data = await this.ordersRepository.getOrdersDoing(userId, admin);
+      const data = await this.ordersRepository.getOrdersDoing(userId, isAdmin);
       return { code: 200, data: data[0] };
     } catch (err) {
       return { code: 500, message: err.message };
     }
   };
 
-  getOrdersDone = async (ownerId, admin, page) => {
-    const data = await this.ordersRepository.getOrdersDone(ownerId, admin, page);
-    const getOrdersDoneCountAllReturnValue = await this.ordersRepository.getOrdersDoneCountAll(ownerId, admin);
+  getOrdersDone = async (ownerId, isAdmin, page) => {
+    const data = await this.ordersRepository.getOrdersDone(ownerId, isAdmin, page);
+    const getOrdersDoneCountAllReturnValue = await this.ordersRepository.getOrdersDoneCountAll(ownerId, isAdmin);
     const count_all = getOrdersDoneCountAllReturnValue[0].count_all;
 
     const paginationManager = new PaginationManager(page, count_all);

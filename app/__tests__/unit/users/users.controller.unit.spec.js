@@ -79,7 +79,7 @@ describe('users.controller Unit Test', () => {
       name: 'name',
       phone: '01012345678',
       address: 'address',
-      admin: false,
+      isAdmin: false,
     };
     mockRequest.body = createUserBodyParams;
 
@@ -97,8 +97,8 @@ describe('users.controller Unit Test', () => {
       createUserBodyParams.name,
       createUserBodyParams.phone,
       createUserBodyParams.address,
-      createUserBodyParams.admin,
-      createUserBodyParams.admin ? 0 : 1000000
+      createUserBodyParams.isAdmin,
+      createUserBodyParams.isAdmin ? 0 : 1000000
     );
     expect(mockResponse.status).toHaveBeenCalledTimes(1);
     expect(mockResponse.status).toHaveBeenCalledWith(response.code);

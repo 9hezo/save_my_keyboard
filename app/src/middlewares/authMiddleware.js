@@ -47,6 +47,6 @@ module.exports = async (req, res, next) => {
     userId = TokenManager.getAccessTokenPayload(accessToken).userId;
   }
   const userInfo = await usersService.findUserById(userId);
-  res.locals.userInfo = { id: userInfo.id, name: userInfo.name, point: userInfo.point, admin: userInfo.admin };
+  res.locals.userInfo = { id: userInfo.id, name: userInfo.name, point: userInfo.point, isAdmin: userInfo.isAdmin };
   next();
 };

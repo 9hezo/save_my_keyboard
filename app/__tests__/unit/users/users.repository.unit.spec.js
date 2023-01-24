@@ -24,7 +24,7 @@ describe('users.repository Unit Test', () => {
       name: 'name',
       phone: 'phone',
       address: 'address',
-      admin: false,
+      isAdmin: false,
       point: 0,
     };
     const result = await usersRepository.createUser(
@@ -33,7 +33,7 @@ describe('users.repository Unit Test', () => {
       params.name,
       params.phone,
       params.address,
-      params.admin,
+      params.isAdmin,
       params.point
     );
 
@@ -45,7 +45,7 @@ describe('users.repository Unit Test', () => {
       name: params.name,
       phone: params.phone,
       address: params.address,
-      admin: params.admin,
+      isAdmin: params.isAdmin,
       point: params.point,
     });
   });

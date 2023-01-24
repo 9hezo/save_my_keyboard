@@ -23,7 +23,7 @@ const params = {
   phone: '01012345678',
   address: 'address',
   point: 0,
-  admin: false,
+  isAdmin: false,
 };
 
 describe('users.service Unit Test', () => {
@@ -66,7 +66,7 @@ describe('users.service Unit Test', () => {
       params.name,
       params.phone,
       params.address,
-      params.admin,
+      params.isAdmin,
       params.point
     );
 
@@ -94,7 +94,7 @@ describe('users.service Unit Test', () => {
       params.name,
       params.phone,
       params.address,
-      params.admin,
+      params.isAdmin,
       params.point
     );
 
@@ -106,7 +106,7 @@ describe('users.service Unit Test', () => {
       params.name,
       params.phone,
       params.address,
-      params.admin,
+      params.isAdmin,
       params.point
     );
   });

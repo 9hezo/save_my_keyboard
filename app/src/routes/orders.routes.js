@@ -20,8 +20,8 @@ router.post(
   ordersController.createOrder
 );
 
-router.patch('/:orderId', authMiddleware, ordersController.updateStatus);
+router.put('/:orderId', authMiddleware, ordersController.takeOrder);
 
-router.put('/mypage2/:ownerId', authMiddleware, ordersController.statusupdate);
+router.patch('/:orderId', authMiddleware, ordersController.updateStatus);
 
 module.exports = router;

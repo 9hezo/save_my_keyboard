@@ -1,15 +1,12 @@
-<script src="/js/users/mypage.js" defer></script>
-
-<% if (!locals.userInfo) { %>
 <script>
+<% if (!locals.userInfo) { %>
   alert('로그인이 필요한 기능입니다.');
   location.href = '/'
-</script>
 <% } else { %>
-<script>
   const userInfo = <%- JSON.stringify(locals.userInfo) %> ;
-</script>
 <% } %>
+</script>
+<script src="/js/users/mypage.js" defer></script>
 
 <div class="container">
   <!-- 불러오기 로딩중 -->
@@ -38,8 +35,12 @@
           </div>
         </div>
         <div class="p-1 col-2">
-          <button id="order_status" class="btn btn-success mb-2" style="width: 100px;"></button>
+          <button id="order_status" class="btn btn-outline-success mb-2" style="width: 100px;" disabled></button>
+          <% if (!locals.userInfo?.isAdmin) { %>
           <button id="order_cancel" class="btn btn-outline-danger" style="width: 100px; display: none;">취소하기</button>
+          <% } else { %>
+          <button id="order_update" class="btn btn-outline-primary" style="width: 100px; display: none;">상태진행</button>
+          <% } %>
         </div>
       </div>
     </div>
@@ -49,7 +50,7 @@
   <!-- 신청 히스토리 시작 -->
   <div>
     <div class="d-grid gap-2">
-      <% if (!locals.userInfo?.admin) { %>
+      <% if (!locals.userInfo?.isAdmin) { %>
       <button class="btn btn-dark" type="button">신청 히스토리</button>
       <% } else { %>
       <button class="btn btn-dark" type="button">윤활 히스토리</button>
@@ -64,7 +65,7 @@
           </div>
           <div class="p-2 col-8">
             <div class="card-body">
-              <% if (!locals.userInfo?.admin) { %>
+              <% if (!locals.userInfo?.isAdmin) { %>
               <h5 id="order_kinds" class="card-title">신청한 이력이 없습니다.</h5>
               <% } else { %>
               <h5 id="order_kinds" class="card-title">완료한 이력이 없습니다.</h5>
@@ -73,7 +74,7 @@
             </div>
           </div>
           <div class="p-1 col-2">
-            <% if (!locals.userInfo?.admin) { %>
+            <% if (!locals.userInfo?.isAdmin) { %>
             <button onclick="location.href='/orders/request'" id="" class="btn btn-outline-primary" style="width: 100px;">윤활신청<br>하러가기</button>
             <% } else { %>
             <button onclick="location.href='/orders/list'" id="" class="btn btn-outline-primary" style="width: 100px;">윤활접수<br>하러가기</button>

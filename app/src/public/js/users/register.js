@@ -18,7 +18,7 @@ function checkPassword() {
   return true;
 }
 
-function register(admin) {
+function register(isAdmin) {
   if (!email.value | !password.value | !confirmPassword.value | !name.value | !phone.value | !address.value) {
     return alert('빈 입력값이 있습니다.');
   }
@@ -38,7 +38,7 @@ function register(admin) {
     name: name.value,
     phone: phone.value,
     address: address.value,
-    admin,
+    isAdmin,
   };
 
   fetch('/api/users/register', {

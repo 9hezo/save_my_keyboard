@@ -93,5 +93,20 @@ const dateFormatter = (str) => {
 }
 
 const takeOrder = (orderId) => {
-  alert('준비중 - orderId: ' + orderId);
+  fetch('/api/orders/' + orderId, {
+    method: 'PUT'
+  })
+    .then(async (res) => {
+      const code = res.status;
+
+      res = await res.json();
+      alert(res.message);
+
+      if (code === 200) {
+        location.href = '/mypage';
+      }
+    })
+    .catch((err) => {
+      console.log('err: ', err);
+    });
 }

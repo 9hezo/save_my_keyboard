@@ -7,16 +7,14 @@ class OrdersOutputController {
   request = (req, res) => {
     res.render('index', {
       components: 'orders/request',
-      userInfo: res.locals.userInfo ? res.locals.userInfo : null,
+      userInfo: res.locals.userInfo ?? null,
     });
   };
 
   list = async (req, res) => {
-    // const order = await this.ordersService.findAllLists();
-
     res.render('index', {
       components: 'orders/list',
-      userInfo: res.locals.userInfo ? res.locals.userInfo : null,
+      userInfo: res.locals.userInfo ?? null,
     });
   };
 }

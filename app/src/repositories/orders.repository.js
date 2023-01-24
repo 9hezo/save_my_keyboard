@@ -10,28 +10,9 @@ class OrdersRepository {
     this.usersModel = usersModel;
   }
 
-  updateStatusById = async (ownerId) => {
-    return await this.ordersModel.findOne({ where: { ownerId: ownerId } });
-  };
-
-  statusUpdate = async (changeStatus) => {
-    return await changeStatus.save();
-  };
-
   createOrder = async (transaction, { ownerId, kinds, details, pickup, imageUrl }) => {
     await this.ordersModel.create({ ownerId, kinds, details, pickup, imageUrl }, { transaction });
   };
-
-  getOrdersWaiting = async (page) => {
-    const PAGE_LIMIT = parseInt(process.env.PAGE_LIMIT);
-
-    return await this.ordersModel.findAll({
-      where: { status: 0 }, 
-      order: [['id', 'ASC']], 
-      offset: (page - 1) * PAGE_LIMIT,
-      limit: PAGE_LIMIT
-    })
-  }
 
   decreasePoint = async (transaction, id, transferPoint) => {
     const userInfo = await this.usersModel.findOne(
@@ -64,13 +45,33 @@ class OrdersRepository {
     );
 
     if (!userInfo) {
-      const err = new Error('유저가 존재하지 않습니다.');
-      throw err;
+      throw new Error('유저가 존재하지 않습니다.');
     }
 
     userInfo.point += transferPoint;
     await userInfo.save({ transaction });
   };
+
+  takeOrder = async (transaction, { orderId, userId }) => {
+    const orderInfo = await this.ordersModel.findOne(
+      {
+        where: { 
+          id: orderId, 
+          workerId: null, 
+          status: 0
+        }
+      },
+      { transaction }
+    );
+
+    if (!orderInfo) {
+      throw new Error('윤활 신청 정보가 존재하지 않습니다.');
+    }
+
+    orderInfo.workerId = userId;
+    orderInfo.status += 1;
+    await orderInfo.save({ transaction });
+  }
 
   updateStatus = async (transaction, { id, status_before, status_after }) => {
     // console.log(id, status_before, status_after);
@@ -90,46 +91,57 @@ class OrdersRepository {
     await orderInfo.save({ transaction });
   };
 
-  getOrdersDoing = async (ownerId, admin) => {
+  getOrdersWaiting = async (page) => {
+    const PAGE_LIMIT = parseInt(process.env.PAGE_LIMIT);
+
+    return await this.ordersModel.findAll({
+      where: { status: 0 }, 
+      order: [['id', 'ASC']], 
+      offset: (page - 1) * PAGE_LIMIT,
+      limit: PAGE_LIMIT
+    })
+  }
+
+  getOrdersDoing = async (userId, isAdmin) => {
     const query = `SELECT 
                     * FROM Orders 
                   WHERE status != 5 
                     AND status != 4 
-                    AND ${admin ? 'workerId' : 'ownerId'} = ?
+                    AND ${isAdmin ? 'workerId' : 'ownerId'} = ?
                   LIMIT 1
                   ;`;
     return await sequelize.query(query, {
       type: QueryTypes.SELECT,
-      replacements: [ownerId],
+      replacements: [userId],
     });
   };
 
-  getOrdersDone = async (ownerId, admin, page) => {
+  getOrdersDone = async (userId, isAdmin, page) => {
     const PAGE_LIMIT = parseInt(process.env.PAGE_LIMIT);
 
     const query = `SELECT 
                     * FROM Orders 
-                  WHERE (${!admin ? 'status = 5 OR ' : ''}status = 4)
-                    AND ${admin ? 'workerId' : 'ownerId'} = ?
-                  ORDER BY id DESC
+                  WHERE (${!isAdmin ? 'status = 5 OR ' : ''}status = 4)
+                    AND ${isAdmin ? 'workerId' : 'ownerId'} = ?
+                  ORDER BY updatedAt DESC
                   LIMIT ?, ?
                   ;`;
     return await sequelize.query(query, {
       type: QueryTypes.SELECT,
-      replacements: [ownerId, (page - 1) * PAGE_LIMIT, PAGE_LIMIT],
+      replacements: [userId, (page - 1) * PAGE_LIMIT, PAGE_LIMIT],
     });
   };
 
-  getOrdersDoneCountAll = async (ownerId, admin) => {
+  getOrdersDoneCountAll = async (userId, isAdmin) => {
     const query = `SELECT 
                     COUNT(*) AS count_all 
                   FROM Orders 
-                  WHERE (${!admin ? 'status = 5 OR ' : ''}status = 4)
-                    AND ${admin ? 'workerId' : 'ownerId'} = ?
+                  WHERE (${!isAdmin ? 'status = 5 OR ' : ''}status = 4)
+                    AND ${isAdmin ? 'workerId' : 'ownerId'} = ?
                   ;`;
     return await sequelize.query(query, {
       type: QueryTypes.SELECT,
-      replacements: [ownerId],
+      replacements: [userId],
     });
   };
 }

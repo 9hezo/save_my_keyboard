@@ -19,7 +19,7 @@ router.get('/orders/list', authMiddleware, ordersOutputController.list);
 
 router.get('/', authMiddleware, (req, res) => {
   res.render('index', {
-    userInfo: res.locals.userInfo ? res.locals.userInfo : null,
+    userInfo: res.locals.userInfo ?? null,
   });
 });
 router.get('/*', (req, res) => res.redirect('/'));
