@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       phone: DataTypes.STRING,
       address: DataTypes.TEXT,
       point: DataTypes.INTEGER,
-      admin: DataTypes.BOOLEAN,
+      isAdmin: DataTypes.BOOLEAN,
     },
     {
       sequelize,

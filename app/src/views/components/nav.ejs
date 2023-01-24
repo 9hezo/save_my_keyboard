@@ -6,7 +6,7 @@
     <div class="d-flex">
       <a class="navbar-brand"><%= userInfo.name %></a>
       <a class="navbar-brand">포인트: <%= userInfo.point %></a>
-      <a class="navbar-brand"><span class="badge rounded-pill text-bg-primary"><%= userInfo.admin ? '사장' : '손님' %></span></a>
+      <a class="navbar-brand"><span class="badge rounded-pill text-bg-primary"><%= userInfo.isAdmin ? '사장' : '손님' %></span></a>
     </div>
     <% } %>
 

@@ -40,10 +40,10 @@ class OrdersController {
       return res.status(401).json({ message: '권한이 없습니다.' });
     }
 
-    const { id, admin } = res.locals.userInfo;
+    const { id, isAdmin } = res.locals.userInfo;
     const { orderId } = req.params;
 
-    const response = await this.ordersService.takeOrder(orderId, id, admin);
+    const response = await this.ordersService.takeOrder(orderId, id, isAdmin);
     res.status(response.code).json({ message: response.message });
   }
 }

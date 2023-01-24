@@ -6,12 +6,12 @@ class UsersController {
   usersService = new UsersService();
 
   createUser = async (req, res) => {
-    let { email, password, name, phone, address, admin } = req.body;
-    admin = admin || false;
+    let { email, password, name, phone, address, isAdmin } = req.body;
+    isAdmin = isAdmin || false;
 
     // 손님일 경우 point: 1000000 설정
-    // admin: false일 경우(전달값 없을 경우) 손님, admin: true일 경우 사장님
-    const point = admin ? 0 : 1000000;
+    // isAdmin: false일 경우(전달값 없을 경우) 손님, isAdmin: true일 경우 사장님
+    const point = isAdmin ? 0 : 1000000;
 
     // 값 체크
     // email, password, name, phone, address 빈 값 x
@@ -20,7 +20,7 @@ class UsersController {
     // phone 숫자만인지, 자리수 맞는지
     // address 최대글자 확인
 
-    const registerResponse = await this.usersService.createUser(email, password, name, phone, address, admin, point);
+    const registerResponse = await this.usersService.createUser(email, password, name, phone, address, isAdmin, point);
     if (registerResponse.code !== 201) {
       return res.status(registerResponse.code).json({ message: registerResponse.message });
     }
@@ -59,9 +59,9 @@ class UsersController {
     if (!res.locals.userInfo) {
       return res.status(403).json({ message: '권한이 없습니다.' });
     }
-    const { id, admin } = res.locals.userInfo;
+    const { id, isAdmin } = res.locals.userInfo;
 
-    const response = await this.usersService.getOrdersDoing(id, admin);
+    const response = await this.usersService.getOrdersDoing(id, isAdmin);
     if (response.data) {
       return res.status(response.code).json({ data: response.data });
     } else {
@@ -73,10 +73,10 @@ class UsersController {
     if (!res.locals.userInfo) {
       return res.status(401).json({ message: '권한이 없습니다.' });
     }
-    const { id, admin } = res.locals.userInfo;
+    const { id, isAdmin } = res.locals.userInfo;
     const page = parseInt(req.query.p || 1);
 
-    const response = await this.usersService.getOrdersDone(id, admin, page);
+    const response = await this.usersService.getOrdersDone(id, isAdmin, page);
     if (response.data) {
       return res.status(response.code).json({ data: response.data, pagination: response.pagination });
     } else {

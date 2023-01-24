@@ -102,12 +102,12 @@ class OrdersRepository {
     })
   }
 
-  getOrdersDoing = async (userId, admin) => {
+  getOrdersDoing = async (userId, isAdmin) => {
     const query = `SELECT 
                     * FROM Orders 
                   WHERE status != 5 
                     AND status != 4 
-                    AND ${admin ? 'workerId' : 'ownerId'} = ?
+                    AND ${isAdmin ? 'workerId' : 'ownerId'} = ?
                   LIMIT 1
                   ;`;
     return await sequelize.query(query, {
@@ -116,13 +116,13 @@ class OrdersRepository {
     });
   };
 
-  getOrdersDone = async (userId, admin, page) => {
+  getOrdersDone = async (userId, isAdmin, page) => {
     const PAGE_LIMIT = parseInt(process.env.PAGE_LIMIT);
 
     const query = `SELECT 
                     * FROM Orders 
-                  WHERE (${!admin ? 'status = 5 OR ' : ''}status = 4)
-                    AND ${admin ? 'workerId' : 'ownerId'} = ?
+                  WHERE (${!isAdmin ? 'status = 5 OR ' : ''}status = 4)
+                    AND ${isAdmin ? 'workerId' : 'ownerId'} = ?
                   ORDER BY updatedAt DESC
                   LIMIT ?, ?
                   ;`;
@@ -132,12 +132,12 @@ class OrdersRepository {
     });
   };
 
-  getOrdersDoneCountAll = async (userId, admin) => {
+  getOrdersDoneCountAll = async (userId, isAdmin) => {
     const query = `SELECT 
                     COUNT(*) AS count_all 
                   FROM Orders 
-                  WHERE (${!admin ? 'status = 5 OR ' : ''}status = 4)
-                    AND ${admin ? 'workerId' : 'ownerId'} = ?
+                  WHERE (${!isAdmin ? 'status = 5 OR ' : ''}status = 4)
+                    AND ${isAdmin ? 'workerId' : 'ownerId'} = ?
                   ;`;
     return await sequelize.query(query, {
       type: QueryTypes.SELECT,

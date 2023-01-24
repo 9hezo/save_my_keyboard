@@ -37,7 +37,7 @@ const getOrdersDoing = () => {
             order_cancel.addEventListener('click', () => {
               cancelOrder(order.id);
             });
-          } else if (userInfo.admin & order.status !== 0) {
+          } else if (userInfo.isAdmin & order.status !== 0) {
             const order_update = document.querySelector('#order_update');
             order_update.style.display = 'block';
             order_update.addEventListener('click', () => {
@@ -105,7 +105,7 @@ const getOrdersDone = (page) => {
                 <div class="p-1 col-2">
                   <button class="btn btn-outline-secondary mb-2" style="width: 100px;" disabled>${status}</button>
                   ${
-                    !userInfo.admin & (order.status === 4)
+                    !userInfo.isAdmin & (order.status === 4)
                       ? `<button onclick="writeReview(${order.id})" class="btn btn-outline-primary" style="width: 100px;">리뷰남기기</button>`
                       : ''
                   }

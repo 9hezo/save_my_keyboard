@@ -5,7 +5,7 @@ class UsersRepository {
     this.usersModel = usersModel;
   }
 
-  createUser = async (email, password, name, phone, address, admin, point) => {
+  createUser = async (email, password, name, phone, address, isAdmin, point) => {
     try {
       const result = await this.usersModel.create({
         email,
@@ -13,7 +13,7 @@ class UsersRepository {
         name,
         phone,
         address,
-        admin,
+        isAdmin,
         point,
       });
       return result.id; // 생성된 유저의 id값
