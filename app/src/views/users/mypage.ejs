@@ -1,15 +1,12 @@
-<script src="/js/users/mypage.js" defer></script>
-
-<% if (!locals.userInfo) { %>
 <script>
+<% if (!locals.userInfo) { %>
   alert('로그인이 필요한 기능입니다.');
   location.href = '/'
-</script>
 <% } else { %>
-<script>
   const userInfo = <%- JSON.stringify(locals.userInfo) %> ;
-</script>
 <% } %>
+</script>
+<script src="/js/users/mypage.js" defer></script>
 
 <div class="container">
   <!-- 불러오기 로딩중 -->
