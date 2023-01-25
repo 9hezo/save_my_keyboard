@@ -37,7 +37,7 @@ const getOrdersDoing = () => {
             order_cancel.addEventListener('click', () => {
               cancelOrder(order.id);
             });
-          } else if (userInfo.isAdmin & order.status !== 0) {
+          } else if (userInfo.isAdmin & (order.status !== 0)) {
             const order_update = document.querySelector('#order_update');
             order_update.style.display = 'block';
             order_update.addEventListener('click', () => {
@@ -168,21 +168,21 @@ const setPagination = (obj) => {
 };
 
 const updateOrder = (orderId, status_before) => {
-  updateStatus(orderId, status_before, status_before+1);
-}
+  updateStatus(orderId, status_before, status_before + 1);
+};
 
 const cancelOrder = (orderId) => {
   const status = {
-    waiting: 0, 
-    cancelled: 5
-  }
+    waiting: 0,
+    cancelled: 5,
+  };
   updateStatus(orderId, status.waiting, status.cancelled);
 };
 
 const updateStatus = (orderId, status_before, status_after) => {
   const req = {
-    status_before, 
-    status_after
+    status_before,
+    status_after,
   };
   fetch('/api/orders/' + orderId, {
     method: 'PATCH',

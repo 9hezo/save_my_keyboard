@@ -11,8 +11,8 @@ const infiniteScroll = () => {
   const scrollEnd = document.querySelector('#scroll-end');
 
   const io = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;  
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
       // entry가 interscting 중이 아니라면 함수를 실행하지 않음
       if (isGetOrdersWaitingLoading) return;
       // 현재 page가 불러오는 중임을 나타내는 flag를 통해 불러오는 중이면 함수를 실행하지 않음
@@ -27,9 +27,9 @@ const infiniteScroll = () => {
 
 const getOrdersWaiting = (p) => {
   isGetOrdersWaitingLoading = true;
-  
+
   console.log('p: ' + p);
-  fetch('/api/orders?p='+p, {
+  fetch('/api/orders?p=' + p, {
     method: 'GET',
   })
     .then(async (res) => {
@@ -49,10 +49,7 @@ const getOrdersWaiting = (p) => {
         }
 
         orders.forEach((order) => {
-          const imageUrl = 
-            order.imageUrl 
-              ? '/uploads/orders/' + order.imageUrl 
-              : '/images/default.png';
+          const imageUrl = order.imageUrl ? '/uploads/orders/' + order.imageUrl : '/images/default.png';
 
           const pickup = dateFormatter(order.pickup);
 
@@ -90,11 +87,11 @@ const getOrdersWaiting = (p) => {
 
 const dateFormatter = (str) => {
   return new Date(str).toLocaleString();
-}
+};
 
 const takeOrder = (orderId) => {
   fetch('/api/orders/' + orderId, {
-    method: 'PUT'
+    method: 'PUT',
   })
     .then(async (res) => {
       const code = res.status;
@@ -109,4 +106,4 @@ const takeOrder = (orderId) => {
     .catch((err) => {
       console.log('err: ', err);
     });
-}
+};

@@ -3,8 +3,8 @@ const UsersController = require('../../../src/controllers/users.controller');
 const mockUsersService = {
   createUser: jest.fn(),
   login: jest.fn(),
-  findOneUser: jest.fn(),
-  findUserById: jest.fn(),
+  findOneByEmail: jest.fn(),
+  findOneById: jest.fn(),
 };
 
 const mockRequest = {

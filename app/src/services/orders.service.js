@@ -1,6 +1,6 @@
 'use strict';
 
-const SocketManager = require('../config/SocketManager');
+const SocketManager = require('../utils/SocketManager');
 const OrdersRepository = require('../repositories/orders.repository');
 const { Order, User } = require('../sequelize/models');
 const { sequelize } = require('../sequelize/models/index');
@@ -20,9 +20,9 @@ class OrdersService {
       const transferPoint = parseInt(process.env.ORDER_PRICE);
       await this.ordersRepository.decreasePoint(transaction, ownerId, transferPoint);
 
+      SocketManager.alertNewOrder();
       await transaction.commit();
 
-      SocketManager.alertNewOrder();
       return { code: 201, message: '주문에 성공하였습니다.' };
     } catch (err) {
       await transaction.rollback();
@@ -37,7 +37,7 @@ class OrdersService {
     } catch (err) {
       return { code: 500, message: err.message };
     }
-  }
+  };
 
   updateStatus = async (orderId, userId, status_before, status_after) => {
     const transaction = await sequelize.transaction();
@@ -67,7 +67,7 @@ class OrdersService {
 
       const getOrdersDoingReturnValue = await this.ordersRepository.getOrdersDoing(userId, isAdmin);
       if (getOrdersDoingReturnValue.length > 0) {
-        throw new Error('이미 접수하여 진행 중인 윤활 신청이 있습니다.')
+        throw new Error('이미 접수하여 진행 중인 윤활 신청이 있습니다.');
       }
       await this.ordersRepository.takeOrder(transaction, { orderId, userId });
 
@@ -78,6 +78,6 @@ class OrdersService {
       await transaction.rollback();
       return { code: 403, message: err.message };
     }
-  }
+  };
 }
 module.exports = OrdersService;

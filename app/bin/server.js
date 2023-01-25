@@ -1,7 +1,7 @@
 'use strict';
 
 const app = require('../app.js');
-const SocketManager = require('../src/config/SocketManager');
+const SocketManager = require('../src/utils/SocketManager');
 const socketManager = new SocketManager(app);
 
 const models = require('../src/sequelize/models/index');

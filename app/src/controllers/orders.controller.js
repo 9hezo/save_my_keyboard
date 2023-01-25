@@ -6,21 +6,26 @@ class OrdersController {
   ordersService = new OrdersService();
 
   createOrder = async (req, res) => {
-    const ownerId = res.locals.userInfo ? res.locals.userInfo.id : null;
-
+    if (!res.locals.userInfo) {
+      return res.status(401).json({ message: '권한이 없습니다.' });
+    }
+    const { id } = res.locals.userInfo;
     const { kinds, details, pickup } = req.body;
     const imageUrl = req.files.length > 0 ? req.files[0].filename : null;
 
-    const response = await this.ordersService.createOrder(ownerId, kinds, details, pickup, imageUrl);
+    const response = await this.ordersService.createOrder(id, kinds, details, pickup, imageUrl);
     res.status(response.code).json({ message: response.message });
   };
 
   getOrdersWaiting = async (req, res) => {
+    if (!res.locals.userInfo) {
+      return res.status(401).json({ message: '권한이 없습니다.' });
+    }
     const page = parseInt(req.query.p || 1);
 
     const response = await this.ordersService.getOrdersWaiting(page);
-    res.status(response.code).json(response.data? { data: response.data } : { message: response.message });
-  }
+    res.status(response.code).json(response.data ? { data: response.data } : { message: response.message });
+  };
 
   updateStatus = async (req, res) => {
     if (!res.locals.userInfo) {
@@ -45,7 +50,7 @@ class OrdersController {
 
     const response = await this.ordersService.takeOrder(orderId, id, isAdmin);
     res.status(response.code).json({ message: response.message });
-  }
+  };
 }
 
 module.exports = OrdersController;

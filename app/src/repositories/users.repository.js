@@ -6,37 +6,15 @@ class UsersRepository {
   }
 
   createUser = async (email, password, name, phone, address, isAdmin, point) => {
-    try {
-      const result = await this.usersModel.create({
-        email,
-        password,
-        name,
-        phone,
-        address,
-        isAdmin,
-        point,
-      });
-      return result.id; // 생성된 유저의 id값
-    } catch (err) {
-      console.log(err);
-      return -1;
-    }
+    return await this.usersModel.create({ email, password, name, phone, address, isAdmin, point });
   };
 
-  findOneUser = async (email) => {
-    try {
-      return await this.usersModel.findOne({ where: { email } });
-    } catch (err) {
-      console.log(err);
-    }
+  findOneByEmail = async (email) => {
+    return await this.usersModel.findOne({ where: { email } });
   };
 
-  findUserById = async (id) => {
-    try {
-      return await this.usersModel.findByPk(id);
-    } catch (err) {
-      console.log(err);
-    }
+  findOneById = async (id) => {
+    return await this.usersModel.findByPk(id);
   };
 }
 

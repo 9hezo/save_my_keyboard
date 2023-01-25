@@ -50,22 +50,22 @@ describe('users.repository Unit Test', () => {
     });
   });
 
-  test('users.repository findOneUser Method success', async () => {
+  test('users.repository findOneByEmail Method success', async () => {
     mockUsersModel.findOne = jest.fn(() => {
       return 'test';
     });
-    const result = await usersRepository.findOneUser('test@gmail.com');
+    const result = await usersRepository.findOneByEmail('test@gmail.com');
 
     expect(result).toEqual('test');
     expect(mockUsersModel.findOne).toHaveBeenCalledTimes(1);
     expect(mockUsersModel.findOne).toHaveBeenCalledWith({ where: { email: 'test@gmail.com' } });
   });
 
-  test('users.repository findUserById Method success', async () => {
+  test('users.repository findOneById Method success', async () => {
     mockUsersModel.findByPk = jest.fn(() => {
       return 'test';
     });
-    const result = await usersRepository.findUserById(1);
+    const result = await usersRepository.findOneById(1);
 
     expect(result).toEqual('test');
     expect(mockUsersModel.findByPk).toHaveBeenCalledTimes(1);
