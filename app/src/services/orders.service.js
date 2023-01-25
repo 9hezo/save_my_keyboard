@@ -37,7 +37,7 @@ class OrdersService {
     } catch (err) {
       return { code: 500, message: err.message };
     }
-  }
+  };
 
   updateStatus = async (orderId, userId, status_before, status_after) => {
     const transaction = await sequelize.transaction();
@@ -67,7 +67,7 @@ class OrdersService {
 
       const getOrdersDoingReturnValue = await this.ordersRepository.getOrdersDoing(userId, isAdmin);
       if (getOrdersDoingReturnValue.length > 0) {
-        throw new Error('이미 접수하여 진행 중인 윤활 신청이 있습니다.')
+        throw new Error('이미 접수하여 진행 중인 윤활 신청이 있습니다.');
       }
       await this.ordersRepository.takeOrder(transaction, { orderId, userId });
 
@@ -78,6 +78,6 @@ class OrdersService {
       await transaction.rollback();
       return { code: 403, message: err.message };
     }
-  }
+  };
 }
 module.exports = OrdersService;

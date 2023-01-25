@@ -27,7 +27,7 @@ class UsersService {
 
       await this.usersRepository.createUser(email, password, name, phone, address, isAdmin, point);
 
-      return { code: 201, message: '회원 가입에 성공하였습니다.' }
+      return { code: 201, message: '회원 가입에 성공하였습니다.' };
     } catch (err) {
       console.log(err.message);
       return { code: 500, message: '회원 가입에 실패하였습니다.' };
@@ -50,7 +50,7 @@ class UsersService {
 
       await this.tokensRepository.saveToken(refreshToken, user.id);
 
-      return { code: 200, accessToken, refreshToken, message: '로그인 되었습니다.' }
+      return { code: 200, accessToken, refreshToken, message: '로그인 되었습니다.' };
     } catch (err) {
       console.log(err.message);
       return { code: 500, message: '로그인에 실패하였습니다.' };

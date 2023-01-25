@@ -24,8 +24,8 @@ class OrdersController {
     const page = parseInt(req.query.p || 1);
 
     const response = await this.ordersService.getOrdersWaiting(page);
-    res.status(response.code).json(response.data? { data: response.data } : { message: response.message });
-  }
+    res.status(response.code).json(response.data ? { data: response.data } : { message: response.message });
+  };
 
   updateStatus = async (req, res) => {
     if (!res.locals.userInfo) {
@@ -50,7 +50,7 @@ class OrdersController {
 
     const response = await this.ordersService.takeOrder(orderId, id, isAdmin);
     res.status(response.code).json({ message: response.message });
-  }
+  };
 }
 
 module.exports = OrdersController;

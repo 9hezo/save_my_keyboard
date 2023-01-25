@@ -55,11 +55,11 @@ class OrdersRepository {
   takeOrder = async (transaction, { orderId, userId }) => {
     const orderInfo = await this.ordersModel.findOne(
       {
-        where: { 
-          id: orderId, 
-          workerId: null, 
-          status: 0
-        }
+        where: {
+          id: orderId,
+          workerId: null,
+          status: 0,
+        },
       },
       { transaction }
     );
@@ -71,7 +71,7 @@ class OrdersRepository {
     orderInfo.workerId = userId;
     orderInfo.status += 1;
     await orderInfo.save({ transaction });
-  }
+  };
 
   updateStatus = async (transaction, { id, status_before, status_after }) => {
     const orderInfo = await this.ordersModel.findOne(
@@ -94,12 +94,12 @@ class OrdersRepository {
     const PAGE_LIMIT = parseInt(process.env.PAGE_LIMIT);
 
     return await this.ordersModel.findAll({
-      where: { status: 0 }, 
-      order: [['id', 'ASC']], 
+      where: { status: 0 },
+      order: [['id', 'ASC']],
       offset: (page - 1) * PAGE_LIMIT,
-      limit: PAGE_LIMIT
-    })
-  }
+      limit: PAGE_LIMIT,
+    });
+  };
 
   getOrdersDoing = async (userId, isAdmin) => {
     const query = `SELECT 

@@ -14,7 +14,12 @@ const authMiddleware = require('../middlewares/authMiddleware');
 
 router.get('/', authMiddleware, ordersController.getOrdersWaiting);
 
-router.post('/', authMiddleware, uploadManager.multer({ storage: uploadManager.storage }).array('files'), ordersController.createOrder);
+router.post(
+  '/',
+  authMiddleware,
+  uploadManager.multer({ storage: uploadManager.storage }).array('files'),
+  ordersController.createOrder
+);
 
 router.put('/:orderId', authMiddleware, ordersController.takeOrder);
 
