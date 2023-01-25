@@ -1,33 +1,20 @@
 const http = require('http');
-const WebSocket = require('ws');
+const SocketIO = require('socket.io');
 
 class SocketManager {
   constructor(app) {
     this.server = http.createServer(app);
-    this.wss = new WebSocket.Server({ server: this.server });
+    SocketManager.wsServer = SocketIO(this.server);
     this.load();
   }
-  static sockets = [];
+  static wsServer;
 
   load = () => {
-    this.wss.on('connection', (socket) => {
-      SocketManager.sockets.push(socket);
-
-      // console.log('Connected to Client ✅');
-      // socket.on('close', () => {
-      //   console.log('Disconnected to Client ❌');
-      // });
-    });
+    SocketManager.wsServer.on('connection', (socket) => {});
   };
 
   static alertNewOrder = () => {
-    SocketManager.sockets.forEach((aSocket) => {
-      const data = {
-        type: 'newOrder',
-        payload: true,
-      };
-      aSocket.send(JSON.stringify(data));
-    });
+    SocketManager.wsServer.sockets.emit('newOrder', true);
   };
 }
 

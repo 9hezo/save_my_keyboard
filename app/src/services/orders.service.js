@@ -20,9 +20,9 @@ class OrdersService {
       const transferPoint = parseInt(process.env.ORDER_PRICE);
       await this.ordersRepository.decreasePoint(transaction, ownerId, transferPoint);
 
+      SocketManager.alertNewOrder();
       await transaction.commit();
 
-      SocketManager.alertNewOrder();
       return { code: 201, message: '주문에 성공하였습니다.' };
     } catch (err) {
       await transaction.rollback();
