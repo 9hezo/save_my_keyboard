@@ -74,7 +74,6 @@ class OrdersRepository {
   }
 
   updateStatus = async (transaction, { id, status_before, status_after }) => {
-    // console.log(id, status_before, status_after);
     const orderInfo = await this.ordersModel.findOne(
       {
         attributes: ['id', 'status'],

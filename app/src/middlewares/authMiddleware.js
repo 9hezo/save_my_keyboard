@@ -2,7 +2,7 @@
 
 const TokensService = require('../services/tokens.service');
 const UsersService = require('../services/users.service');
-const TokenManager = require('../config/TokenManager');
+const TokenManager = require('../utils/TokenManager');
 
 module.exports = async (req, res, next) => {
   const tokensService = new TokensService();
@@ -46,7 +46,7 @@ module.exports = async (req, res, next) => {
   } else {
     userId = TokenManager.getAccessTokenPayload(accessToken).userId;
   }
-  const userInfo = await usersService.findUserById(userId);
+  const userInfo = await usersService.findOneById(userId);
   res.locals.userInfo = { id: userInfo.id, name: userInfo.name, point: userInfo.point, isAdmin: userInfo.isAdmin };
   next();
 };

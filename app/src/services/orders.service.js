@@ -1,6 +1,6 @@
 'use strict';
 
-const SocketManager = require('../config/SocketManager');
+const SocketManager = require('../utils/SocketManager');
 const OrdersRepository = require('../repositories/orders.repository');
 const { Order, User } = require('../sequelize/models');
 const { sequelize } = require('../sequelize/models/index');

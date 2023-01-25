@@ -1,10 +1,10 @@
 const UsersService = require('../../../src/services/users.service');
-const TokenManager = require('../../../src/config/TokenManager');
+const TokenManager = require('../../../src/utils/TokenManager');
 
 const mockUsersRepository = {
   createUser: jest.fn(),
-  findOneUser: jest.fn(),
-  findUserById: jest.fn(),
+  findOneByEmail: jest.fn(),
+  findOneById: jest.fn(),
 };
 
 const mockTokensRepository = {
@@ -31,34 +31,34 @@ describe('users.service Unit Test', () => {
     jest.resetAllMocks();
   });
 
-  test('users.service findOneUser Method success', async () => {
-    const findOneUserReturnValue = 'test';
-    mockUsersRepository.findOneUser = jest.fn(() => {
-      return findOneUserReturnValue;
+  test('users.service findOneByEmail Method success', async () => {
+    const findOneByEmailReturnValue = 'test';
+    mockUsersRepository.findOneByEmail = jest.fn(() => {
+      return findOneByEmailReturnValue;
     });
-    const result = await usersService.findOneUser(params.email);
+    const result = await usersService.findOneByEmail(params.email);
 
-    expect(result).toEqual(findOneUserReturnValue);
-    expect(mockUsersRepository.findOneUser).toHaveBeenCalledTimes(1);
-    expect(mockUsersRepository.findOneUser).toHaveBeenCalledWith(params.email);
+    expect(result).toEqual(findOneByEmailReturnValue);
+    expect(mockUsersRepository.findOneByEmail).toHaveBeenCalledTimes(1);
+    expect(mockUsersRepository.findOneByEmail).toHaveBeenCalledWith(params.email);
   });
 
-  test('users.service findUserById Method success', async () => {
-    const findUserByIdReturnValue = 'test';
-    mockUsersRepository.findUserById = jest.fn(() => {
-      return findUserByIdReturnValue;
+  test('users.service findOneById Method success', async () => {
+    const findOneByIdReturnValue = 'test';
+    mockUsersRepository.findOneById = jest.fn(() => {
+      return findOneByIdReturnValue;
     });
-    const result = await usersService.findUserById(params.id);
+    const result = await usersService.findOneById(params.id);
 
-    expect(result).toEqual(findUserByIdReturnValue);
-    expect(mockUsersRepository.findUserById).toHaveBeenCalledTimes(1);
-    expect(mockUsersRepository.findUserById).toHaveBeenCalledWith(params.id);
+    expect(result).toEqual(findOneByIdReturnValue);
+    expect(mockUsersRepository.findOneById).toHaveBeenCalledTimes(1);
+    expect(mockUsersRepository.findOneById).toHaveBeenCalledWith(params.id);
   });
 
   test('users.service createUser Method Fail - already registed', async () => {
-    const findOneUserReturnValue = 'test';
-    mockUsersRepository.findOneUser = jest.fn(() => {
-      return findOneUserReturnValue;
+    const findOneByEmailReturnValue = 'test';
+    mockUsersRepository.findOneByEmail = jest.fn(() => {
+      return findOneByEmailReturnValue;
     });
     const response = await usersService.createUser(
       params.email,
@@ -74,9 +74,9 @@ describe('users.service Unit Test', () => {
   });
 
   test('users.service createUser Method Success', async () => {
-    const findOneUserReturnValue = null;
-    mockUsersRepository.findOneUser = jest.fn(() => {
-      return findOneUserReturnValue;
+    const findOneByEmailReturnValue = null;
+    mockUsersRepository.findOneByEmail = jest.fn(() => {
+      return findOneByEmailReturnValue;
     });
 
     const encryptPasswordReturnValue = 'encryptedPassword';
@@ -112,9 +112,9 @@ describe('users.service Unit Test', () => {
   });
 
   test(`users.service login Method fail - user not found`, async () => {
-    const findOneUserReturnValue = null;
-    mockUsersRepository.findOneUser = jest.fn(() => {
-      return findOneUserReturnValue;
+    const findOneByEmailReturnValue = null;
+    mockUsersRepository.findOneByEmail = jest.fn(() => {
+      return findOneByEmailReturnValue;
     });
     const response = await usersService.login(params.email, params.password);
 
@@ -122,9 +122,9 @@ describe('users.service Unit Test', () => {
   });
 
   test(`users.service login Method fail - Incorrect password`, async () => {
-    const findOneUserReturnValue = 'test';
-    mockUsersRepository.findOneUser = jest.fn(() => {
-      return findOneUserReturnValue;
+    const findOneByEmailReturnValue = 'test';
+    mockUsersRepository.findOneByEmail = jest.fn(() => {
+      return findOneByEmailReturnValue;
     });
     const checkPasswordReturnValue = false;
     usersService.checkPassword = jest.fn(() => {
@@ -138,7 +138,7 @@ describe('users.service Unit Test', () => {
 
   test(`users.service login Method success`, async () => {
     const user = { id: 1 };
-    mockUsersRepository.findOneUser = jest.fn(() => {
+    mockUsersRepository.findOneByEmail = jest.fn(() => {
       return user;
     });
     const checkPasswordReturnValue = true;
