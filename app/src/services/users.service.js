@@ -12,17 +12,17 @@ const redisClient = require('../utils/redis.util');
 class UsersService {
   usersRepository = new UsersRepository(User);
 
-  createUser = async (email, password, name, phone, address, isAdmin) => {
+  createUser = async (userInfo) => {
     try {
-      const user = await this.findOneByEmail(email);
+      const user = await this.findOneByEmail(userInfo.email);
       if (user) {
         return { code: 401, message: '이미 가입된 이메일입니다.' };
       }
 
-      const point = isAdmin ? 0 : 1000000;
-      password = await this.encryptPassword(password);
+      userInfo.point = userInfo.isAdmin ? 0 : 1000000;
+      userInfo.password = await this.encryptPassword(userInfo.password);
 
-      await this.usersRepository.createUser(email, password, name, phone, address, isAdmin, point);
+      await this.usersRepository.createUser(userInfo);
 
       return { code: 201, message: '회원 가입에 성공하였습니다.' };
     } catch (err) {

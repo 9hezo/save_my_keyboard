@@ -9,8 +9,14 @@ class OrdersRepository {
     this.ordersModel = ordersModel;
   }
 
-  createOrder = async (transaction, { ownerId, kinds, details, pickup, imageUrl }) => {
-    await this.ordersModel.create({ ownerId, kinds, details, pickup, imageUrl }, { transaction });
+  createOrder = async (transaction, orderInfo) => {
+    await this.ordersModel.create({ 
+      ownerId: orderInfo.ownerId, 
+      kinds: orderInfo.kinds, 
+      details: orderInfo.details, 
+      pickup: orderInfo.pickup, 
+      imageUrl: orderInfo.imageUrl,  
+    }, { transaction });
   };
 
   getOrdersWaiting = async (page) => {
@@ -24,7 +30,7 @@ class OrdersRepository {
     });
   };
 
-  getOrdersDoing = async (userId, isAdmin) => {
+  getOrdersDoing = async (userId, isAdmin=false) => {
     const query = `SELECT 
                     * FROM Orders 
                   WHERE status != 5 

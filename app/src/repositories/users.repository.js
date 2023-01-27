@@ -5,8 +5,16 @@ class UsersRepository {
     this.usersModel = usersModel;
   }
 
-  createUser = async (email, password, name, phone, address, isAdmin, point) => {
-    return await this.usersModel.create({ email, password, name, phone, address, isAdmin, point });
+  createUser = async (userInfo) => {
+    return await this.usersModel.create({ 
+      email: userInfo.email, 
+      password: userInfo.password, 
+      name: userInfo.name, 
+      phone: userInfo.phone, 
+      address: userInfo.address, 
+      isAdmin: userInfo.isAdmin, 
+      point: userInfo.point, 
+    });
   };
 
   findOneByEmail = async (email) => {

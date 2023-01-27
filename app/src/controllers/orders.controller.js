@@ -12,8 +12,15 @@ class OrdersController {
     const { id } = res.locals.userInfo;
     const { kinds, details, pickup } = req.body;
     const imageUrl = req.files.length > 0 ? req.files[0].filename : null;
+    const orderInfo = {
+      ownerId: id, 
+      kinds, 
+      details, 
+      pickup, 
+      imageUrl
+    }
 
-    const response = await this.ordersService.createOrder(id, kinds, details, pickup, imageUrl);
+    const response = await this.ordersService.createOrder(orderInfo);
     res.status(response.code).json({ message: response.message });
   };
 
@@ -61,11 +68,11 @@ class OrdersController {
       return res.status(401).json({ message: '권한이 없습니다.' });
     }
 
-    const { id } = res.locals.userInfo;
+    const { id: userId } = res.locals.userInfo;
     const { orderId } = req.params;
     const { status_before, status_after } = req.body;
 
-    const response = await this.ordersService.updateStatus(orderId, id, status_before, status_after);
+    const response = await this.ordersService.updateStatus(orderId, userId, status_before, status_after);
     res.status(response.code).json({ message: response.message });
   };
 
@@ -74,10 +81,10 @@ class OrdersController {
       return res.status(401).json({ message: '권한이 없습니다.' });
     }
 
-    const { id, isAdmin } = res.locals.userInfo;
+    const { id: userId, isAdmin } = res.locals.userInfo;
     const { orderId } = req.params;
 
-    const response = await this.ordersService.takeOrder(orderId, id, isAdmin);
+    const response = await this.ordersService.takeOrder(orderId, userId, isAdmin);
     res.status(response.code).json({ message: response.message });
   };
 }

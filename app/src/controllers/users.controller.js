@@ -8,15 +8,16 @@ class UsersController {
   createUser = async (req, res) => {
     let { email, password, name, phone, address, isAdmin } = req.body;
     isAdmin = isAdmin || false;
+    const userInfo = { email, password, name, phone, address, isAdmin };
 
-    const registerResponse = await this.usersService.createUser(email, password, name, phone, address, isAdmin);
-    if (registerResponse.code !== 201) {
-      return res.status(registerResponse.code).json({ message: registerResponse.message });
+    const createUserResponse = await this.usersService.createUser(userInfo);
+    if (createUserResponse.code !== 201) {
+      return res.status(createUserResponse.code).json({ message: createUserResponse.message });
     }
 
     const loginResponse = await this.usersService.login(email, password);
-    return res.status(registerResponse.code).json({
-      message: registerResponse.message,
+    return res.status(createUserResponse.code).json({
+      message: createUserResponse.message,
       accessToken: loginResponse.accessToken,
       refreshToken: loginResponse.refreshToken,
     });

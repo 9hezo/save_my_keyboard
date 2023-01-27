@@ -12,17 +12,17 @@ class OrdersService {
   ordersRepository = new OrdersRepository(Order);
   usersRepository = new UsersRepository(User);
 
-  createOrder = async (ownerId, kinds, details, pickup, imageUrl) => {
+  createOrder = async (orderInfo) => {
     const transaction = await sequelize.transaction();
     try {
-      const order = await this.ordersRepository.getOrdersDoing(ownerId);
+      const order = await this.ordersRepository.getOrdersDoing(orderInfo.ownerId);
       if (order.length > 0) {
         return { code: 401, message: '이미 대기 중이거나 진행 중인 윤활 신청이 있습니다.' };
       }
 
-      await this.ordersRepository.createOrder(transaction, { ownerId, kinds, details, pickup, imageUrl });
+      await this.ordersRepository.createOrder(transaction, orderInfo);
       const transferPoint = parseInt(process.env.ORDER_PRICE);
-      await this.usersRepository.decreasePoint(transaction, ownerId, transferPoint);
+      await this.usersRepository.decreasePoint(transaction, orderInfo.ownerId, transferPoint);
 
       SocketManager.alertNewOrder();
       await transaction.commit();
