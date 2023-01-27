@@ -5,89 +5,12 @@ const { QueryTypes } = require('sequelize');
 const { sequelize } = require('../sequelize/models/index');
 
 class OrdersRepository {
-  constructor(ordersModel, usersModel) {
+  constructor(ordersModel) {
     this.ordersModel = ordersModel;
-    this.usersModel = usersModel;
   }
 
   createOrder = async (transaction, { ownerId, kinds, details, pickup, imageUrl }) => {
     await this.ordersModel.create({ ownerId, kinds, details, pickup, imageUrl }, { transaction });
-  };
-
-  decreasePoint = async (transaction, id, transferPoint) => {
-    const userInfo = await this.usersModel.findOne(
-      {
-        attributes: ['id', 'point'],
-        where: { id },
-      },
-      { transaction }
-    );
-
-    if (!userInfo) {
-      const err = new Error('유저가 존재하지 않습니다.');
-      throw err;
-    }
-
-    userInfo.point -= transferPoint;
-    if (userInfo.point < 0) {
-      throw new Error('유저의 포인트가 부족합니다.');
-    }
-    await userInfo.save({ transaction });
-  };
-
-  increasePoint = async (transaction, id, transferPoint) => {
-    const userInfo = await this.usersModel.findOne(
-      {
-        attributes: ['id', 'point'],
-        where: { id },
-      },
-      { transaction }
-    );
-
-    if (!userInfo) {
-      throw new Error('유저가 존재하지 않습니다.');
-    }
-
-    userInfo.point += transferPoint;
-    await userInfo.save({ transaction });
-  };
-
-  takeOrder = async (transaction, { orderId, userId }) => {
-    const orderInfo = await this.ordersModel.findOne(
-      {
-        where: {
-          id: orderId,
-          workerId: null,
-          status: 0,
-        },
-      },
-      { transaction }
-    );
-
-    if (!orderInfo) {
-      throw new Error('윤활 신청 정보가 존재하지 않습니다.');
-    }
-
-    orderInfo.workerId = userId;
-    orderInfo.status += 1;
-    await orderInfo.save({ transaction });
-  };
-
-  updateStatus = async (transaction, { id, status_before, status_after }) => {
-    const orderInfo = await this.ordersModel.findOne(
-      {
-        attributes: ['id', 'status'],
-        where: { id, status: status_before },
-      },
-      { transaction }
-    );
-
-    if (!orderInfo) {
-      throw new Error('요청한 상태의 주문이 존재하지 않습니다.');
-    }
-
-    orderInfo.status = status_after;
-    await orderInfo.save({ transaction });
   };
 
   getOrdersWaiting = async (page) => {
@@ -142,6 +65,44 @@ class OrdersRepository {
       type: QueryTypes.SELECT,
       replacements: [userId],
     });
+  };
+
+  updateStatus = async (transaction, { id, status_before, status_after }) => {
+    const orderInfo = await this.ordersModel.findOne(
+      {
+        attributes: ['id', 'status'],
+        where: { id, status: status_before },
+      },
+      { transaction }
+    );
+
+    if (!orderInfo) {
+      throw new Error('요청한 상태의 주문이 존재하지 않습니다.');
+    }
+
+    orderInfo.status = status_after;
+    await orderInfo.save({ transaction });
+  };
+
+  takeOrder = async (transaction, { orderId, userId }) => {
+    const orderInfo = await this.ordersModel.findOne(
+      {
+        where: {
+          id: orderId,
+          workerId: null,
+          status: 0,
+        },
+      },
+      { transaction }
+    );
+
+    if (!orderInfo) {
+      throw new Error('윤활 신청 정보가 존재하지 않습니다.');
+    }
+
+    orderInfo.workerId = userId;
+    orderInfo.status += 1;
+    await orderInfo.save({ transaction });
   };
 }
 

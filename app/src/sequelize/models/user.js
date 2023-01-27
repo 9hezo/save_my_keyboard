@@ -5,7 +5,6 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       this.hasMany(models.Order, { foreignKey: 'ownerId' });
       this.hasMany(models.Order, { foreignKey: 'workerId' });
-      this.hasMany(models.Token, { foreignKey: 'userId' });
     }
   }
   User.init(

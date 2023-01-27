@@ -4,16 +4,13 @@ require('dotenv').config();
 const bcrypt = require('bcrypt');
 
 const UsersRepository = require('../repositories/users.repository');
-const TokensRepository = require('../repositories/tokens.repository');
+const { User } = require('../sequelize/models');
 
 const TokenManager = require('../utils/TokenManager');
 const redisClient = require('../utils/redis.util');
 
-const { User, Token } = require('../sequelize/models');
-
 class UsersService {
   usersRepository = new UsersRepository(User);
-  tokensRepository = new TokensRepository(Token);
 
   createUser = async (email, password, name, phone, address, isAdmin) => {
     try {

@@ -1,13 +1,16 @@
 'use strict';
 
 const OrdersRepository = require('../repositories/orders.repository');
+const UsersRepository = require('../repositories/users.repository');
+
 const { Order, User } = require('../sequelize/models');
 const { sequelize } = require('../sequelize/models/index');
 const SocketManager = require('../utils/SocketManager');
 const PaginationManager = require('../utils/PaginationManager');
 
 class OrdersService {
-  ordersRepository = new OrdersRepository(Order, User);
+  ordersRepository = new OrdersRepository(Order);
+  usersRepository = new UsersRepository(User);
 
   createOrder = async (ownerId, kinds, details, pickup, imageUrl) => {
     const transaction = await sequelize.transaction();
@@ -19,7 +22,7 @@ class OrdersService {
 
       await this.ordersRepository.createOrder(transaction, { ownerId, kinds, details, pickup, imageUrl });
       const transferPoint = parseInt(process.env.ORDER_PRICE);
-      await this.ordersRepository.decreasePoint(transaction, ownerId, transferPoint);
+      await this.usersRepository.decreasePoint(transaction, ownerId, transferPoint);
 
       SocketManager.alertNewOrder();
       await transaction.commit();
@@ -66,7 +69,7 @@ class OrdersService {
 
       if ((status_before == 0 && status_after === 5) || (status_before == 3 && status_after === 4)) {
         const transferPoint = parseInt(process.env.ORDER_PRICE);
-        await this.ordersRepository.increasePoint(transaction, userId, transferPoint);
+        await this.usersRepository.increasePoint(transaction, userId, transferPoint);
       }
 
       await transaction.commit();
