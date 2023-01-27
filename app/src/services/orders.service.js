@@ -1,9 +1,10 @@
 'use strict';
 
-const SocketManager = require('../utils/SocketManager');
 const OrdersRepository = require('../repositories/orders.repository');
 const { Order, User } = require('../sequelize/models');
 const { sequelize } = require('../sequelize/models/index');
+const SocketManager = require('../utils/SocketManager');
+const PaginationManager = require('../utils/PaginationManager');
 
 class OrdersService {
   ordersRepository = new OrdersRepository(Order, User);
@@ -37,6 +38,25 @@ class OrdersService {
     } catch (err) {
       return { code: 500, message: err.message };
     }
+  };
+
+  getOrdersDoing = async (userId, isAdmin) => {
+    try {
+      const data = await this.ordersRepository.getOrdersDoing(userId, isAdmin);
+      return { code: 200, data: data[0] };
+    } catch (err) {
+      return { code: 500, message: err.message };
+    }
+  };
+
+  getOrdersDone = async (ownerId, isAdmin, page) => {
+    const data = await this.ordersRepository.getOrdersDone(ownerId, isAdmin, page);
+    const getOrdersDoneCountAllReturnValue = await this.ordersRepository.getOrdersDoneCountAll(ownerId, isAdmin);
+    const count_all = getOrdersDoneCountAllReturnValue[0].count_all;
+
+    const paginationManager = new PaginationManager(page, count_all);
+
+    return { code: 200, data, pagination: paginationManager.render() };
   };
 
   updateStatus = async (orderId, userId, status_before, status_after) => {

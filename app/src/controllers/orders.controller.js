@@ -27,6 +27,35 @@ class OrdersController {
     res.status(response.code).json(response.data ? { data: response.data } : { message: response.message });
   };
 
+  getOrdersDoing = async (req, res) => {
+    if (!res.locals.userInfo) {
+      return res.status(403).json({ message: '권한이 없습니다.' });
+    }
+    const { id, isAdmin } = res.locals.userInfo;
+
+    const response = await this.ordersService.getOrdersDoing(id, isAdmin);
+    if (response.data) {
+      return res.status(response.code).json({ data: response.data });
+    } else {
+      return res.status(response.code).json({ message: response.message });
+    }
+  };
+
+  getOrdersDone = async (req, res) => {
+    if (!res.locals.userInfo) {
+      return res.status(401).json({ message: '권한이 없습니다.' });
+    }
+    const { id, isAdmin } = res.locals.userInfo;
+    const page = parseInt(req.query.p || 1);
+
+    const response = await this.ordersService.getOrdersDone(id, isAdmin, page);
+    if (response.data) {
+      return res.status(response.code).json({ data: response.data, pagination: response.pagination });
+    } else {
+      return res.status(response.code).json({ message: response.message });
+    }
+  };
+
   updateStatus = async (req, res) => {
     if (!res.locals.userInfo) {
       return res.status(401).json({ message: '권한이 없습니다.' });

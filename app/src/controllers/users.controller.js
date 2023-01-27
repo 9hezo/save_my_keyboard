@@ -43,35 +43,6 @@ class UsersController {
     res.clearCookie('refreshToken');
     return res.status(200).json({ message: '로그아웃 되었습니다.' });
   };
-
-  getOrdersDoing = async (req, res) => {
-    if (!res.locals.userInfo) {
-      return res.status(403).json({ message: '권한이 없습니다.' });
-    }
-    const { id, isAdmin } = res.locals.userInfo;
-
-    const response = await this.usersService.getOrdersDoing(id, isAdmin);
-    if (response.data) {
-      return res.status(response.code).json({ data: response.data });
-    } else {
-      return res.status(response.code).json({ message: response.message });
-    }
-  };
-
-  getOrdersDone = async (req, res) => {
-    if (!res.locals.userInfo) {
-      return res.status(401).json({ message: '권한이 없습니다.' });
-    }
-    const { id, isAdmin } = res.locals.userInfo;
-    const page = parseInt(req.query.p || 1);
-
-    const response = await this.usersService.getOrdersDone(id, isAdmin, page);
-    if (response.data) {
-      return res.status(response.code).json({ data: response.data, pagination: response.pagination });
-    } else {
-      return res.status(response.code).json({ message: response.message });
-    }
-  };
 }
 
 module.exports = UsersController;
