@@ -13,12 +13,12 @@ class OrdersController {
     const { kinds, details, pickup } = req.body;
     const imageUrl = req.files.length > 0 ? req.files[0].filename : null;
     const orderInfo = {
-      ownerId: id, 
-      kinds, 
-      details, 
-      pickup, 
-      imageUrl
-    }
+      ownerId: id,
+      kinds,
+      details,
+      pickup,
+      imageUrl,
+    };
 
     const response = await this.ordersService.createOrder(orderInfo);
     res.status(response.code).json({ message: response.message });

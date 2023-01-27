@@ -6,14 +6,14 @@ class UsersRepository {
   }
 
   createUser = async (userInfo) => {
-    return await this.usersModel.create({ 
-      email: userInfo.email, 
-      password: userInfo.password, 
-      name: userInfo.name, 
-      phone: userInfo.phone, 
-      address: userInfo.address, 
-      isAdmin: userInfo.isAdmin, 
-      point: userInfo.point, 
+    return await this.usersModel.create({
+      email: userInfo.email,
+      password: userInfo.password,
+      name: userInfo.name,
+      phone: userInfo.phone,
+      address: userInfo.address,
+      isAdmin: userInfo.isAdmin,
+      point: userInfo.point,
     });
   };
 
