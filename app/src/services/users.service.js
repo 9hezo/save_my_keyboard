@@ -6,8 +6,11 @@ const bcrypt = require('bcrypt');
 const UsersRepository = require('../repositories/users.repository');
 const TokensRepository = require('../repositories/tokens.repository');
 const OrdersRepository = require('../repositories/orders.repository');
+
 const TokenManager = require('../utils/TokenManager');
 const PaginationManager = require('../utils/PaginationManager');
+const redisClient = require('../utils/redis.util');
+
 const { User, Token, Order } = require('../sequelize/models');
 
 class UsersService {
@@ -48,7 +51,9 @@ class UsersService {
       const accessToken = await TokenManager.createAccessToken(user.id);
       const refreshToken = await TokenManager.createRefreshToken();
 
-      await this.tokensRepository.saveToken(refreshToken, user.id);
+      await redisClient.set(refreshToken, user.id);
+      const TTL = parseInt(process.env.REDIS_REFRESH_TTL);
+      await redisClient.expire(refreshToken, TTL);
 
       return { code: 200, accessToken, refreshToken, message: '로그인 되었습니다.' };
     } catch (err) {
