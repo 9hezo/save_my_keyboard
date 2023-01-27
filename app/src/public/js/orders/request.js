@@ -5,7 +5,7 @@ window.onload = () => {
 };
 
 function getOrdersDoing() {
-  fetch('/api/users/order', {
+  fetch('/api/orders/doing', {
     method: 'GET',
   })
     .then(async (res) => {

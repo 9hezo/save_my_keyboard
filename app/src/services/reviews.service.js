@@ -5,7 +5,6 @@ const { Review } = require('../sequelize/models');
 
 class ReviewsService {
   reviewsRepository = new ReviewsRepository(Review);
-
 }
 
 module.exports = ReviewsService;

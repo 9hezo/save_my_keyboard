@@ -9,6 +9,4 @@ const reviewsController = new ReviewsController();
 const loginCheckMiddleware = require('../middlewares/loginCheckMiddleware');
 const authMiddleware = require('../middlewares/authMiddleware');
 
-
-
 module.exports = router;

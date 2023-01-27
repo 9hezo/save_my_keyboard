@@ -6,7 +6,7 @@ window.onload = () => {
 const getOrdersDoing = () => {
   document.querySelector('.loading').style.display = 'block';
 
-  fetch('/api/users/order', {
+  fetch('/api/orders/doing', {
     method: 'GET',
   })
     .then(async (res) => {
@@ -62,7 +62,7 @@ const getOrdersDone = (page) => {
 
   page = parseInt(page || 1);
 
-  fetch('/api/users/mypage?p=' + page, {
+  fetch('/api/orders/done?p=' + page, {
     method: 'GET',
   })
     .then(async (res) => {

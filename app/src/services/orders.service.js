@@ -1,24 +1,28 @@
 'use strict';
 
-const SocketManager = require('../utils/SocketManager');
 const OrdersRepository = require('../repositories/orders.repository');
+const UsersRepository = require('../repositories/users.repository');
+
 const { Order, User } = require('../sequelize/models');
 const { sequelize } = require('../sequelize/models/index');
+const SocketManager = require('../utils/SocketManager');
+const PaginationManager = require('../utils/PaginationManager');
 
 class OrdersService {
-  ordersRepository = new OrdersRepository(Order, User);
+  ordersRepository = new OrdersRepository(Order);
+  usersRepository = new UsersRepository(User);
 
-  createOrder = async (ownerId, kinds, details, pickup, imageUrl) => {
+  createOrder = async (orderInfo) => {
     const transaction = await sequelize.transaction();
     try {
-      const order = await this.ordersRepository.getOrdersDoing(ownerId);
+      const order = await this.ordersRepository.getOrdersDoing(orderInfo.ownerId);
       if (order.length > 0) {
         return { code: 401, message: '이미 대기 중이거나 진행 중인 윤활 신청이 있습니다.' };
       }
 
-      await this.ordersRepository.createOrder(transaction, { ownerId, kinds, details, pickup, imageUrl });
+      await this.ordersRepository.createOrder(transaction, orderInfo);
       const transferPoint = parseInt(process.env.ORDER_PRICE);
-      await this.ordersRepository.decreasePoint(transaction, ownerId, transferPoint);
+      await this.usersRepository.decreasePoint(transaction, orderInfo.ownerId, transferPoint);
 
       SocketManager.alertNewOrder();
       await transaction.commit();
@@ -39,6 +43,25 @@ class OrdersService {
     }
   };
 
+  getOrdersDoing = async (userId, isAdmin) => {
+    try {
+      const data = await this.ordersRepository.getOrdersDoing(userId, isAdmin);
+      return { code: 200, data: data[0] };
+    } catch (err) {
+      return { code: 500, message: err.message };
+    }
+  };
+
+  getOrdersDone = async (ownerId, isAdmin, page) => {
+    const data = await this.ordersRepository.getOrdersDone(ownerId, isAdmin, page);
+    const getOrdersDoneCountAllReturnValue = await this.ordersRepository.getOrdersDoneCountAll(ownerId, isAdmin);
+    const count_all = getOrdersDoneCountAllReturnValue[0].count_all;
+
+    const paginationManager = new PaginationManager(page, count_all);
+
+    return { code: 200, data, pagination: paginationManager.render() };
+  };
+
   updateStatus = async (orderId, userId, status_before, status_after) => {
     const transaction = await sequelize.transaction();
     try {
@@ -46,7 +69,7 @@ class OrdersService {
 
       if ((status_before == 0 && status_after === 5) || (status_before == 3 && status_after === 4)) {
         const transferPoint = parseInt(process.env.ORDER_PRICE);
-        await this.ordersRepository.increasePoint(transaction, userId, transferPoint);
+        await this.usersRepository.increasePoint(transaction, userId, transferPoint);
       }
 
       await transaction.commit();

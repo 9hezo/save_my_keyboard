@@ -29,7 +29,7 @@ const getOrdersWaiting = (p) => {
   isGetOrdersWaitingLoading = true;
 
   console.log('p: ' + p);
-  fetch('/api/orders?p=' + p, {
+  fetch('/api/orders/waiting?p=' + p, {
     method: 'GET',
   })
     .then(async (res) => {
