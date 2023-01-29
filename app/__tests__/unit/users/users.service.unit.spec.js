@@ -29,7 +29,7 @@ describe('users.service Unit Test', () => {
     jest.resetAllMocks();
   });
 
-  test('users.service createUser Method Fail - already registed', async () => {
+  test('users.service createUser Method Fail - already registered', async () => {
     const userInfo = { ...mockUserInfo };
 
     const findOneByEmailReturnValue = 'test';
