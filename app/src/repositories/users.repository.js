@@ -6,7 +6,7 @@ class UsersRepository {
   }
 
   createUser = async (userInfo) => {
-    return await this.usersModel.create({
+    await this.usersModel.create({
       email: userInfo.email,
       password: userInfo.password,
       name: userInfo.name,
@@ -35,8 +35,7 @@ class UsersRepository {
     );
 
     if (!userInfo) {
-      const err = new Error('유저가 존재하지 않습니다.');
-      throw err;
+      throw new Error('유저가 존재하지 않습니다.');
     }
 
     userInfo.point -= transferPoint;
