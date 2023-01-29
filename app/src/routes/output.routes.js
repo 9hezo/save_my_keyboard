@@ -8,20 +8,21 @@ const usersOutputController = new UsersOutputController();
 const OrdersOutputController = require('../controllers/orders_output.controller');
 const ordersOutputController = new OrdersOutputController();
 
-const authMiddleware = require('../middlewares/authMiddleware');
+const outputMiddleware = require('../middlewares/output.middleware');
 
-router.get('/register', authMiddleware, usersOutputController.register);
-router.get('/login', authMiddleware, usersOutputController.login);
-router.get('/mypage', authMiddleware, usersOutputController.mypage);
+router.get('/register', outputMiddleware, usersOutputController.register);
+router.get('/login', outputMiddleware, usersOutputController.login);
+router.get('/mypage', outputMiddleware, usersOutputController.mypage);
 
-router.get('/orders/request', authMiddleware, ordersOutputController.request);
-router.get('/orders/list', authMiddleware, ordersOutputController.list);
+router.get('/orders/request', outputMiddleware, ordersOutputController.request);
+router.get('/orders/list', outputMiddleware, ordersOutputController.list);
 
-router.get('/', authMiddleware, (req, res) => {
+router.get('/', outputMiddleware, (req, res) => {
   res.render('index', {
     userInfo: res.locals.userInfo ?? null,
   });
 });
+
 router.get('/*', (req, res) => res.redirect('/'));
 
 module.exports = router;

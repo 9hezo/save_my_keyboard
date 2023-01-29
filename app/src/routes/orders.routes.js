@@ -10,21 +10,21 @@ const ordersController = new OrdersController();
 const UploadManager = require('../utils/UploadManager');
 const uploadManager = new UploadManager(process.env.MULTER_PATH_UPLOADS_ORDERS);
 
-const authMiddleware = require('../middlewares/authMiddleware');
+const apiMiddleware = require('../middlewares/api.middleware');
 
-router.get('/waiting', authMiddleware, ordersController.getOrdersWaiting);
-router.get('/doing', authMiddleware, ordersController.getOrdersDoing);
-router.get('/done', authMiddleware, ordersController.getOrdersDone);
+router.get('/waiting', apiMiddleware, ordersController.getOrdersWaiting);
+router.get('/doing', apiMiddleware, ordersController.getOrdersDoing);
+router.get('/done', apiMiddleware, ordersController.getOrdersDone);
 
 router.post(
   '/',
-  authMiddleware,
+  apiMiddleware,
   uploadManager.multer({ storage: uploadManager.storage }).array('files'),
   ordersController.createOrder
 );
 
-router.put('/:orderId', authMiddleware, ordersController.takeOrder);
+router.put('/:orderId', apiMiddleware, ordersController.takeOrder);
 
-router.patch('/:orderId', authMiddleware, ordersController.updateStatus);
+router.patch('/:orderId', apiMiddleware, ordersController.updateStatus);
 
 module.exports = router;

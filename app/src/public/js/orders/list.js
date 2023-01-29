@@ -75,6 +75,9 @@ const getOrdersWaiting = (p) => {
 
           document.querySelector('#orders_status_waiting').insertAdjacentHTML('beforeend', temp);
         });
+      } else if (code === 307) {
+        document.cookie = `accessToken=${res.accessToken}; path=/;`;
+        getOrdersWaiting(p);
       }
     })
     .catch((err) => {
@@ -97,10 +100,15 @@ const takeOrder = (orderId) => {
       const code = res.status;
 
       res = await res.json();
-      alert(res.message);
+      if (res.message) {
+        alert(res.message);
+      }
 
       if (code === 200) {
         location.href = '/mypage';
+      } else if (code === 307) {
+        document.cookie = `accessToken=${res.accessToken}; path=/;`;
+        takeOrder(orderId);
       }
     })
     .catch((err) => {

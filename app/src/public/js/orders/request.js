@@ -4,9 +4,13 @@ window.onload = () => {
   getOrdersDoing();
 };
 
-function getOrdersDoing() {
+const getOrdersDoing = () => {
   fetch('/api/orders/doing', {
     method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(),
   })
     .then(async (res) => {
       const code = res.status;
@@ -19,6 +23,9 @@ function getOrdersDoing() {
         } else {
           console.log('신청 가능한 상태입니다.');
         }
+      } else if (code === 307) {
+        document.cookie = `accessToken=${res.accessToken}; path=/;`;
+        getOrdersDoing();
       }
     })
     .catch((err) => {
@@ -32,7 +39,7 @@ const pickup_date = document.querySelector('#pickup_date');
 const pickup_time = document.querySelector('#pickup_time');
 const imageUrl = document.querySelector('#imageUrl');
 
-function orderRequest() {
+const orderRequest = () => {
   if (!kinds.value | !details.value | !pickup_date.value | !pickup_time.value) {
     return alert('빈 입력값이 있습니다.');
   }
@@ -52,9 +59,16 @@ function orderRequest() {
       const code = res.status;
 
       res = await res.json();
-      alert(res.message);
+      if (res.message) {
+        alert(res.message);
+      }
 
-      location.href = '/mypage';
+      if (code === 201) {
+        location.href = '/mypage';
+      } else if (code === 307) {
+        document.cookie = `accessToken=${res.accessToken}; path=/;`;
+        orderRequest();
+      }
     })
     .catch((err) => {
       console.log('err: ', err);
