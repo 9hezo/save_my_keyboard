@@ -3,8 +3,6 @@ const UsersController = require('../../../src/controllers/users.controller');
 const mockUsersService = {
   createUser: jest.fn(),
   login: jest.fn(),
-  findOneByEmail: jest.fn(),
-  findOneById: jest.fn(),
 };
 
 const mockRequest = {
@@ -14,10 +12,6 @@ const mockRequest = {
 const mockResponse = {
   status: jest.fn(),
   json: jest.fn(),
-  render: jest.fn(),
-  locals: jest.fn(),
-  cookie: jest.fn(),
-  clearCookie: jest.fn(),
 };
 
 const usersController = new UsersController();
@@ -32,88 +26,168 @@ describe('users.controller Unit Test', () => {
     });
   });
 
-  test('users.controller output_register Method success - userInfo exist', async () => {
-    const localsUserInfoValue = { name: 'name', point: 0 };
-    mockResponse.locals.userInfo = localsUserInfoValue;
-
-    usersController.output_register(mockRequest, mockResponse);
-
-    const path = 'users/register';
-    expect(mockResponse.render).toHaveBeenCalledWith(path, { userInfo: localsUserInfoValue });
-  });
-
-  test('users.controller output_register Method success - userInfo not exist', async () => {
-    const localsUserInfoValue = null;
-    mockResponse.locals.userInfo = localsUserInfoValue;
-
-    usersController.output_register(mockRequest, mockResponse);
-
-    const path = 'users/register';
-    expect(mockResponse.render).toHaveBeenCalledWith(path);
-  });
-
-  test('users.controller output_login Method success - userInfo exist', async () => {
-    const localsUserInfoValue = { name: 'name', point: 0 };
-    mockResponse.locals.userInfo = localsUserInfoValue;
-
-    usersController.output_login(mockRequest, mockResponse);
-
-    const path = 'users/login';
-    expect(mockResponse.render).toHaveBeenCalledWith(path, { userInfo: localsUserInfoValue });
-  });
-
-  test('users.controller output_login Method success - userInfo not exist', async () => {
-    const localsUserInfoValue = null;
-    mockResponse.locals.userInfo = localsUserInfoValue;
-
-    usersController.output_login(mockRequest, mockResponse);
-
-    const path = 'users/login';
-    expect(mockResponse.render).toHaveBeenCalledWith(path);
-  });
-
-  test('users.controller createUser Method success', async () => {
-    const createUserBodyParams = {
+  test('users.controller createUser Method success - isAdmin: false', async () => {
+    const requestBody = {
       email: 'test@gmail.com',
       password: 'password',
       name: 'name',
       phone: '01012345678',
       address: 'address',
-      isAdmin: false,
     };
-    mockRequest.body = createUserBodyParams;
+    mockRequest.body = requestBody;
 
-    const response = { code: 201, message: 'message' };
+    const userInfo = {
+      email: requestBody.email,
+      password: requestBody.password,
+      name: requestBody.name,
+      phone: requestBody.phone,
+      address: requestBody.address,
+      isAdmin: requestBody.isAdmin || false,
+    }
+    const createUserResponse = { 
+      code: 201, 
+      message: '회원 가입에 성공하였습니다.' 
+    };
     mockUsersService.createUser = jest.fn(() => {
-      return response;
+      return createUserResponse;
+    });
+
+    const loginResponse = { 
+      code: 200, 
+      accessToken: 'accessToken', 
+      refreshToken: 'refreshToken', 
+      message: '로그인 되었습니다.' 
+    };
+    mockUsersService.login = jest.fn(() => {
+      return loginResponse
     });
 
     await usersController.createUser(mockRequest, mockResponse);
 
     expect(mockUsersService.createUser).toHaveBeenCalledTimes(1);
-    expect(mockUsersService.createUser).toHaveBeenCalledWith(
-      createUserBodyParams.email,
-      createUserBodyParams.password,
-      createUserBodyParams.name,
-      createUserBodyParams.phone,
-      createUserBodyParams.address,
-      createUserBodyParams.isAdmin,
-      createUserBodyParams.isAdmin ? 0 : 1000000
+    expect(mockUsersService.createUser).toHaveBeenCalledWith(userInfo);
+    expect(mockUsersService.login).toHaveBeenCalledTimes(1);
+    expect(mockUsersService.login).toHaveBeenCalledWith(
+      requestBody.email,
+      requestBody.password,
     );
     expect(mockResponse.status).toHaveBeenCalledTimes(1);
-    expect(mockResponse.status).toHaveBeenCalledWith(response.code);
+    expect(mockResponse.status).toHaveBeenCalledWith(createUserResponse.code);
     expect(mockResponse.json).toHaveBeenCalledTimes(1);
-    expect(mockResponse.json).toHaveBeenCalledWith({ message: response.message });
+    expect(mockResponse.json).toHaveBeenCalledWith({ 
+      message: createUserResponse.message,
+      accessToken: loginResponse.accessToken,
+      refreshToken: loginResponse.refreshToken,
+    });
+  });
+
+  test('users.controller createUser Method success - isAdmin: true', async () => {
+    const requestBody = {
+      email: 'test@gmail.com',
+      password: 'password',
+      name: 'name',
+      phone: '01012345678',
+      address: 'address',
+      isAdmin: true,
+    };
+    mockRequest.body = requestBody;
+
+    const userInfo = {
+      email: requestBody.email,
+      password: requestBody.password,
+      name: requestBody.name,
+      phone: requestBody.phone,
+      address: requestBody.address,
+      isAdmin: requestBody.isAdmin || false,
+    }
+    const createUserResponse = { 
+      code: 201, 
+      message: '회원 가입에 성공하였습니다.' 
+    };
+    mockUsersService.createUser = jest.fn(() => {
+      return createUserResponse;
+    });
+
+    const loginResponse = { 
+      code: 200, 
+      accessToken: 'accessToken', 
+      refreshToken: 'refreshToken', 
+      message: '로그인 되었습니다.' 
+    };
+    mockUsersService.login = jest.fn(() => {
+      return loginResponse
+    });
+
+    await usersController.createUser(mockRequest, mockResponse);
+
+    expect(mockUsersService.createUser).toHaveBeenCalledTimes(1);
+    expect(mockUsersService.createUser).toHaveBeenCalledWith(userInfo);
+    expect(mockUsersService.login).toHaveBeenCalledTimes(1);
+    expect(mockUsersService.login).toHaveBeenCalledWith(
+      requestBody.email,
+      requestBody.password,
+    );
+    expect(mockResponse.status).toHaveBeenCalledTimes(1);
+    expect(mockResponse.status).toHaveBeenCalledWith(createUserResponse.code);
+    expect(mockResponse.json).toHaveBeenCalledTimes(1);
+    expect(mockResponse.json).toHaveBeenCalledWith({ 
+      message: createUserResponse.message,
+      accessToken: loginResponse.accessToken,
+      refreshToken: loginResponse.refreshToken,
+    });
+  });
+
+  test('users.controller createUser Method fail - already registered', async () => {
+    const requestBody = {
+      email: 'test@gmail.com',
+      password: 'password',
+      name: 'name',
+      phone: '01012345678',
+      address: 'address',
+    };
+    mockRequest.body = requestBody;
+
+    const userInfo = {
+      email: requestBody.email,
+      password: requestBody.password,
+      name: requestBody.name,
+      phone: requestBody.phone,
+      address: requestBody.address,
+      isAdmin: requestBody.isAdmin || false,
+    }
+    const createUserResponse = { 
+      code: 401, 
+      message: '이미 가입된 이메일입니다.' 
+    };
+    mockUsersService.createUser = jest.fn(() => {
+      return createUserResponse;
+    });
+
+    await usersController.createUser(mockRequest, mockResponse);
+
+    expect(mockUsersService.createUser).toHaveBeenCalledTimes(1);
+    expect(mockUsersService.createUser).toHaveBeenCalledWith(userInfo);
+    expect(mockResponse.status).toHaveBeenCalledTimes(1);
+    expect(mockResponse.status).toHaveBeenCalledWith(createUserResponse.code);
+    expect(mockResponse.json).toHaveBeenCalledTimes(1);
+    expect(mockResponse.json).toHaveBeenCalledWith({ 
+      message: createUserResponse.message,
+    });
   });
 
   test('users.controller login Method success', async () => {
-    const loginBodyParams = {
+    const requestBody = {
       email: 'test@gmail.com',
       password: 'password',
     };
-    mockRequest.body = loginBodyParams;
+    mockRequest.body = requestBody;
 
-    const response = { code: 200, message: 'message', accessToken: 'accessToken', refreshToken: 'refreshToken' };
+    const response = { 
+      code: 200, 
+      accessToken: 'accessToken', 
+      refreshToken: 'refreshToken', 
+      message: '로그인 되었습니다.',
+    };
     mockUsersService.login = jest.fn(() => {
       return response;
     });
@@ -121,21 +195,38 @@ describe('users.controller Unit Test', () => {
     await usersController.login(mockRequest, mockResponse);
 
     expect(mockUsersService.login).toHaveBeenCalledTimes(1);
-    expect(mockUsersService.login).toHaveBeenCalledWith(loginBodyParams.email, loginBodyParams.password);
+    expect(mockUsersService.login).toHaveBeenCalledWith(requestBody.email, requestBody.password);
     expect(mockResponse.status).toHaveBeenCalledTimes(1);
     expect(mockResponse.status).toHaveBeenCalledWith(response.code);
     expect(mockResponse.json).toHaveBeenCalledTimes(1);
-    expect(mockResponse.json).toHaveBeenCalledWith({ message: response.message });
+    expect(mockResponse.json).toHaveBeenCalledWith({ 
+      message: response.message,
+      accessToken: response.accessToken,
+      refreshToken: response.refreshToken,
+    });
   });
 
-  test('users.controller logout Method success', async () => {
-    const response = { code: 200, message: '로그아웃 되었습니다.' };
+  test('users.controller login Method fail - wrong id, pw', async () => {
+    const requestBody = {
+      email: 'test@gmail.com',
+      password: 'wrong',
+    };
+    mockRequest.body = requestBody;
 
-    await usersController.logout(mockRequest, mockResponse);
+    const response = { code: 400, message: '이메일 또는 비밀번호를 확인해주세요.' };
+    mockUsersService.login = jest.fn(() => {
+      return response;
+    });
 
+    await usersController.login(mockRequest, mockResponse);
+
+    expect(mockUsersService.login).toHaveBeenCalledTimes(1);
+    expect(mockUsersService.login).toHaveBeenCalledWith(requestBody.email, requestBody.password);
     expect(mockResponse.status).toHaveBeenCalledTimes(1);
     expect(mockResponse.status).toHaveBeenCalledWith(response.code);
     expect(mockResponse.json).toHaveBeenCalledTimes(1);
-    expect(mockResponse.json).toHaveBeenCalledWith({ message: response.message });
+    expect(mockResponse.json).toHaveBeenCalledWith({ 
+      message: response.message,
+    });
   });
 });

@@ -19,6 +19,8 @@ const getOrdersDoing = () => {
 
       if (code === 200) {
         if (res.data) {
+          document.querySelector('#orders_status_doing').style.display = 'block';
+
           const order = res.data;
           if (order.imageUrl) {
             document.querySelector('#order_img').src = '/uploads/orders/' + order.imageUrl;
@@ -45,8 +47,11 @@ const getOrdersDoing = () => {
             });
           }
         } else {
-          document.querySelector('#orders_status_doing').remove();
+          document.querySelector('#orders_status_doing').style.display = 'none';
         }
+      } else if (code === 307) {
+        document.cookie = `accessToken=${res.accessToken}; path=/;`;
+        getOrdersDoing();
       }
     })
     .catch((err) => {
@@ -116,6 +121,9 @@ const getOrdersDone = (page) => {
 
           document.querySelector('#orders_status_done').insertAdjacentHTML('beforeend', temp);
         });
+      } else if (code === 307) {
+        document.cookie = `accessToken=${res.accessToken}; path=/;`;
+        getOrdersDone(page);
       }
     })
     .catch((err) => {
@@ -126,7 +134,7 @@ const getOrdersDone = (page) => {
     });
 };
 
-function writeReview(orderId) {
+const writeReview = (orderId) => {
   alert(`준비중입니다.`);
   console.log(`준비중입니다. orderId=${orderId}`);
 }
@@ -195,10 +203,15 @@ const updateStatus = (orderId, status_before, status_after) => {
       const code = res.status;
 
       res = await res.json();
-      alert(res.message);
+      if (res.message) {
+        alert(res.message);
+      }
 
       if (code === 200) {
         location.href = '/mypage';
+      } else if (code === 307) {
+        document.cookie = `accessToken=${res.accessToken}; path=/;`;
+        updateStatus(orderId, status_before, status_after);
       }
     })
     .catch((err) => {

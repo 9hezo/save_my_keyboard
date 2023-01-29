@@ -18,7 +18,7 @@ class TokenManager {
     return refreshToken;
   };
 
-  static validateAccessToken(accessToken) {
+  static validateAccessToken = async (accessToken) => {
     try {
       jwt.verify(accessToken, SECRET_KEY);
       return true;
@@ -27,7 +27,7 @@ class TokenManager {
     }
   }
 
-  static validateRefreshToken(refreshToken) {
+  static validateRefreshToken = async (refreshToken) => {
     try {
       jwt.verify(refreshToken, SECRET_KEY);
       return true;
@@ -36,7 +36,7 @@ class TokenManager {
     }
   }
 
-  static getAccessTokenPayload(accessToken) {
+  static getAccessTokenPayload = async (accessToken) => {
     try {
       const payload = jwt.verify(accessToken, SECRET_KEY);
       return payload;

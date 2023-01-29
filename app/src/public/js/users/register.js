@@ -7,7 +7,7 @@ const name = document.querySelector('#name');
 const phone = document.querySelector('#phone');
 const address = document.querySelector('#address');
 
-function checkPassword() {
+const checkPassword = () => {
   password.classList.remove('is-invalid');
   confirmPassword.classList.remove('is-invalid');
   if (password.value !== confirmPassword.value) {
@@ -18,7 +18,7 @@ function checkPassword() {
   return true;
 }
 
-function register(isAdmin) {
+const register = (isAdmin) => {
   if (!email.value | !password.value | !confirmPassword.value | !name.value | !phone.value | !address.value) {
     return alert('빈 입력값이 있습니다.');
   }
@@ -52,7 +52,9 @@ function register(isAdmin) {
       const code = res.status;
 
       res = await res.json();
-      alert(res.message);
+      if (res.message) {
+        alert(res.message);
+      }
 
       if (code === 201) {
         document.cookie = `accessToken=${res.accessToken}`;
