@@ -27,22 +27,22 @@ describe('users.controller Unit Test', () => {
   });
 
   test('users.controller createUser Method success - isAdmin: false', async () => {
-    const createUserBodyParams = {
+    const requestBody = {
       email: 'test@gmail.com',
       password: 'password',
       name: 'name',
       phone: '01012345678',
       address: 'address',
     };
-    mockRequest.body = createUserBodyParams;
+    mockRequest.body = requestBody;
 
     const userInfo = {
-      email: createUserBodyParams.email,
-      password: createUserBodyParams.password,
-      name: createUserBodyParams.name,
-      phone: createUserBodyParams.phone,
-      address: createUserBodyParams.address,
-      isAdmin: createUserBodyParams.isAdmin || false,
+      email: requestBody.email,
+      password: requestBody.password,
+      name: requestBody.name,
+      phone: requestBody.phone,
+      address: requestBody.address,
+      isAdmin: requestBody.isAdmin || false,
     }
     const createUserResponse = { 
       code: 201, 
@@ -68,8 +68,8 @@ describe('users.controller Unit Test', () => {
     expect(mockUsersService.createUser).toHaveBeenCalledWith(userInfo);
     expect(mockUsersService.login).toHaveBeenCalledTimes(1);
     expect(mockUsersService.login).toHaveBeenCalledWith(
-      createUserBodyParams.email,
-      createUserBodyParams.password,
+      requestBody.email,
+      requestBody.password,
     );
     expect(mockResponse.status).toHaveBeenCalledTimes(1);
     expect(mockResponse.status).toHaveBeenCalledWith(createUserResponse.code);
@@ -82,7 +82,7 @@ describe('users.controller Unit Test', () => {
   });
 
   test('users.controller createUser Method success - isAdmin: true', async () => {
-    const createUserBodyParams = {
+    const requestBody = {
       email: 'test@gmail.com',
       password: 'password',
       name: 'name',
@@ -90,15 +90,15 @@ describe('users.controller Unit Test', () => {
       address: 'address',
       isAdmin: true,
     };
-    mockRequest.body = createUserBodyParams;
+    mockRequest.body = requestBody;
 
     const userInfo = {
-      email: createUserBodyParams.email,
-      password: createUserBodyParams.password,
-      name: createUserBodyParams.name,
-      phone: createUserBodyParams.phone,
-      address: createUserBodyParams.address,
-      isAdmin: createUserBodyParams.isAdmin || false,
+      email: requestBody.email,
+      password: requestBody.password,
+      name: requestBody.name,
+      phone: requestBody.phone,
+      address: requestBody.address,
+      isAdmin: requestBody.isAdmin || false,
     }
     const createUserResponse = { 
       code: 201, 
@@ -124,8 +124,8 @@ describe('users.controller Unit Test', () => {
     expect(mockUsersService.createUser).toHaveBeenCalledWith(userInfo);
     expect(mockUsersService.login).toHaveBeenCalledTimes(1);
     expect(mockUsersService.login).toHaveBeenCalledWith(
-      createUserBodyParams.email,
-      createUserBodyParams.password,
+      requestBody.email,
+      requestBody.password,
     );
     expect(mockResponse.status).toHaveBeenCalledTimes(1);
     expect(mockResponse.status).toHaveBeenCalledWith(createUserResponse.code);
@@ -138,22 +138,22 @@ describe('users.controller Unit Test', () => {
   });
 
   test('users.controller createUser Method fail - already registered', async () => {
-    const createUserBodyParams = {
+    const requestBody = {
       email: 'test@gmail.com',
       password: 'password',
       name: 'name',
       phone: '01012345678',
       address: 'address',
     };
-    mockRequest.body = createUserBodyParams;
+    mockRequest.body = requestBody;
 
     const userInfo = {
-      email: createUserBodyParams.email,
-      password: createUserBodyParams.password,
-      name: createUserBodyParams.name,
-      phone: createUserBodyParams.phone,
-      address: createUserBodyParams.address,
-      isAdmin: createUserBodyParams.isAdmin || false,
+      email: requestBody.email,
+      password: requestBody.password,
+      name: requestBody.name,
+      phone: requestBody.phone,
+      address: requestBody.address,
+      isAdmin: requestBody.isAdmin || false,
     }
     const createUserResponse = { 
       code: 401, 
@@ -176,11 +176,11 @@ describe('users.controller Unit Test', () => {
   });
 
   test('users.controller login Method success', async () => {
-    const loginBodyParams = {
+    const requestBody = {
       email: 'test@gmail.com',
       password: 'password',
     };
-    mockRequest.body = loginBodyParams;
+    mockRequest.body = requestBody;
 
     const response = { 
       code: 200, 
@@ -195,7 +195,7 @@ describe('users.controller Unit Test', () => {
     await usersController.login(mockRequest, mockResponse);
 
     expect(mockUsersService.login).toHaveBeenCalledTimes(1);
-    expect(mockUsersService.login).toHaveBeenCalledWith(loginBodyParams.email, loginBodyParams.password);
+    expect(mockUsersService.login).toHaveBeenCalledWith(requestBody.email, requestBody.password);
     expect(mockResponse.status).toHaveBeenCalledTimes(1);
     expect(mockResponse.status).toHaveBeenCalledWith(response.code);
     expect(mockResponse.json).toHaveBeenCalledTimes(1);
@@ -207,11 +207,11 @@ describe('users.controller Unit Test', () => {
   });
 
   test('users.controller login Method fail - wrong id, pw', async () => {
-    const loginBodyParams = {
+    const requestBody = {
       email: 'test@gmail.com',
       password: 'wrong',
     };
-    mockRequest.body = loginBodyParams;
+    mockRequest.body = requestBody;
 
     const response = { code: 400, message: '이메일 또는 비밀번호를 확인해주세요.' };
     mockUsersService.login = jest.fn(() => {
@@ -221,7 +221,7 @@ describe('users.controller Unit Test', () => {
     await usersController.login(mockRequest, mockResponse);
 
     expect(mockUsersService.login).toHaveBeenCalledTimes(1);
-    expect(mockUsersService.login).toHaveBeenCalledWith(loginBodyParams.email, loginBodyParams.password);
+    expect(mockUsersService.login).toHaveBeenCalledWith(requestBody.email, requestBody.password);
     expect(mockResponse.status).toHaveBeenCalledTimes(1);
     expect(mockResponse.status).toHaveBeenCalledWith(response.code);
     expect(mockResponse.json).toHaveBeenCalledTimes(1);
