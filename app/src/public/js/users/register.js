@@ -16,7 +16,7 @@ const checkPassword = () => {
     return false;
   }
   return true;
-}
+};
 
 const register = (isAdmin) => {
   if (!email.value | !password.value | !confirmPassword.value | !name.value | !phone.value | !address.value) {
@@ -67,4 +67,4 @@ const register = (isAdmin) => {
       // console.error(new Error('회원가입 중 에러 발생'));
       console.log('err: ', err);
     });
-}
+};

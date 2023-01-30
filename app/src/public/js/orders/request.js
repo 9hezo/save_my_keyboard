@@ -31,7 +31,7 @@ const getOrdersDoing = () => {
     .catch((err) => {
       console.log('err: ', err);
     });
-}
+};
 
 const kinds = document.querySelector('#kinds');
 const details = document.querySelector('#details');
@@ -73,4 +73,4 @@ const orderRequest = () => {
     .catch((err) => {
       console.log('err: ', err);
     });
-}
+};

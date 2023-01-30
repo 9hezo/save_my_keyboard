@@ -43,23 +43,23 @@ describe('users.controller Unit Test', () => {
       phone: requestBody.phone,
       address: requestBody.address,
       isAdmin: requestBody.isAdmin || false,
-    }
-    const createUserResponse = { 
-      code: 201, 
-      message: '회원 가입에 성공하였습니다.' 
+    };
+    const createUserResponse = {
+      code: 201,
+      message: '회원 가입에 성공하였습니다.',
     };
     mockUsersService.createUser = jest.fn(() => {
       return createUserResponse;
     });
 
-    const loginResponse = { 
-      code: 200, 
-      accessToken: 'accessToken', 
-      refreshToken: 'refreshToken', 
-      message: '로그인 되었습니다.' 
+    const loginResponse = {
+      code: 200,
+      accessToken: 'accessToken',
+      refreshToken: 'refreshToken',
+      message: '로그인 되었습니다.',
     };
     mockUsersService.login = jest.fn(() => {
-      return loginResponse
+      return loginResponse;
     });
 
     await usersController.createUser(mockRequest, mockResponse);
@@ -67,14 +67,11 @@ describe('users.controller Unit Test', () => {
     expect(mockUsersService.createUser).toHaveBeenCalledTimes(1);
     expect(mockUsersService.createUser).toHaveBeenCalledWith(userInfo);
     expect(mockUsersService.login).toHaveBeenCalledTimes(1);
-    expect(mockUsersService.login).toHaveBeenCalledWith(
-      requestBody.email,
-      requestBody.password,
-    );
+    expect(mockUsersService.login).toHaveBeenCalledWith(requestBody.email, requestBody.password);
     expect(mockResponse.status).toHaveBeenCalledTimes(1);
     expect(mockResponse.status).toHaveBeenCalledWith(createUserResponse.code);
     expect(mockResponse.json).toHaveBeenCalledTimes(1);
-    expect(mockResponse.json).toHaveBeenCalledWith({ 
+    expect(mockResponse.json).toHaveBeenCalledWith({
       message: createUserResponse.message,
       accessToken: loginResponse.accessToken,
       refreshToken: loginResponse.refreshToken,
@@ -99,23 +96,23 @@ describe('users.controller Unit Test', () => {
       phone: requestBody.phone,
       address: requestBody.address,
       isAdmin: requestBody.isAdmin || false,
-    }
-    const createUserResponse = { 
-      code: 201, 
-      message: '회원 가입에 성공하였습니다.' 
+    };
+    const createUserResponse = {
+      code: 201,
+      message: '회원 가입에 성공하였습니다.',
     };
     mockUsersService.createUser = jest.fn(() => {
       return createUserResponse;
     });
 
-    const loginResponse = { 
-      code: 200, 
-      accessToken: 'accessToken', 
-      refreshToken: 'refreshToken', 
-      message: '로그인 되었습니다.' 
+    const loginResponse = {
+      code: 200,
+      accessToken: 'accessToken',
+      refreshToken: 'refreshToken',
+      message: '로그인 되었습니다.',
     };
     mockUsersService.login = jest.fn(() => {
-      return loginResponse
+      return loginResponse;
     });
 
     await usersController.createUser(mockRequest, mockResponse);
@@ -123,14 +120,11 @@ describe('users.controller Unit Test', () => {
     expect(mockUsersService.createUser).toHaveBeenCalledTimes(1);
     expect(mockUsersService.createUser).toHaveBeenCalledWith(userInfo);
     expect(mockUsersService.login).toHaveBeenCalledTimes(1);
-    expect(mockUsersService.login).toHaveBeenCalledWith(
-      requestBody.email,
-      requestBody.password,
-    );
+    expect(mockUsersService.login).toHaveBeenCalledWith(requestBody.email, requestBody.password);
     expect(mockResponse.status).toHaveBeenCalledTimes(1);
     expect(mockResponse.status).toHaveBeenCalledWith(createUserResponse.code);
     expect(mockResponse.json).toHaveBeenCalledTimes(1);
-    expect(mockResponse.json).toHaveBeenCalledWith({ 
+    expect(mockResponse.json).toHaveBeenCalledWith({
       message: createUserResponse.message,
       accessToken: loginResponse.accessToken,
       refreshToken: loginResponse.refreshToken,
@@ -154,10 +148,10 @@ describe('users.controller Unit Test', () => {
       phone: requestBody.phone,
       address: requestBody.address,
       isAdmin: requestBody.isAdmin || false,
-    }
-    const createUserResponse = { 
-      code: 401, 
-      message: '이미 가입된 이메일입니다.' 
+    };
+    const createUserResponse = {
+      code: 401,
+      message: '이미 가입된 이메일입니다.',
     };
     mockUsersService.createUser = jest.fn(() => {
       return createUserResponse;
@@ -170,7 +164,7 @@ describe('users.controller Unit Test', () => {
     expect(mockResponse.status).toHaveBeenCalledTimes(1);
     expect(mockResponse.status).toHaveBeenCalledWith(createUserResponse.code);
     expect(mockResponse.json).toHaveBeenCalledTimes(1);
-    expect(mockResponse.json).toHaveBeenCalledWith({ 
+    expect(mockResponse.json).toHaveBeenCalledWith({
       message: createUserResponse.message,
     });
   });
@@ -182,10 +176,10 @@ describe('users.controller Unit Test', () => {
     };
     mockRequest.body = requestBody;
 
-    const response = { 
-      code: 200, 
-      accessToken: 'accessToken', 
-      refreshToken: 'refreshToken', 
+    const response = {
+      code: 200,
+      accessToken: 'accessToken',
+      refreshToken: 'refreshToken',
       message: '로그인 되었습니다.',
     };
     mockUsersService.login = jest.fn(() => {
@@ -199,7 +193,7 @@ describe('users.controller Unit Test', () => {
     expect(mockResponse.status).toHaveBeenCalledTimes(1);
     expect(mockResponse.status).toHaveBeenCalledWith(response.code);
     expect(mockResponse.json).toHaveBeenCalledTimes(1);
-    expect(mockResponse.json).toHaveBeenCalledWith({ 
+    expect(mockResponse.json).toHaveBeenCalledWith({
       message: response.message,
       accessToken: response.accessToken,
       refreshToken: response.refreshToken,
@@ -225,7 +219,7 @@ describe('users.controller Unit Test', () => {
     expect(mockResponse.status).toHaveBeenCalledTimes(1);
     expect(mockResponse.status).toHaveBeenCalledWith(response.code);
     expect(mockResponse.json).toHaveBeenCalledTimes(1);
-    expect(mockResponse.json).toHaveBeenCalledWith({ 
+    expect(mockResponse.json).toHaveBeenCalledWith({
       message: response.message,
     });
   });

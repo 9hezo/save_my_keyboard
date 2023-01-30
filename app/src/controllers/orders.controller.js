@@ -36,7 +36,7 @@ class OrdersController {
 
   getOrdersDoing = async (req, res) => {
     if (!res.locals.userInfo) {
-      return res.status(403).json({ message: '권한이 없습니다.' });
+      return res.status(401).json({ message: '권한이 없습니다.' });
     }
     const { id, isAdmin } = res.locals.userInfo;
 

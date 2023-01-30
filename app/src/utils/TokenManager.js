@@ -25,7 +25,7 @@ class TokenManager {
     } catch (err) {
       return false;
     }
-  }
+  };
 
   static validateRefreshToken = async (refreshToken) => {
     try {
@@ -34,7 +34,7 @@ class TokenManager {
     } catch (err) {
       return false;
     }
-  }
+  };
 
   static getAccessTokenPayload = async (accessToken) => {
     try {
@@ -43,7 +43,7 @@ class TokenManager {
     } catch (err) {
       return null;
     }
-  }
+  };
 }
 
 module.exports = TokenManager;

@@ -191,7 +191,9 @@ describe('users.service Unit Test', () => {
     });
 
     redisClient.set = jest.fn(() => {});
-    redisClient.expire = jest.fn(() => { throw new Error(); });
+    redisClient.expire = jest.fn(() => {
+      throw new Error();
+    });
 
     const response = await usersService.login(userInfo.email, userInfo.password);
 
@@ -216,7 +218,9 @@ describe('users.service Unit Test', () => {
       return 'refreshToken';
     });
 
-    redisClient.set = jest.fn(() => { throw new Error(); });
+    redisClient.set = jest.fn(() => {
+      throw new Error();
+    });
 
     const response = await usersService.login(userInfo.email, userInfo.password);
 
@@ -233,7 +237,7 @@ describe('users.service Unit Test', () => {
     mockUsersRepository.findOneByEmail = jest.fn(() => {
       return findOneByEmailReturnValue;
     });
-    
+
     TokenManager.createAccessToken = jest.fn(() => {
       return 'accessToken';
     });
@@ -334,7 +338,7 @@ describe('users.service Unit Test', () => {
     const userInfo = { ...mockUserInfo };
 
     const saltRounds = parseInt(process.env.BCRYPT_SALT);
-    const afterPassword = await bcrypt.hash(userInfo.password+'wrong', saltRounds);
+    const afterPassword = await bcrypt.hash(userInfo.password + 'wrong', saltRounds);
 
     const result = await usersService.checkPassword(userInfo.password, afterPassword);
 

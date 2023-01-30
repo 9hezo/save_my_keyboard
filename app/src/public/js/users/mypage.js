@@ -137,7 +137,7 @@ const getOrdersDone = (page) => {
 const writeReview = (orderId) => {
   alert(`준비중입니다.`);
   console.log(`준비중입니다. orderId=${orderId}`);
-}
+};
 
 const setPagination = (obj) => {
   let page = parseInt(obj.page);
