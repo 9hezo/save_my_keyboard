@@ -1,126 +1,117 @@
 'use strict';
 
+require('dotenv').config();
 const { QueryTypes } = require('sequelize');
 const { sequelize } = require('../sequelize/models/index');
-const Sequelize = require('sequelize');
-const op = Sequelize.Op;
 
 class OrdersRepository {
-  constructor(ordersModel, usersModel) {
+  constructor(ordersModel) {
     this.ordersModel = ordersModel;
-    this.usersModel = usersModel;
   }
 
-  findAllLists = async () => {
-    return await this.ordersModel.findAll();
+  createOrder = async (transaction, orderInfo) => {
+    await this.ordersModel.create(
+      {
+        ownerId: orderInfo.ownerId,
+        kinds: orderInfo.kinds,
+        details: orderInfo.details,
+        pickup: orderInfo.pickup,
+        imageUrl: orderInfo.imageUrl,
+      },
+      { transaction }
+    );
   };
 
-  updateStatusById = async (ownerId) => {
-    const keyboardbyid = await this.ordersModel.findOne({ where: { ownerId: ownerId } });
-    return keyboardbyid;
+  getOrdersWaiting = async (page) => {
+    const PAGE_LIMIT = parseInt(process.env.PAGE_LIMIT);
+
+    return await this.ordersModel.findAll({
+      where: { status: 0 },
+      order: [['id', 'ASC']],
+      offset: (page - 1) * PAGE_LIMIT,
+      limit: PAGE_LIMIT,
+    });
   };
 
-  statusUpdate = async (changeStatus) => {
-    const statusNow = await changeStatus.save();
-    return statusNow;
-  };
-
-  findOrderById = async (ownerId) => {
-    return await this.ordersModel.findAll({ where: { ownerId: ownerId } });
-  };
-
-  createOrder = async (ownerId, kinds, details, pickup, imageUrl) => {
-    try {
-      const result = await this.ordersModel.create({ ownerId, kinds, details, pickup, imageUrl });
-      return result.id;
-    } catch (err) {
-      console.log(err);
-      return -1;
-    }
-  };
-
-  getOrderStatusZeroToThree = async (ownerId) => {
+  getOrdersDoing = async (userId, isAdmin = false) => {
     const query = `SELECT 
                     * FROM Orders 
                   WHERE status != 5 
                     AND status != 4 
-                    AND ownerId = ?
+                    AND ${isAdmin ? 'workerId' : 'ownerId'} = ?
                   LIMIT 1
                   ;`;
     return await sequelize.query(query, {
       type: QueryTypes.SELECT,
-      replacements: [ownerId],
+      replacements: [userId],
     });
   };
 
-  getOrdersStatusEnd = async (ownerId, page) => {
+  getOrdersDone = async (userId, isAdmin, page) => {
     const PAGE_LIMIT = parseInt(process.env.PAGE_LIMIT);
 
     const query = `SELECT 
                     * FROM Orders 
-                  WHERE (status = 5 
-                    OR status = 4)
-                    AND ownerId = ?
-                  ORDER BY id DESC
+                  WHERE (${!isAdmin ? 'status = 5 OR ' : ''}status = 4)
+                    AND ${isAdmin ? 'workerId' : 'ownerId'} = ?
+                  ORDER BY updatedAt DESC
                   LIMIT ?, ?
                   ;`;
     return await sequelize.query(query, {
       type: QueryTypes.SELECT,
-      replacements: [ownerId, (page - 1) * PAGE_LIMIT, PAGE_LIMIT],
+      replacements: [userId, (page - 1) * PAGE_LIMIT, PAGE_LIMIT],
     });
   };
 
-  getOrdersStatusEndCountAll = async (ownerId) => {
+  getOrdersDoneCountAll = async (userId, isAdmin) => {
     const query = `SELECT 
                     COUNT(*) AS count_all 
                   FROM Orders 
-                  WHERE (status = 5 
-                    OR status = 4)
-                    AND ownerId = ?
+                  WHERE (${!isAdmin ? 'status = 5 OR ' : ''}status = 4)
+                    AND ${isAdmin ? 'workerId' : 'ownerId'} = ?
                   ;`;
     return await sequelize.query(query, {
       type: QueryTypes.SELECT,
-      replacements: [ownerId],
+      replacements: [userId],
     });
   };
 
-  pointDeduct = async (id, point) => {
-    try {
-      await this.usersModel.decrement({ point }, { where: { id } });
-      return true;
-    } catch (err) {
-      return false;
+  updateStatus = async (transaction, { id, status_before, status_after }) => {
+    const orderInfo = await this.ordersModel.findOne(
+      {
+        attributes: ['id', 'status'],
+        where: { id, status: status_before },
+      },
+      { transaction }
+    );
+
+    if (!orderInfo) {
+      throw new Error('요청한 상태의 주문이 존재하지 않습니다.');
     }
+
+    orderInfo.status = status_after;
+    await orderInfo.save({ transaction });
   };
 
-  updateStatus = async (id, status_before, status_after) => {
-    return await this.ordersModel.update({ status: status_after }, { where: { id, status: status_before } });
-  };
+  takeOrder = async (transaction, { orderId, userId }) => {
+    const orderInfo = await this.ordersModel.findOne(
+      {
+        where: {
+          id: orderId,
+          workerId: null,
+          status: 0,
+        },
+      },
+      { transaction }
+    );
 
-  orderlist = async (workerId) => {
-    const data = await this.ordersModel.findAll({ where: { workerId: workerId } });
-    return data;
-  };
-
-  // updateStatus2 = async (id, status_before, status_after) => {
-  //   return await this.ordersModel.update({ status: status_after }, { where: { id, status: status_before } });
-  // };
-
-  statusInduct = async (ownerId, status) => {
-    try {
-      await this.ordersModel.increment({ status }, { where: { ownerId, workerId } });
-      return true;
-    } catch (err) {
-      return false;
+    if (!orderInfo) {
+      throw new Error('윤활 신청 정보가 존재하지 않습니다.');
     }
-  };
 
-  findOrderLists = async (id) => {
-    const lists = await Order.findOne({
-      where: { id, status: 0 },
-      attributes: ['imageUrl', 'status'],
-    });
-    return lists;
+    orderInfo.workerId = userId;
+    orderInfo.status += 1;
+    await orderInfo.save({ transaction });
   };
 }
 

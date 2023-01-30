@@ -3,30 +3,26 @@
 const express = require('express');
 const router = express.Router();
 
-const authMiddleware = require('../config/authMiddleware');
-
 const UsersOutputController = require('../controllers/users_output.controller');
 const usersOutputController = new UsersOutputController();
 const OrdersOutputController = require('../controllers/orders_output.controller');
 const ordersOutputController = new OrdersOutputController();
 
-router.get('/register', authMiddleware, usersOutputController.register);
-router.get('/login', authMiddleware, usersOutputController.login);
-router.get('/mypage_user', authMiddleware, usersOutputController.mypage_user);
-router.get('/admin', authMiddleware, usersOutputController.admin);
+const outputMiddleware = require('../middlewares/output.middleware');
 
-router.get('/orders/request', authMiddleware, ordersOutputController.request);
-// 사장님 윤활 신청 목록 페이지
-router.get('/orders/lists', authMiddleware, ordersOutputController.getlists);
+router.get('/register', outputMiddleware, usersOutputController.register);
+router.get('/login', outputMiddleware, usersOutputController.login);
+router.get('/mypage', outputMiddleware, usersOutputController.mypage);
 
-router.get('/', authMiddleware, (req, res) => {
-  if (res.locals.userInfo) {
-    const userInfo = res.locals.userInfo;
-    res.render('index', { userInfo });
-  } else {
-    res.render('index');
-  }
+router.get('/orders/request', outputMiddleware, ordersOutputController.request);
+router.get('/orders/list', outputMiddleware, ordersOutputController.list);
+
+router.get('/', outputMiddleware, (req, res) => {
+  res.render('index', {
+    userInfo: res.locals.userInfo ?? null,
+  });
 });
+
 router.get('/*', (req, res) => res.redirect('/'));
 
 module.exports = router;

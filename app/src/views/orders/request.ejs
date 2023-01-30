@@ -1,3 +1,12 @@
+<script>
+<% if (!locals.userInfo) { %>
+  alert('로그인이 필요한 기능입니다.');
+  location.href = '/'
+<% } else if (locals.userInfo.isAdmin) {%>
+  alert('권한이 없습니다.');
+  location.href = '/'
+<% } %>
+</script>
 <script src="/js/orders/request.js" defer></script>
 
 <!-- 입력 폼 -->
@@ -6,15 +15,7 @@
 
   <div class="input-group mb-3">
     <span class="input-group-text">키보드 종류</span>
-    <input
-      type="text"
-      class="form-control"
-      id="kinds"
-      placeholder="종류"
-      aria-label="Sizing example input"
-      aria-describedby="inputGroup-sizing-default"
-      required
-    />
+    <input type="text" class="form-control" id="kinds" placeholder="종류" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required />
   </div>
 
   <div class="input-group mb-3">
@@ -24,15 +25,7 @@
 
   <div class="input-group mb-3">
     <span class="input-group-text">요청 사항</span>
-    <input
-      type="text"
-      class="form-control"
-      id="details"
-      placeholder="ex 24일 오전까지 부탁드립니다."
-      aria-label="Sizing example input"
-      aria-describedby="inputGroup-sizing-default"
-      required
-    />
+    <input type="text" class="form-control" id="details" placeholder="ex 24일 오전까지 부탁드립니다." aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required />
   </div>
 
   <div class="input-group mb-3">

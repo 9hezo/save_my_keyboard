@@ -23,28 +23,20 @@
 
 <% 
 if (locals.userInfo) {
-  if (locals.userInfo.admin) { 
+  if (locals.userInfo.isAdmin) { 
 %>
-    <script>
-      const socket = new WebSocket(`ws://${window.location.host}`);
 
-      socket.addEventListener('open', () => {
-        console.log('Connected to Server ✅');
-      });
-      socket.addEventListener('close', () => {
-        console.log('Disconnected to Server ❌');
-      });
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();  
 
-      socket.addEventListener('message', (message) => {
-        const data = JSON.parse(message.data);
-        if (data.payload) {
-          document.querySelector('#alertNewOrder').classList.add('show');
-          setTimeout(() => {
-            document.querySelector('#alertNewOrder').classList.remove('show');
-          }, 5000);
-        }
-      });
-    </script>
+  socket.on('newOrder', (payload) => {
+    document.querySelector('#alertNewOrder').classList.add('show');
+    setTimeout(() => {
+      document.querySelector('#alertNewOrder').classList.remove('show');
+    }, 5000);
+  })
+</script>
 <% 
   } 
 } 

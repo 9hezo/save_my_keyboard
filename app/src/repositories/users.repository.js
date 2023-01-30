@@ -5,38 +5,61 @@ class UsersRepository {
     this.usersModel = usersModel;
   }
 
-  createUser = async (email, password, name, phone, address, admin, point) => {
-    try {
-      const result = await this.usersModel.create({
-        email,
-        password,
-        name,
-        phone,
-        address,
-        admin,
-        point,
-      });
-      return result.id; // 생성된 유저의 id값
-    } catch (err) {
-      console.log(err);
-      return -1;
-    }
+  createUser = async (userInfo) => {
+    await this.usersModel.create({
+      email: userInfo.email,
+      password: userInfo.password,
+      name: userInfo.name,
+      phone: userInfo.phone,
+      address: userInfo.address,
+      isAdmin: userInfo.isAdmin,
+      point: userInfo.point,
+    });
   };
 
-  findOneUser = async (email) => {
-    try {
-      return await this.usersModel.findOne({ where: { email } });
-    } catch (err) {
-      console.log(err);
-    }
+  findOneByEmail = async (email) => {
+    return await this.usersModel.findOne({ where: { email } });
   };
 
-  findUserById = async (id) => {
-    try {
-      return await this.usersModel.findByPk(id);
-    } catch (err) {
-      console.log(err);
+  findOneById = async (id) => {
+    return await this.usersModel.findByPk(id);
+  };
+
+  decreasePoint = async (transaction, id, transferPoint) => {
+    const userInfo = await this.usersModel.findOne(
+      {
+        attributes: ['id', 'point'],
+        where: { id },
+      },
+      { transaction }
+    );
+
+    if (!userInfo) {
+      throw new Error('유저가 존재하지 않습니다.');
     }
+
+    userInfo.point -= transferPoint;
+    if (userInfo.point < 0) {
+      throw new Error('유저의 포인트가 부족합니다.');
+    }
+    await userInfo.save({ transaction });
+  };
+
+  increasePoint = async (transaction, id, transferPoint) => {
+    const userInfo = await this.usersModel.findOne(
+      {
+        attributes: ['id', 'point'],
+        where: { id },
+      },
+      { transaction }
+    );
+
+    if (!userInfo) {
+      throw new Error('유저가 존재하지 않습니다.');
+    }
+
+    userInfo.point += transferPoint;
+    await userInfo.save({ transaction });
   };
 }
 

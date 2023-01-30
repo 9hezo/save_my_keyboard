@@ -1,11 +1,12 @@
 window.onload = () => {
-  getOrderStatusZeroToThree();
-  getOrderStatusEnd();
+  getOrdersDoing();
+  getOrdersDone();
 };
-getOrderStatusZeroToThree = () => {
+
+const getOrdersDoing = () => {
   document.querySelector('.loading').style.display = 'block';
 
-  fetch('/api/users/order', {
+  fetch('/api/orders/doing', {
     method: 'GET',
   })
     .then(async (res) => {
@@ -18,6 +19,8 @@ getOrderStatusZeroToThree = () => {
 
       if (code === 200) {
         if (res.data) {
+          document.querySelector('#orders_status_doing').style.display = 'block';
+
           const order = res.data;
           if (order.imageUrl) {
             document.querySelector('#order_img').src = '/uploads/orders/' + order.imageUrl;
@@ -30,12 +33,25 @@ getOrderStatusZeroToThree = () => {
           const status_arr = ['대기 중', '수거 중', '수거 완료', '배송 중', '배송 완료', '취소 완료'];
           document.querySelector('#order_status').innerHTML = status_arr[order.status];
 
-          document.querySelector('#order_cancel').addEventListener('click', () => {
-            cancelOrder(order.id);
-          });
+          if (order.status === 0) {
+            const order_cancel = document.querySelector('#order_cancel');
+            order_cancel.style.display = 'block';
+            order_cancel.addEventListener('click', () => {
+              cancelOrder(order.id);
+            });
+          } else if (userInfo.isAdmin & (order.status !== 0)) {
+            const order_update = document.querySelector('#order_update');
+            order_update.style.display = 'block';
+            order_update.addEventListener('click', () => {
+              updateOrder(order.id, order.status);
+            });
+          }
         } else {
-          document.querySelector('#orders_status_zeroToThree').remove();
+          document.querySelector('#orders_status_doing').style.display = 'none';
         }
+      } else if (code === 307) {
+        document.cookie = `accessToken=${res.accessToken}; path=/;`;
+        getOrdersDoing();
       }
     })
     .catch((err) => {
@@ -46,12 +62,12 @@ getOrderStatusZeroToThree = () => {
     });
 };
 
-getOrderStatusEnd = (page) => {
+const getOrdersDone = (page) => {
   document.querySelector('.loading').style.display = 'block';
 
   page = parseInt(page || 1);
 
-  fetch('/api/users/mypage?p=' + page, {
+  fetch('/api/orders/done?p=' + page, {
     method: 'GET',
   })
     .then(async (res) => {
@@ -69,7 +85,7 @@ getOrderStatusEnd = (page) => {
         }
         setPagination(res.pagination); // 페이지네이션
 
-        document.querySelector('#orders_status_end').innerHTML = '';
+        document.querySelector('#orders_status_done').innerHTML = '';
         const status_arr = ['대기 중', '수거 중', '수거 완료', '배송 중', '배송 완료', '취소 완료'];
         orders.forEach((order) => {
           const status = status_arr[order.status];
@@ -83,23 +99,31 @@ getOrderStatusEnd = (page) => {
             <div class="card border-secondary border-2 mb-1">
               <div class="row">
                 <div class="ps-4 pt-2 col-2">
-                  <img id="order_img" class="img-fluid rounded-start" src="${imageUrl}" style="width: 100px;">
+                  <img class="img-fluid rounded-start" src="${imageUrl}" style="width: 100px;">
                 </div>
                 <div class="p-2 col-8">
                   <div class="card-body">
-                    <h5 id="order_kinds" class="card-title">${order.kinds}</h5>
-                    <p id="order_details" class="card-text">${order.details}</p>
+                    <h5 class="card-title">${order.kinds}</h5>
+                    <p class="card-text">${order.details}</p>
                   </div>
                 </div>
                 <div class="p-1 col-2">
-                  <button id="order_status" class="btn btn-success mb-2" style="width: 100px;">${status}</button>
-                  <button onclick="location.href='/reviews/write'" id="" class="btn btn-outline-primary" style="width: 100px;">리뷰남기기</button>
+                  <button class="btn btn-outline-secondary mb-2" style="width: 100px;" disabled>${status}</button>
+                  ${
+                    !userInfo.isAdmin & (order.status === 4)
+                      ? `<button onclick="writeReview(${order.id})" class="btn btn-outline-primary" style="width: 100px;">리뷰남기기</button>`
+                      : ''
+                  }
                 </div>
               </div>
             </div>
           `;
-          document.querySelector('#orders_status_end').insertAdjacentHTML('beforeend', temp);
+
+          document.querySelector('#orders_status_done').insertAdjacentHTML('beforeend', temp);
         });
+      } else if (code === 307) {
+        document.cookie = `accessToken=${res.accessToken}; path=/;`;
+        getOrdersDone(page);
       }
     })
     .catch((err) => {
@@ -108,6 +132,11 @@ getOrderStatusEnd = (page) => {
     .finally(() => {
       document.querySelector('.loading').style.display = 'none';
     });
+};
+
+const writeReview = (orderId) => {
+  alert(`준비중입니다.`);
+  console.log(`준비중입니다. orderId=${orderId}`);
 };
 
 const setPagination = (obj) => {
@@ -119,7 +148,7 @@ const setPagination = (obj) => {
   let temp = '';
   if (start_page != 1) {
     temp += `<li class="page-item" style="cursor: pointer;">
-              <a class="page-link" onclick="getOrderStatusEnd(${start_page - 1})"><span aria-hidden="true">&laquo;</span></a>
+              <a class="page-link" onclick="getOrdersDone(${start_page - 1})"><span aria-hidden="true">&laquo;</span></a>
             </li>`;
   } else {
     temp += `<li class="page-item disabled">
@@ -128,14 +157,14 @@ const setPagination = (obj) => {
   }
   for (let i = start_page; i <= end_page; i++) {
     if (i == page) {
-      temp += `<li class="page-item active" style="cursor: pointer;"><a class="page-link" onclick="getOrderStatusEnd(${i})">${i}</a></li>`;
+      temp += `<li class="page-item active" style="cursor: pointer;"><a class="page-link" onclick="getOrdersDone(${i})">${i}</a></li>`;
     } else {
-      temp += `<li class="page-item" style="cursor: pointer;"><a class="page-link" onclick="getOrderStatusEnd(${i})">${i}</a></li>`;
+      temp += `<li class="page-item" style="cursor: pointer;"><a class="page-link" onclick="getOrdersDone(${i})">${i}</a></li>`;
     }
   }
   if (end_page != total_page) {
     temp += `<li class="page-item" style="cursor: pointer;">
-              <a class="page-link" onclick="getOrderStatusEnd(${end_page + 1})"><span aria-hidden="true">&raquo;</span></a>
+              <a class="page-link" onclick="getOrdersDone(${end_page + 1})"><span aria-hidden="true">&raquo;</span></a>
             </li>`;
   } else {
     temp += `<li class="page-item disabled">
@@ -146,10 +175,22 @@ const setPagination = (obj) => {
   document.querySelector('.pagination').insertAdjacentHTML('beforeend', temp);
 };
 
-function cancelOrder(orderId) {
+const updateOrder = (orderId, status_before) => {
+  updateStatus(orderId, status_before, status_before + 1);
+};
+
+const cancelOrder = (orderId) => {
+  const status = {
+    waiting: 0,
+    cancelled: 5,
+  };
+  updateStatus(orderId, status.waiting, status.cancelled);
+};
+
+const updateStatus = (orderId, status_before, status_after) => {
   const req = {
-    status_before: 0,
-    status_after: 5,
+    status_before,
+    status_after,
   };
   fetch('/api/orders/' + orderId, {
     method: 'PATCH',
@@ -162,14 +203,18 @@ function cancelOrder(orderId) {
       const code = res.status;
 
       res = await res.json();
-      alert(res.message);
+      if (res.message) {
+        alert(res.message);
+      }
 
       if (code === 200) {
-        getOrderStatusZeroToThree();
-        getOrderStatusEnd();
+        location.href = '/mypage';
+      } else if (code === 307) {
+        document.cookie = `accessToken=${res.accessToken}; path=/;`;
+        updateStatus(orderId, status_before, status_after);
       }
     })
     .catch((err) => {
       console.log('err: ', err);
     });
-}
+};

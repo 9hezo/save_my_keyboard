@@ -3,7 +3,7 @@
 const email = document.querySelector('#email');
 const password = document.querySelector('#password');
 
-function login() {
+const login = () => {
   if (!email.value | !password.value) {
     return alert('빈 입력값이 있습니다.');
   }
@@ -24,9 +24,14 @@ function login() {
       const code = res.status;
 
       res = await res.json();
-      alert(res.message);
+      if (res.message) {
+        alert(res.message);
+      }
 
       if (code === 200) {
+        document.cookie = `accessToken=${res.accessToken}; path=/;`;
+        document.cookie = `refreshToken=${res.refreshToken}; path=/;`;
+
         location.href = '/';
       }
     })
@@ -34,4 +39,4 @@ function login() {
       // console.error(new Error('회원가입 중 에러 발생'));
       console.log('err: ', err);
     });
-}
+};
