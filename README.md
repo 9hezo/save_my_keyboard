@@ -94,7 +94,7 @@
   <summary><b>ERD</b></summary>
   <div markdown="1">
     <ul>
-      <div><img src="./docs/erd.png" width=100%></div>
+      <div><img src="./docs/erd.png" width=50%></div>
     </ul>
   </div>
 </details>
